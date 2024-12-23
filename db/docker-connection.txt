@@ -1,0 +1,11 @@
+`
+$ docker pull mysql/mysql-server:latest
+
+$ docker run --name=mysql_tin -d mysql/mysql-server:latest
+
+$ docker logs mysql1 2>&1 | grep GENERATED
+
+$ docker exec -it mysql_tin mysql -uroot -p
+
+$ ALTER USER `root`@`localhost` IDENTIFIED BY 'my_password'
+`
