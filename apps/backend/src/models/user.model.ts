@@ -36,7 +36,6 @@ export class User {
         () => Role,
         (role) => role.users,
     )
-    @Column({ type: "int", nullable: false })
     role!: Role;
 
     @OneToMany(

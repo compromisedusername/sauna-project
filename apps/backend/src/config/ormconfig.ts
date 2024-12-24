@@ -4,6 +4,7 @@ import {Role} from './../models/role.model';
 import {Reservation} from './../models/reservation.model';
 import {Sauna} from './../models/sauna.model';
 
+import {seed }from './create-inital-data';
 
 export const AppDataSource = new DataSource({
 	type: "mysql",
@@ -19,12 +20,14 @@ export const AppDataSource = new DataSource({
 });
 
 
-export const initialize = ()=> AppDataSource.initialize()
-	.then(() => {
-	  console.log(process.env.MYSQL_HOST)
+export const initialize = ()=>AppDataSource.initialize()
+	.then( async () => {
 		console.log("Data source has been initialized");
+	    seed(AppDataSource).then( ()=>{
+	    console.log("Initial seed completed.")
+	  }).catch((err: Error)=>{console.log("Error during initial seed", err)})
 	})
-	.catch((err) => {
+	.catch((err: Error) => {
 		console.error("Error during Data Source initialization", err);
 	});
 
