@@ -5,7 +5,7 @@ import { User } from './user.model';
 @Entity()
 @Index(['dateFrom', 'dateTo'])
 export class Reservation {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: number;
 
   @Column({ type: 'datetime', nullable: false })
@@ -17,11 +17,9 @@ export class Reservation {
   @Column({ type: 'int', nullable: false })
   numberOfPeople!: number;
 
-  @ManyToOne(() => Sauna, (sauna: Sauna) => sauna.reservations)
-  @Column({ nullable: false })
+  @ManyToOne(() => Sauna, (sauna) => sauna.reservations)
   sauna!: Sauna;
 
-  @ManyToOne(() => User, (user: User) => user.reservations)
-  @Column({  nullable: false })
+  @ManyToOne(() => User, (user) => user.reservations)
   user!: User;
 }

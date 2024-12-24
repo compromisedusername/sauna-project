@@ -12,9 +12,9 @@ import { Reservation } from "./reservation.model";
 
 @Entity()
 @Unique(["email"])
-@Index(["roleId"])
+@Index(["role"])
 export class User {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id!: number;
 
     @Column({ type: "varchar", length: 60, nullable: false })
@@ -34,14 +34,14 @@ export class User {
 
     @ManyToOne(
         () => Role,
-        (role: Role) => role.users,
+        (role) => role.users,
     )
     @Column({ type: "int", nullable: false })
     role!: Role;
 
     @OneToMany(
         () => Reservation,
-        (reservation: Reservation) => reservation.user,
+        (reservation) => reservation.user,
     )
     reservations!: Reservation[];
 }

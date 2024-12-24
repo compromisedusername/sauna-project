@@ -3,7 +3,7 @@ import {User} from './user.model';
 
 @Entity()
 export class Role {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: number;
 
   @Column({ type: 'varchar', length: 200, nullable: false })
@@ -13,7 +13,6 @@ export class Role {
   name!: string;
 
 
-  @OneToMany( ()=> User, (user: User) => user.role)
-  @Column()
+  @OneToMany( ()=> User, (user) => user.role)
   users!: User[]
 }

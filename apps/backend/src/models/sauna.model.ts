@@ -3,7 +3,7 @@ import { Reservation } from "./reservation.model";
 
 @Entity()
 export class Sauna {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: number;
 
   @Column({ type: "varchar", length: 50, nullable: false })
