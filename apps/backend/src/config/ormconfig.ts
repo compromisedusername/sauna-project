@@ -1,4 +1,4 @@
-
+import 'reflect-metadata'
 import * as dotenv from 'dotenv'
 dotenv.config();
 import { DataSource } from "typeorm";
@@ -6,7 +6,7 @@ import {User} from './../models/user.model';
 import {Role} from './../models/role.model';
 import {Reservation} from './../models/reservation.model';
 import {Sauna} from './../models/sauna.model';
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
 	type: "mysql",
 	host: process.env.MYSQL_HOST || "localhost",
 	port: Number(process.env.MYQSL_PORT) || 3306,

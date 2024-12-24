@@ -22,6 +22,6 @@ export class Reservation {
   sauna!: Sauna;
 
   @ManyToOne(() => User, (user: User) => user.reservations)
-  @Column({ nullable: false })
+  @Column({  nullable: false })
   user!: User;
 }
