@@ -12,10 +12,10 @@ export default new DataSource({
 	username: process.env.MYSQL_USER || "root",
 	password: process.env.MYSQL_PASSWORD || "admin",
 	database: process.env.MYSQL_DATABASE || "sauna-project",
-	synchronize: Boolean(process.env.MYSQL_SYNCHRONIZE) || true,
+	synchronize: Boolean(process.env.MYSQL_SYNCHRONIZE) || false,
 	logging: Boolean(process.env.MYSQL_LOGGING) || true,
 	entities: [  User, Role, Sauna, Reservation],
-	migrations: [ "./../migrations/*.ts"],
+	migrations: [ "src/migrations/**/*.ts"],
 	subscribers: [],
 	migrationsTableName: "migrations",
 });
