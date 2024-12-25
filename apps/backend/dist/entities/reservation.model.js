@@ -17,11 +17,11 @@ let Reservation = class Reservation {
 };
 exports.Reservation = Reservation;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     __metadata("design:type", Number)
 ], Reservation.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'datetime', nullable: false }),
+    (0, typeorm_1.Column)({ type: 'datetime' }),
     __metadata("design:type", Date)
 ], Reservation.prototype, "dateFrom", void 0);
 __decorate([
@@ -34,12 +34,10 @@ __decorate([
 ], Reservation.prototype, "numberOfPeople", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => sauna_model_1.Sauna, (sauna) => sauna.reservations),
-    (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", sauna_model_1.Sauna)
 ], Reservation.prototype, "sauna", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_model_1.User, (user) => user.reservations),
-    (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", user_model_1.User)
 ], Reservation.prototype, "user", void 0);
 exports.Reservation = Reservation = __decorate([

@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
-import { User } from '../models/user.model';
-import { Role } from '../models/role.model';
-import { Sauna } from '../models/sauna.model';
-import { Reservation } from '../models/reservation.model';
+import { User } from '../entities/user.model';
+import { Role } from '../entities/role.model';
+import { Sauna } from '../entities/sauna.model';
+import { Reservation } from '../entities/reservation.model';
 import * as bcrypt from 'bcrypt';
 
 

@@ -1,7 +1,13 @@
-require('dotenv').config()
 import 'reflect-metadata'
+import express from 'express';
 
-import { AppDataSource, initialize} from './config/ormconfig';
 
-initialize();
+import { initialize, seedData} from './config/seed';
 
+
+const app = express();
+app.listen(3000, async () => {
+ console.log('App listening on port 3000');
+
+
+})

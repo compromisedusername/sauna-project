@@ -9,36 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Sauna = void 0;
+exports.Role = void 0;
 const typeorm_1 = require("typeorm");
-const reservation_model_1 = require("./reservation.model");
-let Sauna = class Sauna {
+const user_model_1 = require("./user.model");
+let Role = class Role {
 };
-exports.Sauna = Sauna;
+exports.Role = Role;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     __metadata("design:type", Number)
-], Sauna.prototype, "id", void 0);
+], Role.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 50, nullable: false }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 200, nullable: false }),
     __metadata("design:type", String)
-], Sauna.prototype, "saunaType", void 0);
+], Role.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "int", nullable: false }),
-    __metadata("design:type", Number)
-], Sauna.prototype, "humidity", void 0);
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: false }),
+    __metadata("design:type", String)
+], Role.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "int", nullable: false }),
-    __metadata("design:type", Number)
-], Sauna.prototype, "temperature", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: "int", nullable: false }),
-    __metadata("design:type", Number)
-], Sauna.prototype, "peopleCapacity", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => reservation_model_1.Reservation, (reservation) => reservation.sauna),
+    (0, typeorm_1.OneToMany)(() => user_model_1.User, (user) => user.role),
     __metadata("design:type", Array)
-], Sauna.prototype, "reservations", void 0);
-exports.Sauna = Sauna = __decorate([
+], Role.prototype, "users", void 0);
+exports.Role = Role = __decorate([
     (0, typeorm_1.Entity)()
-], Sauna);
+], Role);

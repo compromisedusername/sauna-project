@@ -3,13 +3,20 @@
     "node": ">=20.6.0"
   },
   "name": "@sauna-project-monorepo/backend",
+  "private": true,
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node src/app.ts",
     "build": "tsc",
-    "typeorm": "typeorm-ts-node-esm"
+    "start": "node dist/app.js",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:run": "npm run typeorm -- migration:run -d ./src/config/ormconfig.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -d ./src/config/ormconfig.ts",
+    "schema:sync": "npm run typeorm -- schema:sync -d ./src/config/ormconfig.ts",
+    "migration:show": "npm run typeorm -- migration:show -d ./src/config/ormconfig.ts",
+    "migration:generate": "npm run typeorm -- migration:generate ./src/migrations/`${npm_config_name}` -d ./src/config/ormconfig.ts",
+    "migration:create": "npm run typeorm -- migration:create ./src/migrations/Migration"
   },
   "keywords": [],
   "author": "",
@@ -17,15 +24,14 @@
   "description": "",
   "dependencies": {
     "@types/express": "^5.0.0",
-    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mysql2": "^3.12.0",
-    "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.20"
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typeorm": "^0.3.20",
+    "typeorm-ts-node-esm": "^0.3.20"
   }
 }

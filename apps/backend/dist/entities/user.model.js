@@ -17,7 +17,7 @@ let User = class User {
 };
 exports.User = User;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     __metadata("design:type", Number)
 ], User.prototype, "id", void 0);
 __decorate([
@@ -42,7 +42,6 @@ __decorate([
 ], User.prototype, "salt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => role_model_1.Role, (role) => role.users),
-    (0, typeorm_1.Column)({ type: "int", nullable: false }),
     __metadata("design:type", role_model_1.Role)
 ], User.prototype, "role", void 0);
 __decorate([
@@ -52,5 +51,5 @@ __decorate([
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)(),
     (0, typeorm_1.Unique)(["email"]),
-    (0, typeorm_1.Index)(["roleId"])
+    (0, typeorm_1.Index)(["role"])
 ], User);
