@@ -6,7 +6,7 @@ import { Reservation } from "../entities/reservation.model";
 
 import * as bcrypt from "bcrypt";
 
-export const seed = async (dataSource: DataSource) => {
+export const createInitialData = async (dataSource: DataSource) => {
     if (!dataSource.isInitialized) {
         console.log("Initializing data source...");
         await dataSource.initialize();
@@ -104,6 +104,7 @@ export const seed = async (dataSource: DataSource) => {
         );
 
         console.log("Seeding completed successfully.");
+    await dataSource.destroy().then( ()=>{console.log("Database connection closed.")})
     });
 };
 

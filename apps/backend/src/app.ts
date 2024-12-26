@@ -1,17 +1,25 @@
-import 'reflect-metadata'
-import dotenv from 'dotenv';
-import express, {Express, Request, Response} from 'express';
-
-dotenv.config();
-
-
-
+import express, { Express, Request, Response } from "express";
+import AppDataSource from "./config/ormconfig";
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
-
-app.listen(3000, async () => {
- console.log('App listening on port 3000');
+const port: number = Number(process.env.PORT) || 3000;
 
 
-})
+
+app.get("/", (req: Request, res: Response) => {
+ res.end(JSON.stringify({Response: "Server listening"}));
+});
+
+
+
+
+AppDataSource.initialize()
+ .then(() => {
+  console.log("Connected to database.")
+  app.listen(port, async () => {
+   console.log(`Server is listening on port ${port}`);
+  });
+ })
+ .catch((err) => {
+  console.error("Error during database connection", err);
+ });

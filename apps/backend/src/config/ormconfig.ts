@@ -7,7 +7,6 @@ import { User } from '../entities/user.model';
 import { Role } from '../entities/role.model';
 import { Sauna } from '../entities/sauna.model';
 import { Reservation } from '../entities/reservation.model';
-console.log(process.env.MYSQL_HOST)
 
 import { DataSource } from "typeorm";
 export default new DataSource({
