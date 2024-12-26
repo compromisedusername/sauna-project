@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import express from 'express';
 
 
-import { initialize, seedData} from './config/seed';
 
 
 const app = express();
