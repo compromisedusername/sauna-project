@@ -5,7 +5,7 @@
   "name": "@sauna-project-monorepo/backend",
   "private": true,
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
     "seed": "ts-node ./src/config/seed.ts",
     "argument": "echo The value is $npm_config_arg",
