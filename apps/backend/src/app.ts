@@ -1,27 +1,33 @@
 import express, { Express, Request, Response } from "express";
 import cors from 'cors';
+import "express-async-errors";
+// todo ADD EXPRESS-VALIDATOR
+
 
 import AppDataSource from "./config/ormconfig";
+
+import {errorHandler} from './middlewares/error-handler.middleware';
+import { loggingMiddleware } from "./middlewares/log.middleware";
 import userRoutes from "./routes/user.routes";
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
-//middlewares config
 
+//middlewares config
 app.use(cors());
 app.use(express.json());
-//app.use(errorHandler);
 // middlewares config
+//app.use(loggingMiddleware);
 
 
 app.use('/api', userRoutes);
+
 
 app.get("/", (req: Request, res: Response) => {
  res.json({Response: "OK"});
 });
 
-
-
+app.use(errorHandler);
 
 AppDataSource.initialize()
  .then( async () => {

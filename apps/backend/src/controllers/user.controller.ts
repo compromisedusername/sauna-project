@@ -19,7 +19,7 @@ export class UserController{
   }
 
   public async getUser(req: Request, res: Response): Promise<Response> {
-      const id : number = Number(req.params.id);
+    const id : number = Number(req.params.id);
       const user : User = await this.userService.getUser(Number(id))
 
     return res.status(200).json(user);
