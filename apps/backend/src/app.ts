@@ -9,6 +9,7 @@ import AppDataSource from "./config/ormconfig";
 import {errorHandler} from './middlewares/error-handler.middleware';
 import { loggingMiddleware } from "./middlewares/log.middleware";
 import userRoutes from "./routes/user.routes";
+import { BasicResponse, NotFoundResponse,OkResponse  } from "./dto/response/responses.response";
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
@@ -24,9 +25,13 @@ app.use('/api', userRoutes);
 
 
 app.get("/", (req: Request, res: Response) => {
- res.json({Response: "OK"});
+ res.json(new OkResponse());
 });
 
+
+app.get('*', (req: Request, res: Response)=>{
+  res.json(new NotFoundResponse(req.path));
+} )
 app.use(errorHandler);
 
 AppDataSource.initialize()

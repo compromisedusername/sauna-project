@@ -16,7 +16,6 @@ userRoutes.get('/user/:id', async (req, res, next) => {
   try{
       await userController.getUser(req, res);
   }catch(error){
-    console.log("ERROR HANDLING PROCESS")
     next(error);
   }
 })

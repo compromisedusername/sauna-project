@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction} from 'express';
 import { HttpError } from '../errors/http-error.error';
+import { ErrorResponse } from '../dto/response/responses.response';
 export const errorHandler = (err: Error | HttpError, req: Request, res: Response, next: NextFunction) => {
   let statusCode = 500;
   let message = 'Something wen wrong';
@@ -9,5 +10,5 @@ export const errorHandler = (err: Error | HttpError, req: Request, res: Response
           statusCode = err.statusCode;
           details = err.details;
   }
-  res.status(statusCode).send({ errors: [{ message: message , details: details}] });
+  res.status(statusCode).send(new ErrorResponse(statusCode, message, details));
 };
