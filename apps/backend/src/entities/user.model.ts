@@ -14,7 +14,7 @@ import { Reservation } from "./reservation.model";
 @Unique(["email"])
 @Index(["role"])
 export class User {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryGeneratedColumn()
     id!: number;
 
     @Column({ type: "varchar", length: 60, nullable: false })

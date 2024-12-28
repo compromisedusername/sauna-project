@@ -1,7 +1,7 @@
 import { ReservationResponse } from "./reservation.response.dto";
 
 export class SaunaResponse{
-  sauna_type!: string;
+  saunaType!: string;
   humidity!: number;
   temperature!: number;
   peopleCapacity!:number;

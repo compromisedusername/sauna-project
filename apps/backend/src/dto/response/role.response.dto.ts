@@ -1,7 +1,7 @@
 import { UserResponse } from "./user.response.dto";
 
 export class RoleResponse{
-  desription!: string;
+  description!: string;
   name!:string;
   users!: UserResponse[];
 }

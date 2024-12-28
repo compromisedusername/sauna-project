@@ -1,7 +1,7 @@
 import { Reservation } from "../../entities/reservation.model";
 import { Role } from "../../entities/role.model";
 
-export class AddUserRequest{
+export class AddUpdateUserRequest {
   name!: string;
   surname!: string;
   email!: string;
