@@ -1,5 +1,6 @@
-import { BasicResponse } from "../dto/response/responses.response";
+import { BasicResponse } from "../dto/response/response-factory.response";
 
+BasicResponse
 export interface HttpErrorInterface extends BasicResponse{
   statusCode: number;
   details?: string;
