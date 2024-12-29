@@ -52,20 +52,29 @@ const swaggerOptions: swaggerJSDoc.Options = {
           type: "object",
           properties: {
             id: { type: "integer", example: 1 },
-            saunaType: { type: "string", example: "Infrared Sauna" },
+            saunaType: { type: "Infraded | Finnish | Steam | Turkish ", example: "Infrared" },
             humidity: { type: "integer", example: 120 },
             temperature: { type: "integer", example: 6 },
             peopleCapacity: { type: "integer", example: 4 },
-            reservations: [1, 2, 3]
+
+            reservations: {
+              type: "array",
+              items: { type: "integer", example: 1 },
+
+            },
           },
         },
         AddSaunaRequest: {
           type: "object",
           properties: {
-            saunaType: { type: "string", example: "Infrared Sauna" },
+            saunaType: { type: "string", example: "Infrared" },
             humidity: { type: "integer", example: 120},
             temperature: { type: "integer", example: 6 },
             peopleCapacity: { type: "integer", example: 3 },
+            reservations: {
+              type: "array",
+              items: { type: "integer", example: [1,2,3,4] },
+            },
           },
         },
         UpdateSaunaRequest: {
@@ -73,10 +82,14 @@ const swaggerOptions: swaggerJSDoc.Options = {
           properties: {
             id: { type: "integer", example: 1 },
 
-            saunaType: { type: "string", example: "Infrared Sauna" },
+            saunaType: { type: "string", example: "Infrared" },
             humidity: { type: "integer", example: 120},
             temperature: { type: "integer", example: 6 },
             peopleCapacity: { type: "integer", example: 3 },
+            reservations: {
+              type: "array",
+              items: { type: "integer", example: [1,2] },
+            },
           },
         },
       },
