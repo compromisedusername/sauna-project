@@ -48,6 +48,7 @@
     "@types/memory-cache": "^0.2.6",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.7",
+    "ts-json-schema-generator": "^2.3.0",
     "ts-node": "^10.9.2",
     "typeorm": "^0.3.20",
     "typeorm-ts-node-esm": "^0.3.20",

@@ -21,7 +21,7 @@ export class SaunaService {
   }
 
   public async getSauna(id: number): Promise<Sauna> {
-    const sauna = await this.saunaRepository.getSauna(id);
+    const sauna = await this.saunaRepository.getSaunaById(id);
     if (!sauna) {
       throw ErrorFactory.createNotFoundError("Sauna not found");
     }

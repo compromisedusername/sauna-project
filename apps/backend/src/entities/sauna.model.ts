@@ -7,6 +7,9 @@ export class Sauna {
   id!: number;
 
   @Column({ type: "varchar", length: 50, nullable: false })
+  name!: string;
+
+  @Column({ type: "varchar", length: 50, nullable: false })
   saunaType!: string;
 
   @Column({ type: "int", nullable: false })

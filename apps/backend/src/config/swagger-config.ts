@@ -33,7 +33,25 @@ const swaggerOptions: swaggerJSDoc.Options = {
             },
           },
         },
-        AddUpdateUserRequest: {
+
+        UpdateUserRequest: {
+          type: "object",
+          properties: {
+            id: {type: "number", exmaple: 1},
+            name: { type: "string", example: "John" },
+            surname: { type: "string", example: "Doe" },
+            email: { type: "string", example: "john.doe@example.com" },
+            passwordHash: { type: "string", example: "hashedpassword123" },
+            salt: { type: "string", example: "randomsalt" },
+            role: { type: "string", example: "admin" },
+            reservations: {
+              type: "array",
+              items: { type: "integer", example: 1 },
+            },
+          },
+        },
+
+        AddUserRequest: {
           type: "object",
           properties: {
             name: { type: "string", example: "John" },
@@ -52,6 +70,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
           type: "object",
           properties: {
             id: { type: "integer", example: 1 },
+            name: {type: "string", exmaple: "Exmaple2"},
             saunaType: { type: "Infraded | Finnish | Steam | Turkish ", example: "Infrared" },
             humidity: { type: "integer", example: 120 },
             temperature: { type: "integer", example: 6 },
@@ -67,6 +86,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
         AddSaunaRequest: {
           type: "object",
           properties: {
+            name: {type: "string", example: "Name1"},
             saunaType: { type: "string", example: "Infrared" },
             humidity: { type: "integer", example: 120},
             temperature: { type: "integer", example: 6 },
