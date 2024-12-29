@@ -16,8 +16,7 @@ export class UserController {
 
   public async getAllUsers(req: Request, res: Response): Promise<Response> {
     const users: UserResponse[] = await this.userService.getAllUsers();
-
-    return res.status(200).json(users);
+      return ResponseFactory.ok(res,users);
   }
 
   public async getUser(req: Request, res: Response): Promise<Response> {
@@ -25,7 +24,7 @@ export class UserController {
 
     const user: UserResponse = await this.userService.getUser(Number(id));
 
-    return res.status(200).json(user);
+    return ResponseFactory.ok(res, user);
   }
 
   public async addUser(req: Request, res: Response): Promise<Response> {
@@ -34,8 +33,8 @@ export class UserController {
       throw ErrorFactory.createBadRequestError("Invalid request")
     }
     const result: number = await this.userService.addUser(user);
-    return res.status(201).json({ created: result });
 
+    return ResponseFactory.created(res, result.toString());
   }
 
   public async updateUser(req: Request, res: Response): Promise<Response> {
