@@ -6,6 +6,7 @@ import { UserService } from "../services/user.service";
 import { UserResponse } from "../dto/response/user.response.dto";
 import { AddUserRequest } from "../dto/request/add.user.request";
 import { ErrorFactory } from "../errors/error-factory.error";
+import { UpdateUserRequest } from "../dto/request/update.user.request";
 export class UserController {
   private readonly userService: UserService;
 
@@ -39,7 +40,7 @@ export class UserController {
 
   public async updateUser(req: Request, res: Response): Promise<Response> {
     const request = req.body;
-    const userDto: UpdateUserRequest = {
+    const userDto: UpdateUserRequest= {
       id: request.id,
       name: request.name,
       surname: request.surname,

@@ -68,7 +68,7 @@ userRoutes.get('/user/:id', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/AddUpdateUserRequest'
+ *             $ref: '#/components/schemas/UpdateUserRequest'
  *     responses:
  *       201:
  *         description: User created successfully.
