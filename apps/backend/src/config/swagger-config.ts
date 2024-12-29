@@ -48,6 +48,35 @@ const swaggerOptions: swaggerJSDoc.Options = {
             },
           },
         },
+        SaunaResponse: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            name: { type: "string", example: "Infrared Sauna" },
+            type: { type: "string", example: "infrared" },
+            capacity: { type: "integer", example: 6 },
+            location: { type: "string", example: "Main spa room" },
+          },
+        },
+        AddSaunaRequest: {
+          type: "object",
+          properties: {
+            name: { type: "string", example: "Infrared Sauna" },
+            type: { type: "string", example: "infrared" },
+            capacity: { type: "integer", example: 6 },
+            location: { type: "string", example: "Main spa room" },
+          },
+        },
+        UpdateSaunaRequest: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            name: { type: "string", example: "Updated Sauna Name" },
+            type: { type: "string", example: "steam" },
+            capacity: { type: "integer", example: 8 },
+            location: { type: "string", example: "New spa area" },
+          },
+        },
       },
     },
 
@@ -65,3 +94,4 @@ const swaggerOptions: swaggerJSDoc.Options = {
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 export default swaggerSpec;
+
