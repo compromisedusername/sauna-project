@@ -11,12 +11,8 @@ import AppDataSource from "./config/ormconfig";
 import { errorHandler } from "./middlewares/error-handler.middleware";
 import { loggingMiddleware } from "./middlewares/log.middleware";
 import userRoutes from "./routes/user.routes";
-import {
-  BasicResponse,
-  NotFoundResponse,
-  OkResponse,
-} from "./dto/response/responses.response";
 import saunaRoutes from "./routes/sauna.routes";
+import { ResponseFactory } from "./dto/response/response-factory.response";
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
@@ -33,11 +29,11 @@ app.use("/api", userRoutes);
 app.use("/api", saunaRoutes);
 
 app.get("/", (req: Request, res: Response) => {
-  res.json(new OkResponse());
+    ResponseFactory.ok(res, "Server listening")
 });
 
 app.get("*", (req: Request, res: Response) => {
-  res.json(new NotFoundResponse(req.path));
+  (ResponseFactory.notFound(res, req.path));
 });
 app.use(errorHandler);
 

@@ -2,7 +2,6 @@ import { ErrorFactory } from "./../errors/error-factory.error";
 import { User } from "./../entities/user.model";
 import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
-import { OkResponse } from "../dto/response/responses.response";
 import { AddUserRequest } from "../dto/request/add.user.request";
 import { UpdateUserRequest } from "../dto/request/update.user.request";
 export class UserRepository {

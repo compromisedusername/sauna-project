@@ -32,7 +32,7 @@ export function validateAddSauna(data : AddSaunaRequest):void{
     const saunaType = data.saunaType.toLowerCase();
     if (!validateSaunaType(saunaType)) {
       throw ErrorFactory.createBadRequestError(
-        `Sauna type can be: ${saunaType} `,
+        `Sauna type can not be: ${saunaType}, possible types are: ${SaunaTypes}`,
       );
 
   }}

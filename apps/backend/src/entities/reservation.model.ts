@@ -5,7 +5,7 @@ import { User } from './user.model';
 @Entity()
 @Index(['dateFrom', 'dateTo'])
 export class Reservation {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ type: 'datetime'})

@@ -4,8 +4,8 @@ const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Express API",
-      version: "1.0.0",
+      title: "Express API - Sauna Reservation",
+      version: "1.0.9",
       description: "API documentation for my Express app",
     },
 
@@ -52,29 +52,31 @@ const swaggerOptions: swaggerJSDoc.Options = {
           type: "object",
           properties: {
             id: { type: "integer", example: 1 },
-            name: { type: "string", example: "Infrared Sauna" },
-            type: { type: "string", example: "infrared" },
-            capacity: { type: "integer", example: 6 },
-            location: { type: "string", example: "Main spa room" },
+            saunaType: { type: "string", example: "Infrared Sauna" },
+            humidity: { type: "integer", example: 120 },
+            temperature: { type: "integer", example: 6 },
+            peopleCapacity: { type: "integer", example: 4 },
+            reservations: [1, 2, 3]
           },
         },
         AddSaunaRequest: {
           type: "object",
           properties: {
-            name: { type: "string", example: "Infrared Sauna" },
-            type: { type: "string", example: "infrared" },
-            capacity: { type: "integer", example: 6 },
-            location: { type: "string", example: "Main spa room" },
+            saunaType: { type: "string", example: "Infrared Sauna" },
+            humidity: { type: "integer", example: 120},
+            temperature: { type: "integer", example: 6 },
+            peopleCapacity: { type: "integer", example: 3 },
           },
         },
         UpdateSaunaRequest: {
           type: "object",
           properties: {
             id: { type: "integer", example: 1 },
-            name: { type: "string", example: "Updated Sauna Name" },
-            type: { type: "string", example: "steam" },
-            capacity: { type: "integer", example: 8 },
-            location: { type: "string", example: "New spa area" },
+
+            saunaType: { type: "string", example: "Infrared Sauna" },
+            humidity: { type: "integer", example: 120},
+            temperature: { type: "integer", example: 6 },
+            peopleCapacity: { type: "integer", example: 3 },
           },
         },
       },

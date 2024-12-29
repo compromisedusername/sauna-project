@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction} from 'express';
 import { HttpError } from '../errors/http-error.error';
-import { ErrorResponse } from '../dto/response/responses.response';
 import { ResponseFactory } from '../dto/response/response-factory.response';
 export const errorHandler = (err: Error | HttpError, req: Request, res: Response, next: NextFunction) => {
   let statusCode = 500;

@@ -34,7 +34,7 @@ export class UserController {
     }
     const result: number = await this.userService.addUser(user);
 
-    return ResponseFactory.created(res, result.toString());
+    return ResponseFactory.created(res, result);
   }
 
   public async updateUser(req: Request, res: Response): Promise<Response> {

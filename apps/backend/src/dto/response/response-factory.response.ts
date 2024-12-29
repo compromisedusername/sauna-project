@@ -30,8 +30,8 @@ export class ErrorResponse extends BasicResponse {
 }
 
 export class CreatedResponse extends BasicResponse {
-  constructor(resourceName: string) {
-    super(`${resourceName} created successfully.`);
+  constructor(id: number) {
+    super(`created successfully.`);
     this.statusCode = 201;
   }
 }
@@ -63,8 +63,8 @@ export class ResponseFactory {
     return res.status(statusCode).json(new ErrorResponse(statusCode, response, details));
   }
 
-  static created(res: Response, resourceName: string): Response {
-    return res.status(201).json(new CreatedResponse(resourceName));
+  static created(res: Response, id: number): Response {
+    return res.status(201).json(new CreatedResponse(id));
   }
 
   static updated(res: Response, resourceName: string): Response {

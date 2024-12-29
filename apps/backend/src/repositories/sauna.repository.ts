@@ -5,7 +5,6 @@ import { ErrorFactory } from "./../errors/error-factory.error";
 import { Sauna } from "./../entities/sauna.model";
 import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
-import { OkResponse } from "../dto/response/responses.response";
 import { AddSaunaRequest } from "../dto/request/add.sauna.request";
 import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
 export class SaunaRepository{

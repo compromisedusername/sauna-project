@@ -36,7 +36,7 @@ export class SaunaController {
       }
 
       const createdSaunaId: number = await this.saunaService.addSauna(saunaData);
-      return ResponseFactory.created(res, `Sauna (ID: ${createdSaunaId})`);
+      return ResponseFactory.created(res, createdSaunaId);
   }
 
   public async updateSauna(req: Request, res: Response): Promise<Response> {

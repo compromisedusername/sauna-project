@@ -35,25 +35,30 @@ export class SaunaService {
 
   public async updateSauna(data: UpdateSaunaRequest): Promise<boolean> {
     validateUpdateSauna(data);
-    const sauna = await this.getSauna(data.id)
-      if(sauna && !sauna.id || !sauna){
-        throw  ErrorFactory.createNotFoundError(`Sauna for given ID: ${data.id} not found`)
+    const sauna = await this.getSauna(data.id);
+    if ((sauna && !sauna.id) || !sauna) {
+      throw ErrorFactory.createNotFoundError(
+        `Sauna for given ID: ${data.id} not found`,
+      );
     }
 
     const updateResult = await this.saunaRepository.updateSauna(data);
-    return  updateResult;
+    return updateResult;
   }
 
   public async deleteSauna(id: number): Promise<boolean> {
-    const sauna = await this.getSauna(id)
-      if(sauna && !sauna.id || !sauna){
-        throw  ErrorFactory.createNotFoundError(`Sauna for given ID: ${id} not found`)
+    const sauna = await this.getSauna(id);
+    if ((sauna && !sauna.id) || !sauna) {
+      throw ErrorFactory.createNotFoundError(
+        `Sauna for given ID: ${id} not found`,
+      );
     }
     const deleteResult = await this.saunaRepository.deleteSauna(id);
-    if(deleteResult){
-      throw ErrorFactory.createInternalServerError("Internal server error, try again later.");
+    if (!deleteResult) {
+      throw ErrorFactory.createInternalServerError(
+        "Internal server error, try again later.",
+      );
     }
     return deleteResult;
-
   }
 }
