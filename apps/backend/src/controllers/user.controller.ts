@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { User } from "./../entities/user.model";
 import { UserService } from "../services/user.service";
 import { UserResponse } from "../dto/response/user.response.dto";
-import { AddUpdateUserRequest } from "../dto/request/add.user.request";
+import { AddUserRequest } from "../dto/request/add.user.request";
 import { ErrorFactory } from "../errors/error-factory.error";
 export class UserController {
   private readonly userService: UserService;
@@ -28,7 +28,7 @@ export class UserController {
   }
 
   public async addUser(req: Request, res: Response): Promise<Response> {
-    const user: AddUpdateUserRequest = req.body;
+    const user: AddUserRequest = req.body;
     if (!user) {
       throw ErrorFactory.createBadRequestError("Invalid request")
     }
@@ -39,7 +39,8 @@ export class UserController {
 
   public async updateUser(req: Request, res: Response): Promise<Response> {
     const request = req.body;
-    const userDto: AddUpdateUserRequest = {
+    const userDto: UpdateUserRequest = {
+      id: request.id,
       name: request.name,
       surname: request.surname,
       email: request.email,
@@ -49,8 +50,13 @@ export class UserController {
       reservations: request.reservations
 
     }
-    const result: boolean = await this.userService.updateUser(request.id, userDto);
-    return res.status(201).json({updated: result})
+    const result: boolean = await this.userService.updateUser(userDto);
+    if(result){
+        return ResponseFactory.updated(res, "user");
+    }
+      else{
+          return ResponseFactory.error(res, 400, "Bad request");
+    }
   }
 
   public async deleteUser(req: Request, res: Response): Promise<Response> {

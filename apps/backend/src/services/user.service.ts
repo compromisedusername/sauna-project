@@ -1,9 +1,10 @@
 import { DeleteResult } from "typeorm";
 import { UserResponse } from "../dto/response/user.response.dto";
-import { AddUpdateUserRequest } from "../dto/request/add.user.request";
+import { AddUserRequest } from "../dto/request/add.user.request";
 import { ErrorFactory } from "../errors/error-factory.error";
 import { User } from "./../entities/user.model";
 import { UserRepository } from "./../repositories/user.repository";
+import { UpdateUserRequest } from "../dto/request/update.user.request";
 
 //todo ADD Role and Reservation Repository and JOIN them
 
@@ -29,10 +30,9 @@ export class UserService {
   }
 
   public async updateUser(
-    userId: number,
-    userDto: AddUpdateUserRequest,
+    userDto: UpdateUserRequest,
   ): Promise<boolean> {
-    const updated = await this.userRepository.updateUser(userId, userDto);
+    const updated = await this.userRepository.updateUser(userDto);
     if (updated) {
       return updated;
     } else {
@@ -40,7 +40,7 @@ export class UserService {
     }
   }
 
-  public async addUser(userDto: AddUpdateUserRequest): Promise<number> {
+  public async addUser(userDto: AddUserRequest): Promise<number> {
     const user: User = await this.userRepository.addUser(userDto);
     if(user){
     return user.id;

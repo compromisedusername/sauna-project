@@ -3,7 +3,8 @@ import { User } from "./../entities/user.model";
 import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
 import { OkResponse } from "../dto/response/responses.response";
-import { AddUpdateUserRequest } from "../dto/request/add.user.request";
+import { AddUserRequest } from "../dto/request/add.user.request";
+import { UpdateUserRequest } from "../dto/request/update.user.request";
 export class UserRepository {
   protected readonly userRepository: Repository<User> =
     AppDataSource.getRepository(User);
@@ -22,7 +23,7 @@ export class UserRepository {
     }
   }
 
-  public async addUser(userDto: AddUpdateUserRequest): Promise<User> {
+  public async addUser(userDto: AddUserRequest): Promise<User> {
     try {
       const user = this.userRepository.create(userDto);
       const result = await this.userRepository.save(user);
@@ -33,12 +34,11 @@ export class UserRepository {
   }
 
   public async updateUser(
-    userId: number,
-    userDto: AddUpdateUserRequest,
+    userDto: UpdateUserRequest,
   ): Promise<boolean> {
     try {
       const user: User = await this.userRepository.findOneByOrFail({
-        id: userId,
+        id: userDto.id,
       });
       const result = await this.userRepository.merge(user, userDto);
       return result ? true : false;
