@@ -216,7 +216,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
       description: "API documentation generated dynamically from TypeScript types",
     },
     components: {
-      schemas: {schemasDefinitions }
+      schemas: {...schemasDefinitions}
     },
     servers: [
       {

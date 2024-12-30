@@ -31,7 +31,7 @@ export class ErrorResponse extends BasicResponse {
 
 export class CreatedResponse extends BasicResponse {
   constructor(id: number) {
-    super(`created successfully.`);
+    super(`${id}`);
     this.statusCode = 201;
   }
 }
