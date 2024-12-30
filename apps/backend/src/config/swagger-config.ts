@@ -225,7 +225,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
       },
     ],
   },
-  apis: ["./src/routes/*.ts"], // Ścieżka do plików z adnotacjami Swaggera
+  apis: ["./src/routes/*.ts"],
 };
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 

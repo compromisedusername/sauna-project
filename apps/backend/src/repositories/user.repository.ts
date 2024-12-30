@@ -7,20 +7,20 @@ export class UserRepository {
     AppDataSource.getRepository(User);
 
   public async getAllUsers(): Promise<User[]> {
-    const users: User[] = await this.userRepository.find();
+    const users: User[] = await this.userRepository.find( {relations: ['reservations', 'role']});
     return users;
   }
 
   public async getUserById(id: number): Promise<User> {
     try{
-    const user: User | null = await this.userRepository.findOneBy({ id: id });
+    const user: User | null = await this.userRepository.findOne({where: { id: id}, relations: ['reservations', 'role'] });
       if(user)
       return user;
       else
       throw ErrorFactory.createNotFoundError(`User for ID: ${id} not found`)
 
     }catch(error){
-      throw ErrorFactory.createInternalServerError(`Finding user failed`,error);
+        throw error;
     }
   }
 
@@ -41,7 +41,7 @@ export class UserRepository {
       const user: User = await this.userRepository.findOneByOrFail({
         id: updatedUser.id,
       });
-      const result = await this.userRepository.merge(user, updatedUser);
+      const result =  this.userRepository.merge(user, updatedUser);
       const updated = await this.userRepository.save(result);
       return updated ? true : false;
     } catch (error) {

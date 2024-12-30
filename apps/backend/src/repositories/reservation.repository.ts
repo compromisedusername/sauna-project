@@ -9,24 +9,21 @@ export class ReservationRepository {
     AppDataSource.getRepository(Reservation);
 
   public async getAllReservations(): Promise<Reservation[]> {
-    const reservations: Reservation[] = await this.reservationRepository.find();
+    const reservations: Reservation[] = await this.reservationRepository.find( {relations: ['sauna', 'user']});
     return reservations;
   }
 
   public async getReservationById(id: number): Promise<Reservation> {
     try {
-      const reservation: Reservation |null  = await this.reservationRepository.findOneBy({
-        id: id,
+      const reservation: Reservation |null  = await this.reservationRepository.findOne( {
+        where: {id: id}, relations: ['user', 'sauna']
       });
       if(reservation)
       return reservation;
       else
       throw ErrorFactory.createNotFoundError(`Reservation for ID: ${id} not found`)
     } catch (error) {
-      throw ErrorFactory.createInternalServerError(
-        `Finding role failed`,
-        error,
-      );
+      throw error;
     }
   }
 

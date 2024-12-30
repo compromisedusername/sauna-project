@@ -9,24 +9,21 @@ export class RoleRepository {
     AppDataSource.getRepository(Role);
 
   public async getAllRoles(): Promise<Role[]> {
-    const roles: Role[] = await this.roleRepository.find();
+    const roles: Role[] = await this.roleRepository.find( {relations: ['users']});
     return roles;
   }
 
   public async getRoleById(id: number): Promise<Role> {
     try {
-      const role: Sauna | null = await this.roleRepository.findOneBy({
-        id: id,
+      const role: Role | null = await this.roleRepository.findOne({
+        where: {id: id}, relations: ['users']
       });
       if(role)
       return role;
       else
       throw ErrorFactory.createNotFoundError(`Role for ID: ${id} not found`)
     } catch (error) {
-      throw ErrorFactory.createInternalServerError(
-        `Finding role failed`,
-        error,
-      );
+      throw error
     }
   }
 

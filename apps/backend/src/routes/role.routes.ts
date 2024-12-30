@@ -1,11 +1,10 @@
-import {Router} from 'express'
-import {  RoleController } from '../controllers/role.controller'
-import { Request, Response, NextFunction } from 'express'
+import { Router } from "express";
+import { RoleController } from "../controllers/role.controller";
+import { Request, Response, NextFunction } from "express";
 
+const roleRoutes: Router = Router();
 
- const roleRoutes: Router = Router();
-
-const roleController: RoleController = new RoleController()
+const roleController: RoleController = new RoleController();
 /**
  * @swagger
  * /api/role/{id}:
@@ -31,16 +30,18 @@ const roleController: RoleController = new RoleController()
  *       404:
  *         description: Role not found.
  */
-roleRoutes.get('/role/:id', async (req: Request, res: Response, next: NextFunction)=> {
-  try{
+roleRoutes.get(
+ "/role/:id",
+ async (req: Request, res: Response, next: NextFunction) => {
+  try {
    await roleController.getRole(req, res);
-  }catch(error){
-    next(error);
+  } catch (error) {
+   next(error);
   }
-})/**
+ },
+); /**
  * @swagger
  * /api/roles:
- * tags: - Role
  *   get:
  *     tags:
  *        - role
@@ -56,13 +57,16 @@ roleRoutes.get('/role/:id', async (req: Request, res: Response, next: NextFuncti
  *               items:
  *                 $ref: '#/components/schemas/RoleResponse'
  */
-roleRoutes.get('/roles', async (req: Request, res: Response, next: NextFunction)=> {
-  try{
+roleRoutes.get(
+ "/roles",
+ async (req: Request, res: Response, next: NextFunction) => {
+  try {
    await roleController.getAllRoles(req, res);
-  }catch(error){
-    next(error);
+  } catch (error) {
+   next(error);
   }
-})/**
+ },
+); /**
  * @swagger
  * /api/role:
  *   post:
@@ -88,13 +92,16 @@ roleRoutes.get('/roles', async (req: Request, res: Response, next: NextFunction)
  *                   type: integer
  *                   description: The ID of the newly created role.
  */
-roleRoutes.post('/role', async (req: Request, res: Response, next: NextFunction)=> {
-  try{
+roleRoutes.post(
+ "/role",
+ async (req: Request, res: Response, next: NextFunction) => {
+  try {
    await roleController.addRole(req, res);
-  }catch(error){
-    next(error);
+  } catch (error) {
+   next(error);
   }
-})
+ },
+);
 /**
  * @swagger
  * /api/role:
@@ -123,13 +130,16 @@ roleRoutes.post('/role', async (req: Request, res: Response, next: NextFunction)
  *       404:
  *         description: Role not found.
  */
-roleRoutes.put('/role', async (req: Request, res: Response, next: NextFunction)=> {
-  try{
+roleRoutes.put(
+ "/role",
+ async (req: Request, res: Response, next: NextFunction) => {
+  try {
    await roleController.updateRole(req, res);
-  }catch(error){
-    next(error);
+  } catch (error) {
+   next(error);
   }
-})/**
+ },
+); /**
  * @swagger
  * /api/role/{id}:
  *   delete:
@@ -157,11 +167,14 @@ roleRoutes.put('/role', async (req: Request, res: Response, next: NextFunction)=
  *       404:
  *         description: Role not found.
  */
-roleRoutes.delete('/role/:id', async (req: Request, res: Response, next: NextFunction)=> {
-  try{
+roleRoutes.delete(
+ "/role/:id",
+ async (req: Request, res: Response, next: NextFunction) => {
+  try {
    await roleController.deleteRole(req, res);
-  }catch(error){
-    next(error);
+  } catch (error) {
+   next(error);
   }
-})
+ },
+);
 export default roleRoutes;

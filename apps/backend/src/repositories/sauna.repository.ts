@@ -7,14 +7,15 @@ export class SaunaRepository {
     AppDataSource.getRepository(Sauna);
 
   public async getAllSaunas(): Promise<Sauna[]> {
-    const users: Sauna[] = await this.saunaRepository.find();
+    const users: Sauna[] = await this.saunaRepository.find({relations: ['reservations']});
     return users;
   }
 
   public async getSaunaById(id: number): Promise<Sauna> {
     try {
-      const sauna: Sauna | null = await this.saunaRepository.findOneBy({
-        id: id,
+      const sauna: Sauna | null = await this.saunaRepository.findOne({
+        where: {
+        id: id,}, relations: ['reservations']
       });
       if(sauna){
       return sauna;}

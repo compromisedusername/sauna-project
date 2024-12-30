@@ -159,7 +159,7 @@ reservationRoutes.put('/reservation/', async (req: Request, res: Response, next:
  */
 reservationRoutes.delete('/reservation/:id', async (req: Request, res: Response, next: NextFunction) => {
      try{
-      await reservationController.updateReservation(req, res);
+      await reservationController.deleteRole(req, res);
   }catch(error){
     next(error)
   }
