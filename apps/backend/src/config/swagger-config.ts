@@ -1,5 +1,6 @@
 import swaggerJSDoc from "swagger-jsdoc";
 
+/*
 const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
@@ -203,7 +204,29 @@ const swaggerOptions: swaggerJSDoc.Options = {
 
   apis: ["./src/routes/*.ts"],
 };
+*/
 
+import schemasDefinitions from "./swagger-schema-generator";
+const swaggerOptions: swaggerJSDoc.Options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API Documentation",
+      version: "1.0.0",
+      description: "API documentation generated dynamically from TypeScript types",
+    },
+    components: {
+      schemas: {schemasDefinitions }
+    },
+    servers: [
+      {
+        url: "http://localhost:3000",
+        description: "Local development server",
+      },
+    ],
+  },
+  apis: ["./src/routes/*.ts"], // Ścieżka do plików z adnotacjami Swaggera
+};
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 export default swaggerSpec;
