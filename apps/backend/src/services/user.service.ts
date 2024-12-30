@@ -5,14 +5,17 @@ import { ErrorFactory } from "../errors/error-factory.error";
 import { User } from "./../entities/user.model";
 import { UserRepository } from "./../repositories/user.repository";
 import { UpdateUserRequest } from "../dto/request/update.user.request";
-
-//todo ADD Role and Reservation Repository and JOIN them
+import { Role } from "../entities/role.model";
+import { Reservation } from "../entities/reservation.model";
+import { validateAddUser, validateUpdateUser } from "../utils/validators/user/user.validator";
+import { RoleRepository } from "../repositories/role.repository";
 
 export class UserService {
   private readonly userRepository: UserRepository;
-
+    private readonly roleRepository: RoleRepository;
   constructor() {
     this.userRepository = new UserRepository();
+    this.roleRepository = new RoleRepository();
   }
 
   public async getAllUsers(): Promise<User[]> {
@@ -30,9 +33,28 @@ export class UserService {
   }
 
   public async updateUser(
-    userDto: UpdateUserRequest,
+    data: UpdateUserRequest,
   ): Promise<boolean> {
-    const updated = await this.userRepository.updateUser(userDto);
+
+   validateUpdateUser(data);
+
+    const role: Role  = await this.roleRepository.getRoleById(data.role);
+    const reservations: Reservation[] = [];
+    for(const id of data.reservations){
+      reservations.push(this.reservationRepository.getReservation(id));
+    }
+    const updatedUser: User = {
+      id: data.id,
+      name: data.name,
+      surname: data.surname,
+      email: data.email,
+      passwordHash: data.passwordHash,
+      salt: data.salt,
+      role: role,
+      reservations: reservations
+    }
+
+    const updated = await this.userRepository.updateUser(updatedUser);
     if (updated) {
       return updated;
     } else {
@@ -40,9 +62,25 @@ export class UserService {
     }
   }
 
-  public async addUser(userDto: AddUserRequest): Promise<number> {
-    const user: User = await this.userRepository.addUser(userDto);
-    if(user){
+  public async addUser(data:AddUserRequest ): Promise<number> {
+    validateAddUser(data);
+
+    const role: Role = this.roleRepository.getRoleById(data.role);
+    const reservations: Reservation[] = [];
+    for(const id of data.reservations){
+      reservations.push(this.reservationRepository.getReservation(id));
+    }
+    const addUser: User = {
+      name: data.name,
+      surname: data.surname,
+      email: data.email,
+      passwordHash: data.passwordHash,
+      salt: data.salt,
+      role: role,
+      reservations: reservations
+    }
+    const user: User = await this.userRepository.addUser(addUser);
+    if(user.id){
     return user.id;
     }else{
         throw ErrorFactory.createBadRequestError("Incorrect input")

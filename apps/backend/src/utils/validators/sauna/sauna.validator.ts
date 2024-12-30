@@ -40,5 +40,4 @@ export function validateAddSauna(data : AddSaunaRequest):void{
   }}
 
 export function validateUpdateSauna(data: UpdateSaunaRequest):void{
-    validateAddSauna(data);
 }

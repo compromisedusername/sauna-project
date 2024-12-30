@@ -2,8 +2,6 @@ import { ErrorFactory } from "./../errors/error-factory.error";
 import { User } from "./../entities/user.model";
 import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
-import { AddUserRequest } from "../dto/request/add.user.request";
-import { UpdateUserRequest } from "../dto/request/update.user.request";
 export class UserRepository {
   protected readonly userRepository: Repository<User> =
     AppDataSource.getRepository(User);
@@ -13,18 +11,22 @@ export class UserRepository {
     return users;
   }
 
-  public async getUser(id: number): Promise<User | null> {
+  public async getUser(id: number): Promise<User> {
     try{
     const user: User | null = await this.userRepository.findOneBy({ id: id });
+      if(user)
       return user;
+      else
+      throw ErrorFactory.createNotFoundError(`User for ID: ${id} not found`)
+
     }catch(error){
       throw ErrorFactory.createInternalServerError(`Finding user failed`,error);
     }
   }
 
-  public async addUser(userDto: AddUserRequest): Promise<User> {
+  public async addUser(addUser: User): Promise<User> {
     try {
-      const user = this.userRepository.create(userDto);
+      const user = this.userRepository.create(addUser);
       const result = await this.userRepository.save(user);
       return result;
     } catch (error) {
@@ -33,14 +35,15 @@ export class UserRepository {
   }
 
   public async updateUser(
-    userDto: UpdateUserRequest,
+    updatedUser:User,
   ): Promise<boolean> {
     try {
       const user: User = await this.userRepository.findOneByOrFail({
-        id: userDto.id,
+        id: updatedUser.id,
       });
-      const result = await this.userRepository.merge(user, userDto);
-      return result ? true : false;
+      const result = await this.userRepository.merge(user, updatedUser);
+      const updated = await this.userRepository.save(result);
+      return updated ? true : false;
     } catch (error) {
       throw ErrorFactory.createInternalServerError("Update user failed",error);
     }

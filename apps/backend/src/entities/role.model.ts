@@ -4,15 +4,15 @@ import {User} from './user.model';
 @Entity()
 export class Role {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id?: number;
 
   @Column({ type: 'varchar', length: 200, nullable: false })
-  description!: string;
+  description?: string;
 
   @Column({ type: 'varchar', length: 20, nullable: false })
-  name!: string;
+  name?: string;
 
 
   @OneToMany( ()=> User, (user) => user.role)
-  users!: User[]
+  users?: User[]
 }

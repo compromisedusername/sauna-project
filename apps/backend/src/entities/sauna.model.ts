@@ -4,26 +4,27 @@ import { Reservation } from "./reservation.model";
 @Entity()
 export class Sauna {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id?: number;
 
   @Column({ type: "varchar", length: 50, nullable: false })
-  name!: string;
+  name?: string;
 
   @Column({ type: "varchar", length: 50, nullable: false })
-  saunaType!: string;
+  saunaType?: string;
 
   @Column({ type: "int", nullable: false })
-  humidity!: number;
+  humidity?: number;
 
   @Column({ type: "int", nullable: false })
-  temperature!: number;
+  temperature?: number;
 
   @Column({ type: "int", nullable: false })
-  peopleCapacity!: number;
+  peopleCapacity?: number;
+
 
   @OneToMany(
     () => Reservation,
     (reservation) => reservation.sauna,
   )
-  reservations!: Reservation[];
+  reservations?: Reservation[];
 }

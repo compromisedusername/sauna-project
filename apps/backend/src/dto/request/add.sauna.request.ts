@@ -4,6 +4,6 @@ export class AddSaunaRequest {
   humidity!: number;
   temperature!: number;
   peopleCapacity!: number;
-
+  reservations!: number[];
 }
 

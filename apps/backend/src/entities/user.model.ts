@@ -15,32 +15,32 @@ import { Reservation } from "./reservation.model";
 @Index(["role"])
 export class User {
     @PrimaryGeneratedColumn()
-    id!: number;
+    id?: number;
 
     @Column({ type: "varchar", length: 60, nullable: false })
-    name!: string;
+    name?: string;
 
     @Column({ type: "varchar", length: 60, nullable: false })
-    surname!: string;
+    surname?: string;
 
     @Column({ type: "varchar", length: 254, nullable: false })
-    email!: string;
+    email?: string;
 
     @Column({ type: "varchar", length: 255, nullable: false })
-    passwordHash!: string;
+    passwordHash?: string;
 
     @Column({ type: "varchar", length: 50, nullable: false })
-    salt!: string;
+    salt?: string;
 
     @ManyToOne(
         () => Role,
         (role) => role.users,
     )
-    role!: Role;
+    role?: Role;
 
     @OneToMany(
         () => Reservation,
         (reservation) => reservation.user,
     )
-    reservations!: Reservation[];
+    reservations?: Reservation[];
 }

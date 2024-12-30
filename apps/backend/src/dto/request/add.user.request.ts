@@ -7,6 +7,6 @@ export class AddUserRequest {
   email!: string;
   passwordHash!: string;
   salt!: string;
-  role!: Role;
-  reservations!: Reservation[];
+  role!: number;
+  reservations!: number[];
 }

@@ -3,61 +3,59 @@ import { ErrorFactory } from "./../errors/error-factory.error";
 import { Sauna } from "./../entities/sauna.model";
 import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
-import { AddSaunaRequest } from "../dto/request/add.sauna.request";
-import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
-export class SaunaRepository {
-  protected readonly saunaRepository: Repository<Sauna> =
-    AppDataSource.getRepository(Sauna);
+import { Role } from "../entities/role.model";
+export class RoleRepository {
+  protected readonly roleRepository: Repository<Role> =
+    AppDataSource.getRepository(Role);
 
-  public async getAllRoles(): Promise<Sauna[]> {
-    const users: Sauna[] = await this.saunaRepository.find();
-    return users;
+  public async getAllRoles(): Promise<Role[]> {
+    const roles: Role[] = await this.roleRepository.find();
+    return roles;
   }
 
-  public async getSaunaById(id: number): Promise<Sauna | null> {
+  public async getRoleById(id: number): Promise<Role> {
     try {
-      const user: Sauna | null = await this.saunaRepository.findOneBy({
+      const role: Sauna | null = await this.roleRepository.findOneBy({
         id: id,
       });
-      return user;
+      if(role)
+      return role;
+      else
+      throw ErrorFactory.createNotFoundError(`Role for ID: ${id} not found`)
     } catch (error) {
       throw ErrorFactory.createInternalServerError(
-        `Finding sauna failed`,
+        `Finding role failed`,
         error,
       );
     }
   }
 
-  public async addSauna(saunaDto: AddSaunaRequest): Promise<Sauna> {
+  public async addRole(addedRole: Role): Promise<Role> {
     try {
-
-      const sauna = this.saunaRepository.create(saunaDto);
-      const result = await this.saunaRepository.save(sauna);
+      const role = this.roleRepository.create(addedRole);
+      const result = await this.roleRepository.save(role);
       return result;
     } catch (error) {
-      throw ErrorFactory.createInternalServerError("Add sauna failed", error);
+      throw ErrorFactory.createInternalServerError("Add role failed", error);
     }
   }
 
-  public async updateSauna(saunaDto: UpdateSaunaRequest): Promise<boolean> {
+  public async updateRole(updatedRole: Role): Promise<boolean> {
     try {
-      const sauna: Sauna = await this.saunaRepository.findOneByOrFail({
-        id: saunaDto.id,
-      });
-      const result = this.saunaRepository.merge(sauna, saunaDto);
+      const result = this.roleRepository.merge(updatedRole);
       return result ? true : false;
     } catch (error) {
       throw ErrorFactory.createInternalServerError("Update user failed", error);
     }
   }
 
-  public async deleteSauna(id: number): Promise<boolean> {
+  public async deleteRole(id: number): Promise<boolean> {
     try {
-      const result = await this.saunaRepository.delete(id);
+      const result = await this.roleRepository.delete(id);
       return result.affected !== 0 ? true : false;
     } catch (error) {
       throw ErrorFactory.createInternalServerError(
-        "Delete sauna failed",
+        "Delete role failed",
         error,
       );
     }

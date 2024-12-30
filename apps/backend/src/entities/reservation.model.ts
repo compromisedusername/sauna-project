@@ -6,20 +6,20 @@ import { User } from './user.model';
 @Index(['dateFrom', 'dateTo'])
 export class Reservation {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id?: number;
 
   @Column({ type: 'datetime'})
-  dateFrom!: Date;
+  dateFrom?: Date;
 
   @Column({ type: 'datetime', nullable: false })
-  dateTo!: Date;
+  dateTo?: Date;
 
   @Column({ type: 'int', nullable: true /* do zmiany na false, test*/ })
-  numberOfPeople!: number;
+  numberOfPeople?: number;
 
   @ManyToOne(() => Sauna, (sauna) => sauna.reservations)
-  sauna!: Sauna;
+  sauna?: Sauna;
 
   @ManyToOne(() => User, (user) => user.reservations)
-  user!: User;
+  user?: User;
 }

@@ -1,10 +1,11 @@
 
 export class UpdateSaunaRequest {
-  name!: string;
   id!: number;
+  name!: string;
   saunaType!: string;
   humidity!: number;
   temperature!: number;
   peopleCapacity!: number;
+  reservations!: number[];
 }
 

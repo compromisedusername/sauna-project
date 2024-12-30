@@ -4,12 +4,15 @@ import { AddSaunaRequest } from "../dto/request/add.sauna.request";
 import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
 import { SaunaResponse } from "../dto/response/sauna.response.dto";
 import { SaunaRepository } from "../repositories/sauna.repository";
+import { ReservationRepository } from "../repositories/reservation.repository";
 import { ErrorFactory } from "../errors/error-factory.error";
 import { validateUpdateSauna } from "../utils/validators/sauna/sauna.validator";
 import { validateAddSauna } from "../utils/validators/sauna/sauna.validator";
+import { UpdatedResponse } from "../dto/response/response-factory.response";
 
 export class SaunaService {
   private readonly saunaRepository: SaunaRepository;
+  private readonly reservationRepository: ReservationRepository
 
   constructor() {
     this.saunaRepository = new SaunaRepository();
@@ -29,8 +32,24 @@ export class SaunaService {
   }
   public async addSauna(data: AddSaunaRequest): Promise<number> {
     validateAddSauna(data);
-    const savedSauna = await this.saunaRepository.addSauna(data);
-    return savedSauna.id;
+    const addSauna:Sauna = {
+      name: data.name,
+      saunaType: data.saunaType,
+      humidity: data.humidity,
+      temperature: data.temperature,
+      peopleCapacity: data.peopleCapacity,
+      reservations: []
+    }
+    for(const id of data.reservations){
+      if(addSauna.reservations)
+      addSauna.reservations.push(this.reservationRepository.getReservation(id));
+    }
+    const savedSauna = await this.saunaRepository.addSauna(addSauna);
+    if(savedSauna.id){
+    return savedSauna.id;}
+    else{
+      throw ErrorFactory.createInternalServerError("Error occured. Try again later.")
+    }
   }
 
   public async updateSauna(data: UpdateSaunaRequest): Promise<boolean> {
@@ -42,7 +61,23 @@ export class SaunaService {
       );
     }
 
-    const updateResult = await this.saunaRepository.updateSauna(data);
+    const updateSauna:Sauna = {
+      id: data.id,
+      name: data.name,
+      saunaType: data.saunaType,
+      temperature: data.temperature,
+      peopleCapacity: data.peopleCapacity,
+      humidity: data.humidity,
+      reservations: [],
+    }
+
+
+    for(const id of data.reservations){
+      if(updateSauna.reservations)
+      updateSauna.reservations.push(this.reservationRepository.getReservation(id));
+    }
+
+    const updateResult = await this.saunaRepository.updateSauna(updateSauna);
     return updateResult;
   }
 

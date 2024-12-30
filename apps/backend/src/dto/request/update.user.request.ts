@@ -9,6 +9,6 @@ export class UpdateUserRequest {
   email!: string;
   passwordHash!: string;
   salt!: string;
-  role!: Role;
-  reservations!: Reservation[];
+  role!: number;
+  reservations!: number[];
 }
