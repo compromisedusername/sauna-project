@@ -4,10 +4,10 @@ const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Express API - Sauna Reservation & Roles Management",
+      title: "Express API - Sauna Reservation",
       version: "1.1.0",
       description:
-        "API documentation for the Express app, including Sauna and Role management",
+        "API documentation for the Sauna Reservation app",
     },
 
     components: {

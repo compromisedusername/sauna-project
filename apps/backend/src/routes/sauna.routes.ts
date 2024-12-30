@@ -10,6 +10,8 @@ const saunaController = new SaunaController();
  * @swagger
  * /api/saunas:
  *   get:
+ *     tags:
+ *        - sauna
  *     summary: Get all saunas
  *     description: Retrieve a list of all saunas in the system.
  *     responses:
@@ -34,6 +36,8 @@ saunaRoutes.get('/saunas', async (req, res, next) => {
  * @swagger
  * /api/sauna/{id}:
  *   get:
+ *     tags:
+ *        - sauna
  *     summary: Get a sauna by ID
  *     description: Retrieve a sauna based on its unique ID.
  *     parameters:
@@ -65,6 +69,8 @@ saunaRoutes.get('/sauna/:id', async (req, res, next) => {
  * @swagger
  * /api/sauna:
  *   post:
+ *     tags:
+ *        - sauna
  *     summary: Add a new sauna
  *     description: Create a new sauna in the system.
  *     requestBody:
@@ -97,6 +103,8 @@ saunaRoutes.post('/sauna', async (req, res, next) => {
  * @swagger
  * /api/sauna:
  *   put:
+ *     tags:
+ *        - sauna
  *     summary: Update a sauna
  *     description: Update an existing sauna's details.
  *     requestBody:
@@ -131,6 +139,8 @@ saunaRoutes.put('/sauna', async (req: Request, res: Response, next) => {
  * @swagger
  * /api/sauna/{id}:
  *   delete:
+ *     tags:
+ *        - sauna
  *     summary: Delete a sauna
  *     description: Remove a sauna from the system by its unique ID.
  *     parameters:

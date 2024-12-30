@@ -10,10 +10,14 @@ import AppDataSource from "./config/ormconfig";
 
 import { errorHandler } from "./middlewares/error-handler.middleware";
 import { loggingMiddleware } from "./middlewares/log.middleware";
+
+import { ResponseFactory } from "./dto/response/response-factory.response";
+
 import userRoutes from "./routes/user.routes";
 import saunaRoutes from "./routes/sauna.routes";
 import roleRoutes from "./routes/role.routes"
-import { ResponseFactory } from "./dto/response/response-factory.response";
+import reservationRoutes from "./routes/reservation.routes"
+
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
@@ -26,6 +30,7 @@ app.use(express.json());
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use("/api", reservationRoutes)
 app.use("/api", userRoutes);
 app.use("/api", saunaRoutes);
 app.use("/api", roleRoutes)

@@ -11,6 +11,8 @@ const reservationController: ReservationController = new ReservationController()
  * @swagger
  * /api/reservations:
  *   get:
+ *     tags:
+ *        - reservation
  *     summary: Get all reservations
  *     description: Retrieve a list of all reservations in the system.
  *     responses:
@@ -34,6 +36,8 @@ reservationRoutes.get('/reservations', async (req: Request, res: Response, next:
  * @swagger
  * /api/reservation/{id}:
  *   get:
+ *     tags:
+ *        - reservation
  *     summary: Get a reservation by ID
  *     description: Retrieve a reservation based on its unique ID.
  *     parameters:
@@ -63,6 +67,8 @@ reservationRoutes.get('/reservation/:id', async (req: Request, res: Response, ne
  * @swagger
  * /api/reservation:
  *   post:
+ *     tags:
+ *        - reservation
  *     summary: Add a new reservation
  *     description: Create a new reservation in the system.
  *     requestBody:
@@ -93,6 +99,8 @@ reservationRoutes.post('/reservation', async (req: Request, res: Response, next:
  * @swagger
  * /api/reservation:
  *   put:
+ *     tags:
+ *        - reservation
  *     summary: Update a reservation
  *     description: Update an existing reservation's details.
  *     requestBody:
@@ -125,6 +133,8 @@ reservationRoutes.put('/reservation/', async (req: Request, res: Response, next:
  * @swagger
  * /api/reservation/{id}:
  *   delete:
+ *     tags:
+ *        - reservation
  *     summary: Delete a reservation
  *     description: Remove a reservation from the system by its unique ID.
  *     parameters:
@@ -154,3 +164,5 @@ reservationRoutes.delete('/reservation/:id', async (req: Request, res: Response,
     next(error)
   }
 });
+
+export default reservationRoutes;

@@ -10,6 +10,8 @@ const roleController: RoleController = new RoleController()
  * @swagger
  * /api/role/{id}:
  *   get:
+ *     tags:
+ *        - role
  *     summary: Get a role by ID
  *     description: Retrieve a role based on its unique ID.
  *     parameters:
@@ -38,7 +40,10 @@ roleRoutes.get('/role/:id', async (req: Request, res: Response, next: NextFuncti
 })/**
  * @swagger
  * /api/roles:
+ * tags: - Role
  *   get:
+ *     tags:
+ *        - role
  *     summary: Get all roles
  *     description: Retrieve a list of all roles in the system.
  *     responses:
@@ -61,6 +66,8 @@ roleRoutes.get('/roles', async (req: Request, res: Response, next: NextFunction)
  * @swagger
  * /api/role:
  *   post:
+ *     tags:
+ *        - role
  *     summary: Add a new role
  *     description: Create a new role in the system.
  *     requestBody:
@@ -92,6 +99,8 @@ roleRoutes.post('/role', async (req: Request, res: Response, next: NextFunction)
  * @swagger
  * /api/role:
  *   put:
+ *     tags:
+ *        - role
  *     summary: Update a role
  *     description: Update an existing role's details.
  *     requestBody:
@@ -124,6 +133,8 @@ roleRoutes.put('/role', async (req: Request, res: Response, next: NextFunction)=
  * @swagger
  * /api/role/{id}:
  *   delete:
+ *     tags:
+ *        - role
  *     summary: Delete a role
  *     description: Remove a role from the system by its unique ID.
  *     parameters:

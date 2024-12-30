@@ -8,6 +8,8 @@ const userController = new UserController();
  * @swagger
  * /api/users:
  *   get:
+ *     tags:
+ *        - user
  *     summary: Get all users
  *     description: Retrieve a list of all users in the system.
  *     responses:
@@ -31,6 +33,8 @@ userRoutes.get('/users',async (req, res, next)   => {
  * @swagger
  * /api/user/{id}:
  *   get:
+ *     tags:
+ *        - user
  *     summary: Get a user by ID
  *     description: Retrieve a user based on their unique ID.
  *     parameters:
@@ -61,6 +65,8 @@ userRoutes.get('/user/:id', async (req, res, next) => {
  * @swagger
  * /api/user:
  *   post:
+ *     tags:
+ *        - user
  *     summary: Add a new user
  *     description: Create a new user in the system.
  *     requestBody:
@@ -92,6 +98,8 @@ userRoutes.post('/user', async (req, res, next) => {
  * @swagger
  * /api/user:
  *   put:
+ *     tags:
+ *        - user
  *     summary: Update a user
  *     description: Update an existing user's details.
  *     requestBody:
@@ -124,6 +132,8 @@ userRoutes.put('/user', async (req: Request, res: Response,next) => {
  * @swagger
  * /api/user/{id}:
  *   delete:
+ *     tags:
+ *        - user
  *     summary: Delete a user
  *     description: Remove a user from the system by their unique ID.
  *     parameters:
