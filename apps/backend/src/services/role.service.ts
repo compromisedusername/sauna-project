@@ -43,7 +43,7 @@ export class RoleService {
     validateAddRole(data);
 
     const users: User[] = await Promise.all(
-      data.users.map((id) => this.userRepository.getUser(id)),
+      data.users.map((id) => this.userRepository.getUserById(id)),
     );
 
     const addedRole: Role = {
@@ -72,7 +72,7 @@ export class RoleService {
     }
 
     const users: User[] = await Promise.all(
-      data.users.map((id) => this.userRepository.getUser(id)),
+      data.users.map((id) => this.userRepository.getUserById(id)),
     );
 
     const updatedRole: Role = {

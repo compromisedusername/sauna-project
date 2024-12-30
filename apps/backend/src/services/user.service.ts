@@ -1,5 +1,3 @@
-import { DeleteResult } from "typeorm";
-import { UserResponse } from "../dto/response/user.response.dto";
 import { AddUserRequest } from "../dto/request/add.user.request";
 import { ErrorFactory } from "../errors/error-factory.error";
 import { User } from "./../entities/user.model";
@@ -7,15 +5,20 @@ import { UserRepository } from "./../repositories/user.repository";
 import { UpdateUserRequest } from "../dto/request/update.user.request";
 import { Role } from "../entities/role.model";
 import { Reservation } from "../entities/reservation.model";
-import { validateAddUser, validateUpdateUser } from "../utils/validators/user/user.validator";
+import {
+  validateAddUser,
+  validateUpdateUser,
+} from "../utils/validators/user/user.validator";
 import { RoleRepository } from "../repositories/role.repository";
-
+import { ReservationRepository } from "../repositories/reservation.repository";
 export class UserService {
   private readonly userRepository: UserRepository;
-    private readonly roleRepository: RoleRepository;
+  private readonly roleRepository: RoleRepository;
+  private readonly reservationRepository: ReservationRepository;
   constructor() {
     this.userRepository = new UserRepository();
     this.roleRepository = new RoleRepository();
+    this.reservationRepository = new ReservationRepository();
   }
 
   public async getAllUsers(): Promise<User[]> {
@@ -24,7 +27,7 @@ export class UserService {
   }
 
   public async getUser(id: number): Promise<User> {
-    const user: User | null = await this.userRepository.getUser(id);
+    const user: User | null = await this.userRepository.getUserById(id);
     if (user) {
       return user;
     } else {
@@ -32,17 +35,17 @@ export class UserService {
     }
   }
 
-  public async updateUser(
-    data: UpdateUserRequest,
-  ): Promise<boolean> {
+  public async updateUser(data: UpdateUserRequest): Promise<boolean> {
+    validateUpdateUser(data);
 
-   validateUpdateUser(data);
+    const role: Role = await this.roleRepository.getRoleById(data.role);
 
-    const role: Role  = await this.roleRepository.getRoleById(data.role);
-    const reservations: Reservation[] = [];
-    for(const id of data.reservations){
-      reservations.push(this.reservationRepository.getReservation(id));
-    }
+    const reservations: Reservation[] = await Promise.all(
+      data.reservations.map((id) =>
+        this.reservationRepository.getReservationById(id),
+      ),
+    );
+
     const updatedUser: User = {
       id: data.id,
       name: data.name,
@@ -51,8 +54,8 @@ export class UserService {
       passwordHash: data.passwordHash,
       salt: data.salt,
       role: role,
-      reservations: reservations
-    }
+      reservations: reservations,
+    };
 
     const updated = await this.userRepository.updateUser(updatedUser);
     if (updated) {
@@ -62,14 +65,15 @@ export class UserService {
     }
   }
 
-  public async addUser(data:AddUserRequest ): Promise<number> {
+  public async addUser(data: AddUserRequest): Promise<number> {
     validateAddUser(data);
 
-    const role: Role = this.roleRepository.getRoleById(data.role);
-    const reservations: Reservation[] = [];
-    for(const id of data.reservations){
-      reservations.push(this.reservationRepository.getReservation(id));
-    }
+    const role: Role = await this.roleRepository.getRoleById(data.role);
+    const reservations: Reservation[] = await Promise.all(
+      data.reservations.map((id) =>
+        this.reservationRepository.getReservationById(id),
+      ),
+    );
     const addUser: User = {
       name: data.name,
       surname: data.surname,
@@ -77,13 +81,13 @@ export class UserService {
       passwordHash: data.passwordHash,
       salt: data.salt,
       role: role,
-      reservations: reservations
-    }
+      reservations: reservations,
+    };
     const user: User = await this.userRepository.addUser(addUser);
-    if(user.id){
-    return user.id;
-    }else{
-        throw ErrorFactory.createBadRequestError("Incorrect input")
+    if (user.id) {
+      return user.id;
+    } else {
+      throw ErrorFactory.createBadRequestError("Incorrect input");
     }
   }
 

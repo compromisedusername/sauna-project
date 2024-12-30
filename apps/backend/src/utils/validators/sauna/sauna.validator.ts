@@ -26,7 +26,7 @@ export function validateAddSauna(data : AddSaunaRequest):void{
         "Sauna temperature must be under 200 and greater than 0",
       );
     }
-    if (data.peopleCapacity >= 100 ||  data.peopleCapacity < 0) {
+    if (data.peopleCapacity >= 100 && data.peopleCapacity < 0) {
       throw ErrorFactory.createBadRequestError(
         "People capacity must be under 100 and greater than 0",
       );
@@ -40,4 +40,5 @@ export function validateAddSauna(data : AddSaunaRequest):void{
   }}
 
 export function validateUpdateSauna(data: UpdateSaunaRequest):void{
+    validateAddSauna(data);
 }

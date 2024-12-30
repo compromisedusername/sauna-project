@@ -45,7 +45,7 @@ export class RoleRepository {
       const result = this.roleRepository.merge(updatedRole);
       return result ? true : false;
     } catch (error) {
-      throw ErrorFactory.createInternalServerError("Update user failed", error);
+      throw ErrorFactory.createInternalServerError("Update role failed", error);
     }
   }
 

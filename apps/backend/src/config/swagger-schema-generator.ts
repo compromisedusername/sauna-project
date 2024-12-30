@@ -10,7 +10,7 @@ const config = {
 
 const schemaGenerator = createGenerator(config);
 
-const schemaSauna = schemaGenerator.createSchema('Sauna')
-const schemaReservation = schemaGenerator.createSchema('Reservation')
+const schemaSauna = schemaGenerator.createSchema('')
+const schemaReservation = schemaGenerator.createSchema('')
 
 console.log(JSON.stringify(schemaSauna, null, 2),  JSON.stringify(schemaReservation, null, 2))

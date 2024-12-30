@@ -6,11 +6,60 @@ const swaggerOptions: swaggerJSDoc.Options = {
     info: {
       title: "Express API - Sauna Reservation & Roles Management",
       version: "1.1.0",
-      description: "API documentation for the Express app, including Sauna and Role management",
+      description:
+        "API documentation for the Express app, including Sauna and Role management",
     },
 
     components: {
       schemas: {
+        Sauna: {
+          type: "object",
+          properites: {
+            id: { type: "integer", example: 1 },
+            name: { type: "string", exmaple: "ExampleName" },
+            saunaType: {
+              type: "string",
+              example: "Infrared",
+              enum: ["Infrared", "Finnish", "Steam", "Turkish"],
+            },
+            temperature: {type: "integer", exmaple: 100},
+            humidity: {type: "integer", exmaple: 80},
+            peopleCapacity: {type: "integer", exmaple: 4},
+          },
+        },
+
+        Role: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            name: { type: "string", example: "Admin" },
+            description: { type: "string", example: "Administrator role" },
+            users: {
+              type: "array",
+              items: { type: "integer", example: [1, 2, 3] },
+            },
+          },
+        },
+
+        Reservation: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            dateFrom: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-01T10:00:00Z",
+            },
+            dateTo: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-01T12:00:00Z",
+            },
+            numberOfPeople: { type: "integer", example: 4 },
+            saunaId: { type: "integer", example: 2 },
+            userId: { type: "integer", example: 3 },
+          },
+        },
         User: {
           type: "object",
           properties: {
@@ -115,18 +164,6 @@ const swaggerOptions: swaggerJSDoc.Options = {
           },
         },
 
-        Role: {
-          type: "object",
-          properties: {
-            id: { type: "integer", example: 1 },
-            name: { type: "string", example: "Admin" },
-            description: { type: "string", example: "Administrator role" },
-            users: {
-              type: "array",
-              items: { type: "integer", example: [1, 2, 3] },
-            },
-          },
-        },
         AddRoleRequest: {
           type: "object",
           properties: {
@@ -143,7 +180,10 @@ const swaggerOptions: swaggerJSDoc.Options = {
           properties: {
             id: { type: "integer", example: 1 },
             name: { type: "string", example: "Admin" },
-            description: { type: "string", example: "Updated role description" },
+            description: {
+              type: "string",
+              example: "Updated role description",
+            },
             users: {
               type: "array",
               items: { type: "integer", example: [1, 2, 3] },
@@ -167,4 +207,3 @@ const swaggerOptions: swaggerJSDoc.Options = {
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 export default swaggerSpec;
-

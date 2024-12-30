@@ -11,7 +11,7 @@ export class UserRepository {
     return users;
   }
 
-  public async getUser(id: number): Promise<User> {
+  public async getUserById(id: number): Promise<User> {
     try{
     const user: User | null = await this.userRepository.findOneBy({ id: id });
       if(user)

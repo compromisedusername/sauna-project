@@ -9,6 +9,7 @@ import { ErrorFactory } from "../errors/error-factory.error";
 import { validateUpdateSauna } from "../utils/validators/sauna/sauna.validator";
 import { validateAddSauna } from "../utils/validators/sauna/sauna.validator";
 import { UpdatedResponse } from "../dto/response/response-factory.response";
+import { Reservation } from "../entities/reservation.model";
 
 export class SaunaService {
   private readonly saunaRepository: SaunaRepository;
@@ -16,6 +17,7 @@ export class SaunaService {
 
   constructor() {
     this.saunaRepository = new SaunaRepository();
+    this.reservationRepository = new ReservationRepository();
   }
 
   public async getAllSaunas(): Promise<Sauna[]> {
@@ -32,18 +34,16 @@ export class SaunaService {
   }
   public async addSauna(data: AddSaunaRequest): Promise<number> {
     validateAddSauna(data);
+    const reservations: Reservation[] = await Promise.all(data.reservations.map( (id)=>this.reservationRepository.getReservationById(id)));
     const addSauna:Sauna = {
       name: data.name,
       saunaType: data.saunaType,
       humidity: data.humidity,
       temperature: data.temperature,
       peopleCapacity: data.peopleCapacity,
-      reservations: []
+      reservations: reservations,
     }
-    for(const id of data.reservations){
-      if(addSauna.reservations)
-      addSauna.reservations.push(this.reservationRepository.getReservation(id));
-    }
+
     const savedSauna = await this.saunaRepository.addSauna(addSauna);
     if(savedSauna.id){
     return savedSauna.id;}
@@ -61,6 +61,8 @@ export class SaunaService {
       );
     }
 
+
+    const reservations: Reservation[] = await Promise.all(data.reservations.map( (id)=>this.reservationRepository.getReservationById(id)));
     const updateSauna:Sauna = {
       id: data.id,
       name: data.name,
@@ -68,14 +70,10 @@ export class SaunaService {
       temperature: data.temperature,
       peopleCapacity: data.peopleCapacity,
       humidity: data.humidity,
-      reservations: [],
+      reservations: reservations,
     }
 
 
-    for(const id of data.reservations){
-      if(updateSauna.reservations)
-      updateSauna.reservations.push(this.reservationRepository.getReservation(id));
-    }
 
     const updateResult = await this.saunaRepository.updateSauna(updateSauna);
     return updateResult;

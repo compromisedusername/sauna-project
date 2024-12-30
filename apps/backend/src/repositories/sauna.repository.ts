@@ -11,12 +11,17 @@ export class SaunaRepository {
     return users;
   }
 
-  public async getSaunaById(id: number): Promise<Sauna | null> {
+  public async getSaunaById(id: number): Promise<Sauna> {
     try {
-      const user: Sauna | null = await this.saunaRepository.findOneBy({
+      const sauna: Sauna | null = await this.saunaRepository.findOneBy({
         id: id,
       });
-      return user;
+      if(sauna){
+      return sauna;}
+
+      else{
+        throw ErrorFactory.createNotFoundError(`Sauna with ID: ${id} not found`)
+      }
     } catch (error) {
       throw ErrorFactory.createInternalServerError(
         `Finding sauna failed`,
@@ -44,7 +49,7 @@ export class SaunaRepository {
       const result = this.saunaRepository.merge(sauna, updateSauna);
       return result ? true : false;
     } catch (error) {
-      throw ErrorFactory.createInternalServerError("Update user failed", error);
+      throw ErrorFactory.createInternalServerError("Update sauna failed", error);
     }
   }
 

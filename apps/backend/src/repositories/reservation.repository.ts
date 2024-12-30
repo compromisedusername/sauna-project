@@ -1,0 +1,63 @@
+
+
+import { ErrorFactory } from "./../errors/error-factory.error";
+import { Repository } from "typeorm";
+import AppDataSource from "./../config/ormconfig";
+import { Reservation } from "../entities/reservation.model";
+export class ReservationRepository {
+  protected readonly reservationRepository: Repository<Reservation> =
+    AppDataSource.getRepository(Reservation);
+
+  public async getAllReservations(): Promise<Reservation[]> {
+    const reservations: Reservation[] = await this.reservationRepository.find();
+    return reservations;
+  }
+
+  public async getReservationById(id: number): Promise<Reservation> {
+    try {
+      const reservation: Reservation |null  = await this.reservationRepository.findOneBy({
+        id: id,
+      });
+      if(reservation)
+      return reservation;
+      else
+      throw ErrorFactory.createNotFoundError(`Reservation for ID: ${id} not found`)
+    } catch (error) {
+      throw ErrorFactory.createInternalServerError(
+        `Finding role failed`,
+        error,
+      );
+    }
+  }
+
+  public async addReservation(addedReservation: Reservation): Promise<Reservation> {
+    try {
+      const reservation = this.reservationRepository.create(addedReservation);
+      const result = await this.reservationRepository.save(reservation);
+      return result;
+    } catch (error) {
+      throw ErrorFactory.createInternalServerError("Add reservation failed", error);
+    }
+  }
+
+  public async updateReservation(updatedReservation: Reservation): Promise<boolean> {
+    try {
+      const result = this.reservationRepository.merge(updatedReservation);
+      return result ? true : false;
+    } catch (error) {
+      throw ErrorFactory.createInternalServerError("Update reservation failed", error);
+    }
+  }
+
+  public async deleteReservation(id: number): Promise<boolean> {
+    try {
+      const result = await this.reservationRepository.delete(id);
+      return result.affected !== 0 ? true : false;
+    } catch (error) {
+      throw ErrorFactory.createInternalServerError(
+        "Delete reservation failed",
+        error,
+      );
+    }
+  }
+}
