@@ -12,6 +12,7 @@ import { errorHandler } from "./middlewares/error-handler.middleware";
 import { loggingMiddleware } from "./middlewares/log.middleware";
 import userRoutes from "./routes/user.routes";
 import saunaRoutes from "./routes/sauna.routes";
+import roleRoutes from "./routes/role.routes"
 import { ResponseFactory } from "./dto/response/response-factory.response";
 
 const app: Express = express();
@@ -27,7 +28,7 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api", userRoutes);
 app.use("/api", saunaRoutes);
-
+app.use("/api", roleRoutes)
 app.get("/", (req: Request, res: Response) => {
     ResponseFactory.ok(res, "Server listening")
 });

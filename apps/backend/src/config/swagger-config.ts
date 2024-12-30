@@ -4,9 +4,9 @@ const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Express API - Sauna Reservation",
-      version: "1.0.9",
-      description: "API documentation for my Express app",
+      title: "Express API - Sauna Reservation & Roles Management",
+      version: "1.1.0",
+      description: "API documentation for the Express app, including Sauna and Role management",
     },
 
     components: {
@@ -37,7 +37,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
         UpdateUserRequest: {
           type: "object",
           properties: {
-            id: {type: "number", exmaple: 1},
+            id: { type: "number", example: 1 },
             name: { type: "string", example: "John" },
             surname: { type: "string", example: "Doe" },
             email: { type: "string", example: "john.doe@example.com" },
@@ -66,34 +66,37 @@ const swaggerOptions: swaggerJSDoc.Options = {
             },
           },
         },
+
         SaunaResponse: {
           type: "object",
           properties: {
             id: { type: "integer", example: 1 },
-            name: {type: "string", exmaple: "Exmaple2"},
-            saunaType: { type: "Infraded | Finnish | Steam | Turkish ", example: "Infrared" },
+            name: { type: "string", example: "Example2" },
+            saunaType: {
+              type: "string",
+              example: "Infrared",
+              enum: ["Infrared", "Finnish", "Steam", "Turkish"],
+            },
             humidity: { type: "integer", example: 120 },
             temperature: { type: "integer", example: 6 },
             peopleCapacity: { type: "integer", example: 4 },
-
             reservations: {
               type: "array",
               items: { type: "integer", example: 1 },
-
             },
           },
         },
         AddSaunaRequest: {
           type: "object",
           properties: {
-            name: {type: "string", example: "Name1"},
+            name: { type: "string", example: "Name1" },
             saunaType: { type: "string", example: "Infrared" },
-            humidity: { type: "integer", example: 120},
+            humidity: { type: "integer", example: 120 },
             temperature: { type: "integer", example: 6 },
             peopleCapacity: { type: "integer", example: 3 },
             reservations: {
               type: "array",
-              items: { type: "integer", example: [1,2,3,4] },
+              items: { type: "integer", example: [1, 2, 3, 4] },
             },
           },
         },
@@ -101,14 +104,49 @@ const swaggerOptions: swaggerJSDoc.Options = {
           type: "object",
           properties: {
             id: { type: "integer", example: 1 },
-
             saunaType: { type: "string", example: "Infrared" },
-            humidity: { type: "integer", example: 120},
+            humidity: { type: "integer", example: 120 },
             temperature: { type: "integer", example: 6 },
             peopleCapacity: { type: "integer", example: 3 },
             reservations: {
               type: "array",
-              items: { type: "integer", example: [1,2] },
+              items: { type: "integer", example: [1, 2] },
+            },
+          },
+        },
+
+        Role: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            name: { type: "string", example: "Admin" },
+            description: { type: "string", example: "Administrator role" },
+            users: {
+              type: "array",
+              items: { type: "integer", example: [1, 2, 3] },
+            },
+          },
+        },
+        AddRoleRequest: {
+          type: "object",
+          properties: {
+            name: { type: "string", example: "Admin" },
+            description: { type: "string", example: "Administrator role" },
+            users: {
+              type: "array",
+              items: { type: "integer", example: [1, 2, 3] },
+            },
+          },
+        },
+        UpdateRoleRequest: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            name: { type: "string", example: "Admin" },
+            description: { type: "string", example: "Updated role description" },
+            users: {
+              type: "array",
+              items: { type: "integer", example: [1, 2, 3] },
             },
           },
         },
