@@ -4,6 +4,7 @@ import path from "path/posix";
 const config = {
   path: __filename,
   tsconfig: path.join(__dirname, "../../tsconfig.json"),
+  exclude: ["./../types/express.d.ts"]
 };
 
 const schemaGenerator = createGenerator(config);
@@ -12,6 +13,7 @@ import { AddSaunaRequest } from "../dto/request/add.sauna.request";
 import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
 import { Sauna } from "../entities/sauna.model";
 // USER
+import { RegisterUserRequest } from "../dto/request/register.user.request";
 import { AddUserRequest } from "../dto/request/add.user.request";
 import { UpdateUserRequest } from "../dto/request/update.user.request";
 import { User } from "../entities/user.model";
@@ -30,6 +32,7 @@ const schemas = {
   UpdateSaunaRequest: schemaGenerator.createSchema("UpdateSaunaRequest"),
   // USER
   User: schemaGenerator.createSchema("User"),
+  RegisterUserRequest: schemaGenerator.createSchema("RegisterUserRequest"),
   AddUserRequest: schemaGenerator.createSchema("AddUserRequest"),
   UpdateUserRequest: schemaGenerator.createSchema("UpdateUserRequest"),
   // RESERVATION

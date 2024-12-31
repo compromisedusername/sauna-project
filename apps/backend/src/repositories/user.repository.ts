@@ -2,6 +2,7 @@ import { ErrorFactory } from "./../errors/error-factory.error";
 import { User } from "./../entities/user.model";
 import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
+import { comparePasswords } from "../utils/bcrypt";
 export class UserRepository {
   protected readonly userRepository: Repository<User> =
     AppDataSource.getRepository(User);
@@ -27,20 +28,16 @@ export class UserRepository {
     }
   }
 
-  public async getUserByEmailAndPassword(
-    email: string,
-    hashedPassword: string,
+  public async getUserByEmail(
+    email: string
   ): Promise<User> {
     try {
-      const user: User = await this.userRepository.findOneByOrFail({
-        email: email,
-        passwordHash: hashedPassword,
+      const user: User = await this.userRepository.findOneOrFail({
+      where: {  email: email},
       });
-      return user;
+        return user;
     } catch (error) {
-      throw ErrorFactory.createNotFoundError(
-        "User for given password and email doesnt exists!",
-      );
+      throw ErrorFactory.createNotFoundError("Invalid credentials.", error);
     }
   }
 

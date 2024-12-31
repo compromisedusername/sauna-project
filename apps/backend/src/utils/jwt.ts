@@ -9,12 +9,12 @@ export function generateToken(user: User): string {
         role: user.role?.name,
         email: user.email,
     };
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign(payload, 'secret' , { expiresIn: '1h' });
 }
 
 export function verifyToken(token: string): any {
     try {
-        return jwt.verify(token, JWT_SECRET);
+        return jwt.verify(token, 'secret');
     } catch (error) {
         return null;
     }

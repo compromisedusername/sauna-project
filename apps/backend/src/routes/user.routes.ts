@@ -1,41 +1,49 @@
-import {Router} from 'express';
+import {RequestHandler, Router} from 'express';
 import {UserController} from './../controllers/user.controller';
 import { Request, Response, NextFunction } from 'express';
+import { authMiddleware } from '../middlewares/auth.middleware';
+import { ResponseFactory } from '../dto/response/response-factory.response';
+import { AuthRequest } from '../dto/request/auth.authrequest';
 const userRoutes = Router();
 const userController = new UserController();
-
-
 /**
  * @swagger
- * /api/user:
+ * /api/login:
  *   post:
  *     tags:
- *        - user
+ *       - user
  *     summary: Login to system
- *     description: Login to system
+ *     description: Allows a user to log in to the system.
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properites:
+ *             properties:
  *               email:
  *                 type: string
+ *                 description: User's email address.
  *               password:
  *                 type: string
+ *                 description: User's password.
  *     responses:
  *       200:
- *         description: User logged successfully.
+ *         description: User logged in successfully.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 jwtToken:
- *                   type:string
- *                 $ref: #/components/schemas/User
+ *                   type: string
+ *                   description: JWT token for authentication.
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid login credentials.
  */
+
 userRoutes.post('/login', async(req, res, next) => {
 
   try{
@@ -45,21 +53,21 @@ userRoutes.post('/login', async(req, res, next) => {
     next(error);
   }
 })
+
 /**
  * @swagger
- * /api/user:
+ * /api/register:
  *   post:
  *     tags:
- *        - user
- *     summary: Register to system
- *     description: Register to system
+ *       - user
+ *     summary: Register a new user
+ *     description: Allows a new user to register in the system.
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: #/components/schemas/User
- *
+ *             $ref: '#/components/schemas/RegisterUserRequest'
  *     responses:
  *       200:
  *         description: User registered successfully.
@@ -69,8 +77,12 @@ userRoutes.post('/login', async(req, res, next) => {
  *               type: object
  *               properties:
  *                 jwtToken:
- *                   type:string
- *                 $ref: #/components/schemas/User
+ *                   type: string
+ *                   description: JWT token for authentication.
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid registration data.
  */
 userRoutes.post('/register', async(req, res, next) => {
 
@@ -80,6 +92,17 @@ userRoutes.post('/register', async(req, res, next) => {
     next(error);
   }
 })
+userRoutes.get('/me' , authMiddleware as RequestHandler,  async (req: Request, res:Response, next: NextFunction) => {
+  console.log("GET ME", req)
+  try{
+      res.json({ response: req.user.role  })
+  }catch(error){
+    next(error);
+  }
+})
+
+
+
 
 /**
  * @swagger

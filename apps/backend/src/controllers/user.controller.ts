@@ -10,6 +10,7 @@ import { UpdateUserRequest } from "../dto/request/update.user.request";
 import { RoleService } from "../services/role.service";
 import { generateSalt, hashPassword } from './../utils/bcrypt';
 import { generateToken } from "../utils/jwt";
+import { RegisterUserRequest } from "../dto/request/register.user.request";
 
 export class UserController {
 
@@ -24,11 +25,13 @@ export class UserController {
     if(!role){
       throw ErrorFactory.createNotFoundError(`Role name user not found`);
     }
+const userRequest : RegisterUserRequest = req.body;
+
     const user: AddUserRequest = {
-      name: req.body.name,
-      surname: req.body.surname,
-      email: req.body.email,
-      passwordHash: await hashPassword(req.body.password),
+      name: userRequest.name,
+      surname:userRequest.surname,
+      email: userRequest.email,
+      passwordHash: await hashPassword(userRequest.password),
       salt: await generateSalt(),
       role: (role.id ? role.id : 1),
       reservations: [],
@@ -40,6 +43,8 @@ export class UserController {
       id: addedUserId,
       email: user.email,
       role: role,
+      name: userRequest.name,
+      surname: userRequest.name
       // other ??
     }
 
@@ -53,8 +58,7 @@ export class UserController {
     if(!email || !password){
           throw ErrorFactory.createBadRequestError("Input email and password.")
     }
-    const passwordHash: string = await hashPassword(password);
-    const existingUser: User = await this.userService.getUserByEmailAndPassword(email, passwordHash)
+    const existingUser: User = await this.userService.getUserByEmailAndPassword(email, password)
 
     const jwtToken: string = generateToken(existingUser);
 

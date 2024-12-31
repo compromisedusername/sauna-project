@@ -10,7 +10,7 @@ import AppDataSource from "./config/ormconfig";
 
 import { errorHandler } from "./middlewares/error-handler.middleware";
 import { loggingMiddleware } from "./middlewares/log.middleware";
-
+import { requireAuthorization } from "./middlewares/requireAuth.middleware";
 import { ResponseFactory } from "./dto/response/response-factory.response";
 
 import userRoutes from "./routes/user.routes";
@@ -23,8 +23,9 @@ const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
 
 //middlewares config
-app.use(cors());
+app.use(cors({origin: "http://localhost:3000",credentials: true}));
 app.use(express.json());
+//app.use(requireAuthorization())
 // middlewares config
 //app.use(loggingMiddleware);
 

@@ -5,6 +5,7 @@ import { UserRepository } from "./../repositories/user.repository";
 import { UpdateUserRequest } from "../dto/request/update.user.request";
 import { Role } from "../entities/role.model";
 import { Reservation } from "../entities/reservation.model";
+import { comparePasswords, hashPassword } from "../utils/bcrypt";
 import {
   validateAddUser,
   validateUpdateUser,
@@ -21,12 +22,25 @@ export class UserService {
     this.reservationRepository = new ReservationRepository();
   }
 
+  public async getUserByEmailAndPassword(
+    email: string,
+    password: string,
+  ): Promise<User> {
+    try {
+      const user: User = await this.userRepository.getUserByEmail(
+        email,
+      );
 
-  public async getUserByEmailAndPassword(email: string, hashedPassword: string): Promise<User>{
-    try{
-    const user: User = await this.userRepository.getUserByEmailAndPassword(email, hashedPassword);
-    return user;
-    }catch(error){
+      const result: boolean = await comparePasswords(
+        password,
+        user.passwordHash!,
+      );
+      if (result) {
+        return user;
+      } else {
+        throw ErrorFactory.createConflictError("Incorrect credentials.");
+      }
+    } catch (error) {
       throw error;
     }
   }

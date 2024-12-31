@@ -29,7 +29,7 @@ export class User {
     @Column({ type: "varchar", length: 255, nullable: false })
     passwordHash?: string;
 
-    @Column({ type: "varchar", length: 50, nullable: false })
+    @Column({ type: "varchar", length: 255, nullable: false })
     salt?: string;
 
     @ManyToOne(
