@@ -4,6 +4,83 @@ import { Request, Response, NextFunction } from 'express';
 const userRoutes = Router();
 const userController = new UserController();
 
+
+/**
+ * @swagger
+ * /api/user:
+ *   post:
+ *     tags:
+ *        - user
+ *     summary: Login to system
+ *     description: Login to system
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properites:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User logged successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 jwtToken:
+ *                   type:string
+ *                 $ref: #/components/schemas/User
+ */
+userRoutes.post('/login', async(req, res, next) => {
+
+  try{
+    await userController.loginUser(req , res);
+
+  }catch(error){
+    next(error);
+  }
+})
+/**
+ * @swagger
+ * /api/user:
+ *   post:
+ *     tags:
+ *        - user
+ *     summary: Register to system
+ *     description: Register to system
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: #/components/schemas/User
+ *
+ *     responses:
+ *       200:
+ *         description: User registered successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 jwtToken:
+ *                   type:string
+ *                 $ref: #/components/schemas/User
+ */
+userRoutes.post('/register', async(req, res, next) => {
+
+  try{
+    await userController.registerUser(req, res);
+  }catch(error){
+    next(error);
+  }
+})
+
 /**
  * @swagger
  * /api/users:
