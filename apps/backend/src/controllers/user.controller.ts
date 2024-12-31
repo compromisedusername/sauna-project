@@ -8,7 +8,7 @@ import { AddUserRequest } from "../dto/request/add.user.request";
 import { ErrorFactory } from "../errors/error-factory.error";
 import { UpdateUserRequest } from "../dto/request/update.user.request";
 import { RoleService } from "../services/role.service";
-import { generateSalt, hashPassword } from './../utils/bcrypt.ts';
+import { generateSalt, hashPassword } from './../utils/bcrypt';
 import { generateToken } from "../utils/jwt";
 interface RegisterResponse {
 
@@ -31,7 +31,7 @@ export class UserController {
       surname: req.body.surname,
       email: req.body.email,
       passwordHash: await hashPassword(req.body.password),
-      salt: generateSalt(),
+      salt: await generateSalt(),
       role: (role.id ? role.id : 1),
       reservations: [],
     };
