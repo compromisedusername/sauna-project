@@ -10,9 +10,7 @@ import { UpdateUserRequest } from "../dto/request/update.user.request";
 import { RoleService } from "../services/role.service";
 import { generateSalt, hashPassword } from './../utils/bcrypt';
 import { generateToken } from "../utils/jwt";
-interface RegisterResponse {
 
-  }
 export class UserController {
 
   private readonly userService: UserService;
