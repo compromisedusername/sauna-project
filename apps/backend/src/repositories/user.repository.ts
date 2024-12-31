@@ -7,20 +7,40 @@ export class UserRepository {
     AppDataSource.getRepository(User);
 
   public async getAllUsers(): Promise<User[]> {
-    const users: User[] = await this.userRepository.find( {relations: ['reservations', 'role']});
+    const users: User[] = await this.userRepository.find({
+      relations: ["reservations", "role"],
+    });
     return users;
   }
 
   public async getUserById(id: number): Promise<User> {
-    try{
-    const user: User | null = await this.userRepository.findOne({where: { id: id}, relations: ['reservations', 'role'] });
-      if(user)
-      return user;
+    try {
+      const user: User | null = await this.userRepository.findOne({
+        where: { id: id },
+        relations: ["reservations", "role"],
+      });
+      if (user) return user;
       else
-      throw ErrorFactory.createNotFoundError(`User for ID: ${id} not found`)
+        throw ErrorFactory.createNotFoundError(`User for ID: ${id} not found`);
+    } catch (error) {
+      throw error;
+    }
+  }
 
-    }catch(error){
-        throw error;
+  public async getUserByEmailAndPassword(
+    email: string,
+    hashedPassword: string,
+  ): Promise<User> {
+    try {
+      const user: User = await this.userRepository.findOneByOrFail({
+        email: email,
+        passwordHash: hashedPassword,
+      });
+      return user;
+    } catch (error) {
+      throw ErrorFactory.createNotFoundError(
+        "User for given password and email doesnt exists!",
+      );
     }
   }
 
@@ -34,18 +54,16 @@ export class UserRepository {
     }
   }
 
-  public async updateUser(
-    updatedUser:User,
-  ): Promise<boolean> {
+  public async updateUser(updatedUser: User): Promise<boolean> {
     try {
       const user: User = await this.userRepository.findOneByOrFail({
         id: updatedUser.id,
       });
-      const result =  this.userRepository.merge(user, updatedUser);
+      const result = this.userRepository.merge(user, updatedUser);
       const updated = await this.userRepository.save(result);
       return updated ? true : false;
     } catch (error) {
-      throw ErrorFactory.createInternalServerError("Update user failed",error);
+      throw ErrorFactory.createInternalServerError("Update user failed", error);
     }
   }
 
@@ -54,7 +72,7 @@ export class UserRepository {
       const result = await this.userRepository.delete(id);
       return result.affected !== 0 ? true : false;
     } catch (error) {
-      throw ErrorFactory.createInternalServerError("Delete user failed",error);
+      throw ErrorFactory.createInternalServerError("Delete user failed", error);
     }
   }
 }

@@ -3,12 +3,12 @@ import { UpdateUserRequest } from "../../../dto/request/update.user.request";
 import { ErrorFactory } from "../../../errors/error-factory.error";
 
 export function validateAddUser(data: AddUserRequest): void {
-  if (data.name.length < 3 || data.name.length >= 60) {
+  if (data.name && (data.name.length < 3 || data.name.length >= 60)) {
     throw ErrorFactory.createBadRequestError(
       "Name must be longer than 2 characters and shorter than 60 characters",
     );
   }
-  if (data.surname.length < 3 || data.name.length >= 60) {
+  if ( (data.surname  && data.name ) && (data.surname.length < 3 || data.name.length >= 60)) {
     throw ErrorFactory.createBadRequestError(
       "Surname must be longer than 2 characters and shorter than 60 characters",
     );
@@ -16,7 +16,7 @@ export function validateAddUser(data: AddUserRequest): void {
 
   const emailRegex: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-  if (!emailRegex.test(data.email)) {
+  if (data.email  && !emailRegex.test(data.email)) {
     throw ErrorFactory.createBadRequestError("Incorrect email format.");
   }
 

@@ -26,6 +26,17 @@ export class RoleService {
     this.userRepository = new UserRepository();
   }
 
+  public async getRoleByName(roleName: string): Promise<Role>{
+    if(!roleName){
+      throw ErrorFactory.createBadRequestError("incorrect role")
+    }
+    const role = await this.roleRepository.getRoleByName(roleName);
+    if(role){
+    return role;
+    }else{
+      throw ErrorFactory.createNotFoundError(`Role name: '${roleName}' doesnt not exists`)
+    }
+  }
   public async getAllRoles(): Promise<Role[]> {
     const roles = await this.roleRepository.getAllRoles();
     return roles;

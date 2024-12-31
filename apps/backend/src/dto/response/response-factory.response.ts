@@ -2,6 +2,7 @@
 
 import { Response } from "express";
 import { EntitySchema } from "typeorm";
+import { User } from "../../entities/user.model";
 
 export abstract class BasicResponse {
   response: string = "OK";
@@ -52,11 +53,39 @@ export class DeletedResponse extends BasicResponse {
   }
 }
 
+export class LoggedResponse extends BasicResponse {
+  user: User;
+  jwtToken: string;
+  constructor(jwtToken: string, user: User) {
+    super(`${user.name} logged successfully.`);
+    this.statusCode = 200;
+    this.jwtToken = jwtToken;
+    this.user = user;
+  }
+}
+
+
+export class RegisteredResponse extends BasicResponse {
+  user: User;
+  jwtToken: string;
+  constructor(jwtToken: string, user: User) {
+    super(`${user.name} logged successfully.`);
+    this.statusCode = 200;
+    this.jwtToken = jwtToken;
+    this.user = user;
+  }
+}
 export class ResponseFactory {
   static ok<T>(res: Response, data: T): Response {
     return res.status(200).json(data);
   }
 
+  static registered(res: Response, jwtToken: string, user: User): Response{
+    return res.status(201).json( new RegisteredResponse(jwtToken, user) )
+  }
+  static logged(res: Response, jwtToken: string, user: User): Response{
+    return res.status(200).json( new LoggedResponse(jwtToken , user));
+  }
   static notFound(res: Response, resourceName: string): Response{
     return res.status(404).json(new NotFoundResponse(resourceName));
   }

@@ -21,12 +21,21 @@ export class UserService {
     this.reservationRepository = new ReservationRepository();
   }
 
+
+  public async getUserByEmailAndPassword(email: string, hashedPassword: string): Promise<User>{
+    try{
+    const user: User = await this.userRepository.getUserByEmailAndPassword(email, hashedPassword);
+    return user;
+    }catch(error){
+      throw error;
+    }
+  }
   public async getAllUsers(): Promise<User[]> {
     const users: User[] = await this.userRepository.getAllUsers();
     return users;
   }
 
-  public async getUser(id: number): Promise<User> {
+  public async getUserById(id: number): Promise<User> {
     const user: User | null = await this.userRepository.getUserById(id);
     if (user) {
       return user;
@@ -67,7 +76,6 @@ export class UserService {
 
   public async addUser(data: AddUserRequest): Promise<number> {
     validateAddUser(data);
-
     const role: Role = await this.roleRepository.getRoleById(data.role);
     const reservations: Reservation[] = await Promise.all(
       data.reservations.map((id) =>
