@@ -110,7 +110,7 @@ export class UserController {
 	public async updateUser(req: Request, res: Response): Promise<Response> {
 		const request = req.body;
 		const userDto: UpdateUserRequest = {
-			id: request.id ,
+			userId: request.userId ,
 			name: request.name,
 			surname: request.surname,
 			email: request.email,

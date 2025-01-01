@@ -59,11 +59,12 @@ export class UserService {
   public async updateUser(data: UpdateUserRequest): Promise<boolean> {
     validateUpdateUser(data);
 
+    const existingUser = await this.userRepository.getUserById(data.userId);
+
     let reservations: Reservation[];
 
-    if (data.reservations.length === 0) {
-      reservations = (await this.userRepository.getUserById(data.id))
-        .reservations!;
+    if (!data.reservations) {
+      reservations = existingUser.reservations!;
     } else {
       reservations = await Promise.all(
         data.reservations.map((id) =>
@@ -72,14 +73,15 @@ export class UserService {
       );
     }
 
-    const role: Role = await this.roleRepository.getRoleById(data.role);
+
+    let role: Role = (data.role ? await this.roleRepository.getRoleById(data.role) : existingUser.role! );
 
     const updatedUser: User = {
-      id: data.id,
-      name: data.name,
-      surname: data.surname,
-      email: data.email,
-      passwordHash: await hashPassword(data.passwordHash),
+      id: data.userId,
+      name: (data.name ? data.name : existingUser.name) ,
+      surname: (data.surname ? data.surname : existingUser.surname),
+      email: (data.email ? data.email : existingUser.email),
+      passwordHash: (data.passwordHash ? await hashPassword(data.passwordHash ) : existingUser.passwordHash) ,
       role: role,
       reservations: reservations,
     };

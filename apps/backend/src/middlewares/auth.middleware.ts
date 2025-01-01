@@ -11,14 +11,13 @@ export const authMiddleware = async (
 
   if (req.cookies && req.cookies.jwt) {
     token = req.cookies.jwt;
-    console.log("Cookie auth")
+    console.log("Cookie auth");
   }
 
   if (!token) {
-  	console.log("Header auth")
+    console.log("Header auth");
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-
       return res.status(401).json({ message: "No token provided" });
     }
 
@@ -73,7 +72,6 @@ export const userMiddleware = (
   } else {
     return res.status(403).json({ message: "Unathorized access." });
   }
-
 };
 
 export const resourceUserAccessMiddleware = (
@@ -81,28 +79,18 @@ export const resourceUserAccessMiddleware = (
   res: Response,
   next: NextFunction,
 ) => {
-  if (req.user && (req.user.role === "user" )){
-    if (req.params && req.params.id) {
-      if (Number(req.params.id) === req.user.id) {
-        next();
-      } else {
-        return res.status(403).json({ message: "Unathorized access." });
-      }
+  console.log("userMiddlewareAccess");
+  if (req.user && req.user.role === "user") {
+    if (req.params && req.params.id && Number(req.params.id) !== req.user.id) {
+      return res.status(403).json({ message: "Unathorized access." });
     }
-    if (req.body && req.body.userId) {
-      if (req.user.id === req.body.userId) {
-        next();
-      } else {
-        return res.status(403).json({ message: "Unathorized access." });
-      }
+    if (req.body && req.body.userId && req.user.id !== req.body.userId) {
+      return res.status(403).json({ message: "Unathorized access." });
     }
-
-  } else if(req.user && req.user.role === 'admin') {
-				next();
-  }
-
-  else {
+    next();
+  } else if (req.user && req.user.role === "admin") {
+    next();
+  } else {
     return res.status(403).json({ message: "Unathorized access." });
   }
-
 };

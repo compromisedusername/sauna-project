@@ -5,6 +5,7 @@ import {
   adminMiddleware,
   userMiddleware,
   authMiddleware,
+  resourceUserAccessMiddleware,
 } from "../middlewares/auth.middleware";
 import { ResponseFactory } from "../dto/response/response-factory.response";
 import { AuthRequest } from "../dto/request/auth.authrequest";
@@ -198,7 +199,7 @@ userRoutes.get(
 userRoutes.get(
   "/user/:id",
   authMiddleware as RequestHandler,
-  userMiddleware as RequestHandler,
+  resourceUserAccessMiddleware as RequestHandler,
   async (req, res, next) => {
     try {
       await userController.getUser(req, res);
@@ -274,7 +275,7 @@ userRoutes.post(
 userRoutes.put(
   "/user",
   authMiddleware as RequestHandler,
-  userMiddleware as RequestHandler,
+  resourceUserAccessMiddleware as RequestHandler,
   async (req: Request, res: Response, next) => {
     try {
       await userController.updateUser(req, res);
