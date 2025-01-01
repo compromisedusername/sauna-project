@@ -1,7 +1,8 @@
 
 import { Router } from "express";
 import { SaunaController } from "../controllers/sauna.controller";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, RequestHandler,  NextFunction } from "express";
+import {userMiddleware, adminMiddleware, authMiddleware } from "../middlewares/auth.middleware";
 
 const saunaRoutes = Router();
 const saunaController = new SaunaController();
@@ -24,7 +25,7 @@ const saunaController = new SaunaController();
  *               items:
  *                 $ref: '#/components/schemas/SaunaResponse'
  */
-saunaRoutes.get('/saunas', async (req, res, next) => {
+saunaRoutes.get('/saunas', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req, res, next) => {
   try {
     await saunaController.getAllSaunas(req, res);
   } catch (error) {
@@ -57,7 +58,7 @@ saunaRoutes.get('/saunas', async (req, res, next) => {
  *       404:
  *         description: Sauna not found.
  */
-saunaRoutes.get('/sauna/:id', async (req, res, next) => {
+saunaRoutes.get('/sauna/:id', authMiddleware as RequestHandler, userMiddleware as RequestHandler,async (req, res, next) => {
   try {
     await saunaController.getSauna(req, res);
   } catch (error) {
@@ -91,7 +92,7 @@ saunaRoutes.get('/sauna/:id', async (req, res, next) => {
  *                   type: integer
  *                   description: The ID of the newly created sauna.
  */
-saunaRoutes.post('/sauna', async (req, res, next) => {
+saunaRoutes.post('/sauna', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req, res, next) => {
   try {
     await saunaController.addSauna(req, res);
   } catch (error) {
@@ -127,7 +128,7 @@ saunaRoutes.post('/sauna', async (req, res, next) => {
  *       404:
  *         description: Sauna not found.
  */
-saunaRoutes.put('/sauna', async (req: Request, res: Response, next) => {
+saunaRoutes.put('/sauna', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req: Request, res: Response, next) => {
   try {
     await saunaController.updateSauna(req, res);
   } catch (error) {
@@ -163,7 +164,7 @@ saunaRoutes.put('/sauna', async (req: Request, res: Response, next) => {
  *       404:
  *         description: Sauna not found.
  */
-saunaRoutes.delete('/sauna/:id', async (req, res, next) => {
+saunaRoutes.delete('/sauna/:id', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req, res, next) => {
   try {
     await saunaController.deleteSauna(req, res);
   } catch (error) {

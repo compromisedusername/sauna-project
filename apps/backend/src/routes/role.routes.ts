@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { RoleController } from "../controllers/role.controller";
-import { Request, Response, NextFunction } from "express";
-
+import { Request, Response, NextFunction, RequestHandler } from "express";
+import { adminMiddleware, authMiddleware } from "../middlewares/auth.middleware";
 const roleRoutes: Router = Router();
 
 const roleController: RoleController = new RoleController();
@@ -31,7 +31,7 @@ const roleController: RoleController = new RoleController();
  *         description: Role not found.
  */
 roleRoutes.get(
- "/role/:id",
+ "/role/:id",authMiddleware as RequestHandler, adminMiddleware as RequestHandler,
  async (req: Request, res: Response, next: NextFunction) => {
   try {
    await roleController.getRole(req, res);
@@ -58,7 +58,7 @@ roleRoutes.get(
  *                 $ref: '#/components/schemas/RoleResponse'
  */
 roleRoutes.get(
- "/roles",
+ "/roles",authMiddleware as RequestHandler, adminMiddleware as RequestHandler,
  async (req: Request, res: Response, next: NextFunction) => {
   try {
    await roleController.getAllRoles(req, res);
@@ -93,7 +93,7 @@ roleRoutes.get(
  *                   description: The ID of the newly created role.
  */
 roleRoutes.post(
- "/role",
+ "/role",authMiddleware as RequestHandler, adminMiddleware as RequestHandler,
  async (req: Request, res: Response, next: NextFunction) => {
   try {
    await roleController.addRole(req, res);
@@ -131,7 +131,7 @@ roleRoutes.post(
  *         description: Role not found.
  */
 roleRoutes.put(
- "/role",
+ "/role",authMiddleware as RequestHandler, adminMiddleware as RequestHandler,
  async (req: Request, res: Response, next: NextFunction) => {
   try {
    await roleController.updateRole(req, res);
@@ -169,6 +169,7 @@ roleRoutes.put(
  */
 roleRoutes.delete(
  "/role/:id",
+authMiddleware as RequestHandler, adminMiddleware as RequestHandler,
  async (req: Request, res: Response, next: NextFunction) => {
   try {
    await roleController.deleteRole(req, res);

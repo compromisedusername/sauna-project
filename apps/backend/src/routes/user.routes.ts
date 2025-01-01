@@ -1,9 +1,13 @@
-import {RequestHandler, Router} from 'express';
-import {UserController} from './../controllers/user.controller';
-import { Request, Response, NextFunction } from 'express';
-import { authMiddleware } from '../middlewares/auth.middleware';
-import { ResponseFactory } from '../dto/response/response-factory.response';
-import { AuthRequest } from '../dto/request/auth.authrequest';
+import { RequestHandler, Router } from "express";
+import { UserController } from "./../controllers/user.controller";
+import { Request, Response, NextFunction } from "express";
+import {
+  adminMiddleware,
+  userMiddleware,
+  authMiddleware,
+} from "../middlewares/auth.middleware";
+import { ResponseFactory } from "../dto/response/response-factory.response";
+import { AuthRequest } from "../dto/request/auth.authrequest";
 const userRoutes = Router();
 const userController = new UserController();
 /**
@@ -44,16 +48,49 @@ const userController = new UserController();
  *         description: Invalid login credentials.
  */
 
-userRoutes.post('/login', async(req, res, next) => {
-
-  try{
-    await userController.loginUser(req , res);
-
-  }catch(error){
+userRoutes.post("/login", async (req, res, next) => {
+  try {
+    await userController.loginUser(req, res);
+  } catch (error) {
     next(error);
   }
-})
-
+});
+/**
+ * @swagger
+ * /api/logout:
+ *   get:
+ *     tags:
+ *       - user
+ *     summary: Logout user
+ *     description: Clear auth params..
+ *     responses:
+ *       200:
+ *         description: User logout successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 response:
+ *                   type: string
+ *                   example: "logged out"
+ *       400:
+ *         description: Invalid registration data.
+ */
+userRoutes.get("/logout", async (req, res, next) => {
+  try {
+    req.token = "";
+    req.user = undefined;
+    req.cookies = null;
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: false,
+    })
+      res.status(200).json({ response: "logged out"  });
+  } catch (error) {
+    next(error);
+  }
+});
 /**
  * @swagger
  * /api/register:
@@ -84,25 +121,24 @@ userRoutes.post('/login', async(req, res, next) => {
  *       400:
  *         description: Invalid registration data.
  */
-userRoutes.post('/register', async(req, res, next) => {
-
-  try{
+userRoutes.post("/register", async (req, res, next) => {
+  try {
     await userController.registerUser(req, res);
-  }catch(error){
+  } catch (error) {
     next(error);
   }
-})
-userRoutes.get('/me' , authMiddleware as RequestHandler,  async (req: Request, res:Response, next: NextFunction) => {
-  console.log("GET ME", req)
-  try{
-      res.json({ response: req.user.role  })
-  }catch(error){
-    next(error);
-  }
-})
-
-
-
+});
+userRoutes.get(
+  "/me",
+  authMiddleware as RequestHandler,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.json({ response: req.user, token: req.token });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 /**
  * @swagger
@@ -122,13 +158,18 @@ userRoutes.get('/me' , authMiddleware as RequestHandler,  async (req: Request, r
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-userRoutes.get('/users',async (req, res, next)   => {
-  try {
-    await userController.getAllUsers(req, res);
-  }catch(error){
-    next(error);
-  }
-});
+userRoutes.get(
+  "/users",
+  authMiddleware as RequestHandler,
+  adminMiddleware as RequestHandler,
+  async (req, res, next) => {
+    try {
+      await userController.getAllUsers(req, res);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 /**
  * @swagger
  * /api/user/{id}:
@@ -154,13 +195,18 @@ userRoutes.get('/users',async (req, res, next)   => {
  *       404:
  *         description: User not found.
  */
-userRoutes.get('/user/:id', async (req, res, next) => {
-  try{
+userRoutes.get(
+  "/user/:id",
+  authMiddleware as RequestHandler,
+  userMiddleware as RequestHandler,
+  async (req, res, next) => {
+    try {
       await userController.getUser(req, res);
-  }catch(error){
-    next(error);
-  }
-});
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 /**
  * @swagger
  * /api/user:
@@ -187,13 +233,18 @@ userRoutes.get('/user/:id', async (req, res, next) => {
  *                   type: integer
  *                   description: The ID of the newly created user.
  */
-userRoutes.post('/user', async (req, res, next) => {
-    try{
-    await userController.addUser(req, res);
-  }catch(error){
-      next(error)
-  }
-});
+userRoutes.post(
+  "/user",
+  authMiddleware as RequestHandler,
+  adminMiddleware as RequestHandler,
+  async (req, res, next) => {
+    try {
+      await userController.addUser(req, res);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 /**
  * @swagger
  * /api/user:
@@ -220,14 +271,18 @@ userRoutes.post('/user', async (req, res, next) => {
  *                   type: boolean
  *                   description: Indicates whether the user was successfully updated.
  */
-userRoutes.put('/user', async (req: Request, res: Response,next) => {
-    try{
+userRoutes.put(
+  "/user",
+  authMiddleware as RequestHandler,
+  userMiddleware as RequestHandler,
+  async (req: Request, res: Response, next) => {
+    try {
       await userController.updateUser(req, res);
-    }catch(error){
-      next(error)
+    } catch (error) {
+      next(error);
     }
-
-  });
+  },
+);
 /**
  * @swagger
  * /api/user/{id}:
@@ -256,12 +311,17 @@ userRoutes.put('/user', async (req: Request, res: Response,next) => {
  *       404:
  *         description: User not found.
  */
-userRoutes.delete('/user/:id', async (req, res, next) => {
-    try{
-    await userController.deleteUser(req, res);
-  }catch(error){
-    next(error)
-  }
-});
+userRoutes.delete(
+  "/user/:id",
+  authMiddleware as RequestHandler,
+  userMiddleware as RequestHandler,
+  async (req, res, next) => {
+    try {
+      await userController.deleteUser(req, res);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 export default userRoutes;

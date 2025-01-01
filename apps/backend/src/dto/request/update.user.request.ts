@@ -8,7 +8,6 @@ export class UpdateUserRequest {
   surname!: string;
   email!: string;
   passwordHash!: string;
-  salt!: string;
   role!: number;
   reservations!: number[];
 }

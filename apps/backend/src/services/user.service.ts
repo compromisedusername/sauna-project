@@ -22,14 +22,12 @@ export class UserService {
     this.reservationRepository = new ReservationRepository();
   }
 
-  public async getUserByEmailAndPassword(
+  public async getUserByEmailAndComparePassword(
     email: string,
     password: string,
   ): Promise<User> {
     try {
-      const user: User = await this.userRepository.getUserByEmail(
-        email,
-      );
+      const user: User = await this.userRepository.getUserByEmail(email);
 
       const result: boolean = await comparePasswords(
         password,
@@ -61,21 +59,27 @@ export class UserService {
   public async updateUser(data: UpdateUserRequest): Promise<boolean> {
     validateUpdateUser(data);
 
-    const role: Role = await this.roleRepository.getRoleById(data.role);
+    let reservations: Reservation[];
 
-    const reservations: Reservation[] = await Promise.all(
-      data.reservations.map((id) =>
-        this.reservationRepository.getReservationById(id),
-      ),
-    );
+    if (data.reservations.length === 0) {
+      reservations = (await this.userRepository.getUserById(data.id))
+        .reservations!;
+    } else {
+      reservations = await Promise.all(
+        data.reservations.map((id) =>
+          this.reservationRepository.getReservationById(id),
+        ),
+      );
+    }
+
+    const role: Role = await this.roleRepository.getRoleById(data.role);
 
     const updatedUser: User = {
       id: data.id,
       name: data.name,
       surname: data.surname,
       email: data.email,
-      passwordHash: data.passwordHash,
-      salt: data.salt,
+      passwordHash: await hashPassword(data.passwordHash),
       role: role,
       reservations: reservations,
     };
@@ -100,8 +104,7 @@ export class UserService {
       name: data.name,
       surname: data.surname,
       email: data.email,
-      passwordHash: data.passwordHash,
-      salt: data.salt,
+      passwordHash: await hashPassword(data.passwordHash!),
       role: role,
       reservations: reservations,
     };

@@ -12,12 +12,11 @@ import { errorHandler } from "./middlewares/error-handler.middleware";
 import { loggingMiddleware } from "./middlewares/log.middleware";
 import { requireAuthorization } from "./middlewares/requireAuth.middleware";
 import { ResponseFactory } from "./dto/response/response-factory.response";
-
 import userRoutes from "./routes/user.routes";
 import saunaRoutes from "./routes/sauna.routes";
 import roleRoutes from "./routes/role.routes"
 import reservationRoutes from "./routes/reservation.routes"
-
+import cookieParser from 'cookie-parser'
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
@@ -25,6 +24,7 @@ const port: number = Number(process.env.PORT) || 3000;
 //middlewares config
 app.use(cors({origin: "http://localhost:3000",credentials: true}));
 app.use(express.json());
+app.use(cookieParser())
 //app.use(requireAuthorization())
 // middlewares config
 //app.use(loggingMiddleware);

@@ -1,8 +1,8 @@
 import {Router} from 'express';
 import {ReservationController } from './../controllers/reservation.controller';
 
-import {Request, Response, NextFunction} from 'express';
-
+import {Request, Response, NextFunction, RequestHandler} from 'express';
+import { adminMiddleware, authMiddleware, userMiddleware } from '../middlewares/auth.middleware';
 const reservationRoutes: Router = Router();
 
 const reservationController: ReservationController = new ReservationController();
@@ -25,7 +25,7 @@ const reservationController: ReservationController = new ReservationController()
  *               items:
  *                 $ref: '#/components/schemas/Reservation'
  */
-reservationRoutes.get('/reservations', async (req: Request, res: Response, next: NextFunction) => {
+reservationRoutes.get('/reservations', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req: Request, res: Response, next: NextFunction) => {
      try{
       await reservationController.getAllReservations(req, res);
   }catch(error){
@@ -57,7 +57,7 @@ reservationRoutes.get('/reservations', async (req: Request, res: Response, next:
  *       404:
  *         description: Reservation not found.
  */
-reservationRoutes.get('/reservation/:id', async (req: Request, res: Response, next: NextFunction) => {
+reservationRoutes.get('/reservation/:id', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req: Request, res: Response, next: NextFunction) => {
      try{
       await reservationController.getReservation(req, res);
   }catch(error){
@@ -89,7 +89,7 @@ reservationRoutes.get('/reservation/:id', async (req: Request, res: Response, ne
  *                   type: integer
  *                   description: The ID of the newly created reservation.
  */
-reservationRoutes.post('/reservation', async (req: Request, res: Response, next: NextFunction) => {
+reservationRoutes.post('/reservation', authMiddleware as RequestHandler, userMiddleware as RequestHandler,async (req: Request, res: Response, next: NextFunction) => {
      try{
       await reservationController.addReservation(req, res);
   }catch(error){
@@ -123,7 +123,7 @@ reservationRoutes.post('/reservation', async (req: Request, res: Response, next:
  *       404:
  *         description: Reservation not found.
  */
-reservationRoutes.put('/reservation/', async (req: Request, res: Response, next: NextFunction) => {
+reservationRoutes.put('/reservation/', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req: Request, res: Response, next: NextFunction) => {
      try{
       await reservationController.updateReservation(req, res);
   }catch(error){
@@ -157,7 +157,7 @@ reservationRoutes.put('/reservation/', async (req: Request, res: Response, next:
  *       404:
  *         description: Reservation not found.
  */
-reservationRoutes.delete('/reservation/:id', async (req: Request, res: Response, next: NextFunction) => {
+reservationRoutes.delete('/reservation/:id', authMiddleware as RequestHandler, userMiddleware as RequestHandler,async (req: Request, res: Response, next: NextFunction) => {
      try{
       await reservationController.deleteRole(req, res);
   }catch(error){
