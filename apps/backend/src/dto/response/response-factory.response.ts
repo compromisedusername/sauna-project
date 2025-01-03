@@ -54,25 +54,21 @@ export class DeletedResponse extends BasicResponse {
 }
 
 export class LoggedResponse extends BasicResponse {
-  user: User;
   jwtToken: string;
-  constructor(jwtToken: string, user: User) {
-    super(`${user.name} logged successfully.`);
+  constructor(jwtToken: string) {
+    super(`logged successfully.`);
     this.statusCode = 200;
     this.jwtToken = jwtToken;
-    this.user = user;
   }
 }
 
 
 export class RegisteredResponse extends BasicResponse {
-  user: User;
   jwtToken: string;
-  constructor(jwtToken: string, user: User) {
-    super(`${user.name} logged successfully.`);
+  constructor(jwtToken: string) {
+    super(`registered successfully.`);
     this.statusCode = 200;
     this.jwtToken = jwtToken;
-    this.user = user;
   }
 }
 export class ResponseFactory {
@@ -80,11 +76,11 @@ export class ResponseFactory {
     return res.status(200).json(data);
   }
 
-  static registered(res: Response, jwtToken: string, user: User): Response{
-    return res.status(201).json( new RegisteredResponse(jwtToken, user) )
+  static registered(res: Response, jwtToken: string): Response{
+    return res.status(201).json( new RegisteredResponse(jwtToken) )
   }
-  static logged(res: Response, jwtToken: string, user: User): Response{
-    return res.status(200).json( new LoggedResponse(jwtToken , user));
+  static logged(res: Response, jwtToken: string): Response{
+    return res.status(200).json( new LoggedResponse(jwtToken));
   }
   static notFound(res: Response, resourceName: string): Response{
     return res.status(404).json(new NotFoundResponse(resourceName));

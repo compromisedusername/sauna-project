@@ -17,7 +17,7 @@ export default new DataSource({
 	password: process.env.MYSQL_PASSWORD || "admin",
 	database: process.env.MYSQL_DATABASE || "sauna-project",
 	synchronize: Boolean(process.env.MYSQL_SYNCHRONIZE) || false,
-	logging: Boolean(process.env.MYSQL_LOGGING) || true,
+	logging: Boolean(process.env.MYSQL_LOGGING) || false,
 	entities: [  User, Role, Sauna, Reservation],
 	migrations: [ "src/migrations/**/*.ts"],
 	subscribers: [],

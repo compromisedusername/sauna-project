@@ -7,7 +7,7 @@ export default function Logout({ setToken }: any) {
     <>
       <p>
         {" "}
-        <a onClick={() => {setToken("guest");navigate("/dashboard")}}> LOGOUT</a>
+        <a onClick={() => {setToken("");navigate("/dashboard")}}> LOGOUT</a>
       </p>
     </>
   );

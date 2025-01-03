@@ -312,6 +312,8 @@ userRoutes.put(
  *       404:
  *         description: User not found.
  */
+
+
 userRoutes.delete(
   "/user/:id",
   authMiddleware as RequestHandler,
@@ -324,5 +326,54 @@ userRoutes.delete(
     }
   },
 );
+
+/**
+ * @swagger
+ * /api/user/{id}/reservations/{page}/{pageSize}:
+ *   get:
+ *     tags:
+ *        - user
+ *     summary: Get reservation for a user
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The user's ID
+ *       - name: page
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The page number
+ *       - name: pageSize
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The pageSize
+ *     responses:
+ *       200:
+ *         description: Ok reservations for user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: User not found.
+ */
+
+
+userRoutes.get("/user/:userId/reservations/:page/:pageSize", async (req, res, next)=>{
+  try{
+        await userController.getPaginatedReservationsForUser(req, res);
+  }catch(error){
+    next(error);
+  }
+})
 
 export default userRoutes;

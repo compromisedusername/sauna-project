@@ -22,6 +22,23 @@ export class UserService {
     this.reservationRepository = new ReservationRepository();
   }
 
+  public async getPaginatedReservationsForUser(
+    userId: number,
+    page: number,
+    pageSize: number,
+  ) {
+
+    const user = await this.userRepository.getUserById(userId);
+
+    const result: [ Reservation[], number] =
+      await this.reservationRepository.getReservationByUserIdPaginated(
+        user,
+        page,
+        pageSize,
+      );
+
+    return result;
+  }
   public async getUserByEmailAndComparePassword(
     email: string,
     password: string,
@@ -73,15 +90,18 @@ export class UserService {
       );
     }
 
-
-    let role: Role = (data.role ? await this.roleRepository.getRoleById(data.role) : existingUser.role! );
+    let role: Role = data.role
+      ? await this.roleRepository.getRoleById(data.role)
+      : existingUser.role!;
 
     const updatedUser: User = {
       id: data.userId,
-      name: (data.name ? data.name : existingUser.name) ,
-      surname: (data.surname ? data.surname : existingUser.surname),
-      email: (data.email ? data.email : existingUser.email),
-      passwordHash: (data.passwordHash ? await hashPassword(data.passwordHash ) : existingUser.passwordHash) ,
+      name: data.name ? data.name : existingUser.name,
+      surname: data.surname ? data.surname : existingUser.surname,
+      email: data.email ? data.email : existingUser.email,
+      passwordHash: data.passwordHash
+        ? await hashPassword(data.passwordHash)
+        : existingUser.passwordHash,
       role: role,
       reservations: reservations,
     };

@@ -26,7 +26,7 @@ async function loginUser(credentials: {email: string; password: string}){
 }
 
 
-export default function Login( {setToken}: { setToken: (token: string)=>void},  ) {
+export default function Login( {setToken}: { setToken: (token: string )=>void},  ) {
 const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 const [error, setError] = useState("");
@@ -72,7 +72,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           Don't have an account? <a onClick={() => navigate("/register")}>Register</a>
         </p>
         <p>
-          Or <span onClick={ ()=> {setToken('guest');navigate('/dashboard')} } >Continue as Guest</span>
+          Or <span onClick={ ()=> {setToken('');navigate('/dashboard')} } >Continue as Guest</span>
         </p>
       </div>
 

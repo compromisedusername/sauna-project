@@ -77,7 +77,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           Already have an account? <a onClick={() => navigate("/login")}>Login</a>
         </p>
         <p>
-          Or <span onClick={ () => {setToken("guest"); navigate("/dashboard")}} >Continue as Guest</span>
+          Or <span onClick={ () => {setToken(""); navigate("/dashboard")}} >Continue as Guest</span>
         </p>
       </div>
 

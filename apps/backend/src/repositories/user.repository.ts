@@ -14,6 +14,15 @@ export class UserRepository {
     return users;
   }
 
+  public async userExistsById(id: number): Promise<boolean> {
+    try {
+      const exists: boolean = await this.userRepository.existsBy({id: id});
+      return exists;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async getUserById(id: number): Promise<User> {
     try {
       const user: User | null = await this.userRepository.findOne({
@@ -28,14 +37,13 @@ export class UserRepository {
     }
   }
 
-  public async getUserByEmail(
-    email: string
-  ): Promise<User> {
+  public async getUserByEmail(email: string): Promise<User> {
     try {
       const user: User = await this.userRepository.findOneOrFail({
-      where: {  email: email},
+        where: { email: email },
+        relations: ["reservations", "role"],
       });
-        return user;
+      return user;
     } catch (error) {
       throw ErrorFactory.createNotFoundError("Invalid credentials.", error);
     }

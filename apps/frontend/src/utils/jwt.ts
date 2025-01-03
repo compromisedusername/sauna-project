@@ -1,25 +1,21 @@
 
-import jwt from 'jsonwebtoken';
+import {jwtDecode }from 'jwt-decode';
 interface User {
   id: number;
-  role:{ name: string};
+  role: string;
   email: string;
 }
-const JWT_SECRET = process.env.JWT_SECRET || 'default_secret';
 
-export function generateToken(user: User): string {
-    const payload = {
-        userId: user.id,
-        role: user.role?.name,
-        email: user.email,
-    };
-    return jwt.sign(payload, 'secret' , { expiresIn: '1h' });
-}
+export function getRoleFromToken(token: string){
+    if(!token){
 
-export function verifyToken(token: string): any {
-    try {
-        return jwt.verify(token, 'secret');
-    } catch (error) {
-        return null;
+    console.log(" TOKEN IS NULL")
+        return "guest";
+    }
+try{
+        const decoded = jwtDecode<User>(token);
+        return decoded.role || "guest";
+    }catch(error){
+        return "guest";
     }
 }

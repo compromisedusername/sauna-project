@@ -22,7 +22,7 @@ const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
 
 //middlewares config
-app.use(cors({origin: "http://localhost:3000",credentials: true}));
+app.use(cors({origin: "http://localhost:3001",credentials: true}));
 app.use(express.json());
 app.use(cookieParser())
 //app.use(requireAuthorization())
