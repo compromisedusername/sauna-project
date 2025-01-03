@@ -6,17 +6,14 @@ import Login from "./components/Login/Login";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import Preferences from "./components/Preferences/Preference";
+import Logout from "./components/Logout/Logout";
+import useToken from "./components/Hooks/useToken";
 
-function setToken(userToken: string) {
-  localStorage.setItem("token", userToken);
-}
-function getToken(): string | null {
-  return localStorage.getItem("token");
-}
+
 
 function App() {
-  const token = getToken();
 
+  const {token, setToken} = useToken();
 
   return (
     <div className="wrapper">
@@ -24,20 +21,21 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element = {<Login setToken={setToken}></Login>}></Route>
-          {token ? (
+          {token && token !== 'guest' ? (
             <>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard token={token} />} />
               <Route path="/preferences" element={<Preferences />} />
-              <Route path ="/logout" element={<></>}/>
+              <Route path ="/logout" element={<Logout setToken={setToken} />}/>
               <Route path="/dashboard/admin"/>
 
             </>
           ) : (
             <>
-              <Route path="/login" element={<Login setToken={setToken} />} />
+              <Route path="/dashboard" element={<Dashboard token={token}/>} />
+              <Route path="/login" element={<Login setToken={setToken}  />} />
               <Route
                 path="/register"
-                element={<Register setToken={setToken} />}
+                element={<Register setToken={setToken}  />}
               />
             </>
           )}

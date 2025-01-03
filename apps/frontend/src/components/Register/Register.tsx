@@ -25,7 +25,7 @@ async function registerUser(credentials: {email: string; password: string; name:
 }
 
 
-export default function Register( {setToken}: any ) {
+export default function Register( {setToken}: any,  ) {
 const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");

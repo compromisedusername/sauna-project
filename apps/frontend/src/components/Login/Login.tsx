@@ -15,6 +15,7 @@ async function loginUser(credentials: {email: string; password: string}){
     const response = await api.post<LoginResponse>("/login", credentials);
     if(response.data && response.data.jwtToken){
     console.log(response.data)
+      if(!response.data.jwtToken){throw new Error("Login failed. Try again")};
       return response.data.jwtToken;
     }
 
@@ -25,7 +26,7 @@ async function loginUser(credentials: {email: string; password: string}){
 }
 
 
-export default function Login( {setToken}: any ) {
+export default function Login( {setToken}: { setToken: (token: string)=>void},  ) {
 const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 const [error, setError] = useState("");
@@ -37,7 +38,8 @@ const handleSubmit = async (e: React.FormEvent) => {
     const token = await loginUser({
       email, password
     });
-    setToken(token);
+    setToken(token!);
+    navigate('/dashboard')
     }catch(err: any){
       setError(err.message);
     }
@@ -70,7 +72,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           Don't have an account? <a onClick={() => navigate("/register")}>Register</a>
         </p>
         <p>
-          Or <span onClick={ ()=> {setToken("guest");navigate('/dashboard')} } >Continue as Guest</span>
+          Or <span onClick={ ()=> {setToken('guest');navigate('/dashboard')} } >Continue as Guest</span>
         </p>
       </div>
 
