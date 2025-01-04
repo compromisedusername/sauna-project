@@ -28,9 +28,9 @@ const DeleteReservation = ({
 			<h2>Delete Reservation for ID: {reservationId}</h2>
 			<p>Are you sure?</p>
 			<button onClick={handleClick}>
-				DELETE reservation ID: {reservationId}
+			YES, DELETE reservation ID: {reservationId}
 			</button>
-			<button onClick={onClose}>Close</button>
+			<button onClick={onClose}>NO, CLOSE</button>
 		</>
 	);
 };

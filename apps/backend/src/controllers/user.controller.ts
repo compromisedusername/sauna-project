@@ -24,6 +24,22 @@ export class UserController {
     this.reservationSerivce = new ReservationService();
   }
 
+public async getPaginatedUsers(req: Request, res: Response
+){
+
+    const page: number = Number(req.params.page);
+    const pageSize: number = Number(req.params.pageSize);
+
+    const [users, count]: [User[], number] = await this.userService.getPaginatedUsers(page,pageSize);
+    return ResponseFactory.ok(res, {
+          users: users,
+      totalItems: count,
+      currentPage: page,
+      pageSize: pageSize,
+      totalPages: Math.ceil(count / pageSize),
+    })
+  }
+
   public async getPaginatedReservationsForUser(
     req: Request,
     res: Response,
@@ -44,71 +60,11 @@ export class UserController {
       totalItems: count,
       currentPage: page,
       pageSize: pageSize,
-      totalPages: count / pageSize,
+
+      totalPages: Math.ceil(count / pageSize),
     });
   }
 
-  public async registerUser(req: Request, res: Response): Promise<Response> {
-    const role = await this.roleService.getRoleByName("user");
-    if (!role) {
-      throw ErrorFactory.createNotFoundError(`Role name user not found`);
-    }
-    const userRequest: RegisterUserRequest = req.body;
-
-    const user: AddUserRequest = {
-      name: userRequest.name,
-      surname: userRequest.surname,
-      email: userRequest.email,
-      passwordHash: await hashPassword(userRequest.password),
-      role: role.id ? role.id : 1,
-      reservations: [],
-    };
-
-    const addedUserId: number = await this.userService.addUser(user);
-
-    const userForJwt: User = {
-      id: addedUserId,
-      email: user.email,
-      role: role,
-      name: userRequest.name,
-      surname: userRequest.name,
-    };
-
-    const jwtToken: string = generateToken(userForJwt);
-
-    res.cookie("jwt", jwtToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 360000,
-    });
-    return ResponseFactory.registered(res, jwtToken);
-  }
-  public async loginUser(req: Request, res: Response): Promise<Response> {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      throw ErrorFactory.createBadRequestError("Input email and password.");
-    }
-    const existingUser: User =
-      await this.userService.getUserByEmailAndComparePassword(email, password);
-
-    const userForJwt: User = {
-      id: existingUser.id,
-      email: existingUser.email,
-      role: existingUser.role,
-      name: existingUser.name,
-      surname: existingUser.name,
-    };
-    const jwtToken: string = generateToken(userForJwt);
-
-    res.cookie("jwt", jwtToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 360000,
-    });
-    return ResponseFactory.logged(res, jwtToken);
-  }
 
   public async getAllUsers(req: Request, res: Response): Promise<Response> {
     const users: UserResponse[] = await this.userService.getAllUsers();

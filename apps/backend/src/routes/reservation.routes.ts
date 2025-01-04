@@ -47,6 +47,31 @@ reservationRoutes.get('/reservations/:page/:pageSize', authMiddleware as Request
 });
 /**
  * @swagger
+ * /api/reservationsfree:
+ *   get:
+ *     tags:
+ *        - reservation
+ *     summary: Get all reservations withour user
+ *     description: Retrieve a list of all reservations without in the system.
+ *     responses:
+ *       200:
+ *         description: A list of reservations.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Reservation'
+ */
+reservationRoutes.get('/reservationsfree', authMiddleware as RequestHandler, adminMiddleware as RequestHandler,async (req: Request, res: Response, next: NextFunction) => {
+     try{
+      await reservationController.getReservationsWithoutUser(req, res);
+  }catch(error){
+    next(error)
+  }
+});
+/**
+ * @swagger
  * /api/reservations:
  *   get:
  *     tags:

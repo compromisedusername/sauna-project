@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
 import { Role } from "../entities/role.model";
 import { HttpError } from "../errors/http-error.error";
+import { RoleWithourUser } from "../dto/response/role.response.dto";
 export class RoleRepository {
   protected readonly roleRepository: Repository<Role> =
     AppDataSource.getRepository(Role);
@@ -69,7 +70,14 @@ export class RoleRepository {
       throw ErrorFactory.createInternalServerError("Update role failed", error);
     }
   }
-
+public async getRolesWithoutUser(): Promise<Role[]>{
+    try{
+      const result = this.roleRepository.find();
+      return result;
+    }catch(error){
+      throw ErrorFactory.createInternalServerError("Try again later", error)
+    }
+  }
   public async deleteRole(id: number): Promise<boolean> {
     try {
       const result = await this.roleRepository.delete(id);

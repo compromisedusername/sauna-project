@@ -7,6 +7,17 @@ export class UserRepository {
   protected readonly userRepository: Repository<User> =
     AppDataSource.getRepository(User);
 
+
+public async getPaginatedUsers(page: number, pageSize: number): Promise<[User[], number]>{
+      const [result, count]: [User[], number] = await this.userRepository.findAndCount({
+      relations: ['reservations', 'role'],
+      skip: (page-1 ) * pageSize,
+      take: pageSize,
+    })
+
+    return [result, count];
+  }
+
   public async getAllUsers(): Promise<User[]> {
     const users: User[] = await this.userRepository.find({
       relations: ["reservations", "role"],

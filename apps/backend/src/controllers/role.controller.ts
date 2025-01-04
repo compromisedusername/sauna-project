@@ -10,6 +10,7 @@ import { RoleService } from "../services/role.service";
 import { Role } from "../entities/role.model";
 import { AddRoleRequest } from "../dto/request/add.role.request";
 import { UpdateRoleRequest } from "../dto/request/update.role.request";
+import { RoleWithourUser } from "../dto/response/role.response.dto";
 
 export class RoleController {
   private readonly roleSerivce: RoleService;
@@ -20,7 +21,9 @@ export class RoleController {
 
   public async getAllRoles(req: Request, res: Response): Promise<Response> {
     try {
-      const roles: Role[] = await this.roleSerivce.getAllRoles();
+      const getUsers:boolean = (req.query.users === 'true');
+      const roles: Role[] |RoleWithourUser[]= await this.roleSerivce.getAllRoles(getUsers);
+
       return ResponseFactory.ok(res, roles);
     } catch (error) {
       return ResponseFactory.error(res, 500, "Error fetching roles");

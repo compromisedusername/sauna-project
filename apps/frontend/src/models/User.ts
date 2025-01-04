@@ -1,3 +1,5 @@
+
+ import { ReservationResponse } from "./Reservation";
  interface Reservation {
   id: number;
   dateFrom: string;
@@ -23,3 +25,13 @@ export interface UserDto {
 
 export type UsersDto = UserDto[];
 
+export interface UserRequestAdd{
+    name: string,
+  surname: string,
+  email: string,
+  passwordHash: string,
+  roleId: number,
+  reservations: number[];
+ }
+
+ export type ReservationWithoutUser = ReservationResponse;

@@ -24,6 +24,12 @@ export class ReservationService {
   }
 
 
+public async getReservationsWithoutUser(): Promise<ReservationDto[]>{
+    const result = await this.reservationRepository.getReservationsWithourUser();
+    return result;
+
+  }
+
 public async getAllReservationsPaginated(page: number, pageSize: number): Promise<[ReservationDto[], number]>{
 
     const [reservations, count]  = await this.reservationRepository.getAllReservationsPaginated(page, pageSize);

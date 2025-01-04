@@ -15,9 +15,10 @@ import { ResponseFactory } from "./dto/response/response-factory.response";
 import userRoutes from "./routes/user.routes";
 import saunaRoutes from "./routes/sauna.routes";
 import roleRoutes from "./routes/role.routes"
+
+import authRoutes from './routes/auth.routes'
 import reservationRoutes from "./routes/reservation.routes"
 import cookieParser from 'cookie-parser'
-
 const app: Express = express();
 const port: number = Number(process.env.PORT) || 3000;
 
@@ -31,6 +32,7 @@ app.use(cookieParser())
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use("/api", authRoutes)
 app.use("/api", reservationRoutes)
 app.use("/api", userRoutes);
 app.use("/api", saunaRoutes);

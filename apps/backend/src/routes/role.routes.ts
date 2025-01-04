@@ -39,23 +39,65 @@ roleRoutes.get(
    next(error);
   }
  },
-); /**
+);
+ /**
  * @swagger
  * /api/roles:
  *   get:
  *     tags:
- *        - role
+ *       - role
  *     summary: Get all roles
- *     description: Retrieve a list of all roles in the system.
+ *     description: Returns a list of all roles. You can optionally include user information.
+ *     parameters:
+ *       - in: query
+ *         name: users
+ *         schema:
+ *           type: string
+ *           enum: [true, false]
+ *         description: |
+ *           Optional. If set to `true`, returns roles with user information.
+ *           If set to `false` or not provided, returns only role information.
  *     responses:
  *       200:
- *         description: A list of roles.
+ *         description: List of roles successfully retrieved.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/RoleResponse'
+ *                 $ref: '#/components/schemas/Role'
+ *       500:
+ *         description: Error fetching roles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message
+ *   post:
+ *     tags:
+ *        - role
+ *     summary: Add a new role
+ *     description: Create a new role in the system.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AddRoleRequest'
+ *     responses:
+ *       201:
+ *         description: Role created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 created:
+ *                   type: integer
+ *                   description: The ID of the newly created role.
  */
 roleRoutes.get(
  "/roles",authMiddleware as RequestHandler, adminMiddleware as RequestHandler,

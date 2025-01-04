@@ -17,6 +17,7 @@ import { User } from "../entities/user.model";
 import { UpdateRoleRequest } from "../dto/request/update.role.request";
 import { UserRepository } from "../repositories/user.repository";
 import { RoleRepository } from "../repositories/role.repository";
+import { RoleWithourUser } from "../dto/response/role.response.dto";
 
 export class RoleService {
   private readonly roleRepository: RoleRepository;
@@ -37,9 +38,22 @@ export class RoleService {
       throw ErrorFactory.createNotFoundError(`Role name: '${roleName}' doesnt not exists`)
     }
   }
-  public async getAllRoles(): Promise<Role[]> {
-    const roles = await this.roleRepository.getAllRoles();
-    return roles;
+  public async getAllRoles(getUsers: boolean): Promise<Role[] | RoleWithourUser[]> {
+if(getUsers){
+     return await this.roleRepository.getAllRoles();
+    }
+      else{
+     const roles = await this.roleRepository.getRolesWithoutUser();
+      const rolesWithourUser: RoleWithourUser[] = roles.map( (role)=>
+         ({id: role!.id,
+        name: role!.name,
+        description: role!.description
+        })
+      )
+return rolesWithourUser;
+    }
+
+
   }
 
   public async getRole(id: number): Promise<Role> {

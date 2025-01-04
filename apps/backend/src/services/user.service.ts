@@ -22,6 +22,12 @@ export class UserService {
     this.reservationRepository = new ReservationRepository();
   }
 
+
+  public async getPaginatedUsers(page: number, pageSize: number){
+    const result: [User[], number] = await this.userRepository.getPaginatedUsers(page,pageSize);
+    return result;
+  }
+
   public async getPaginatedReservationsForUser(
     userId: number,
     page: number,

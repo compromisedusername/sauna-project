@@ -21,6 +21,8 @@ import UsersList from "./components/Users/UsersList";
 import RolesList from "./components/Roles/RolesList";
 import SaunasList from "./components/Saunas/SaunasList";
 import EditReservation from "./components/Reservation/EditReservation";
+import AddUser from "./components/Users/AddUser";
+import EditUser from "./components/Users/EditUser";
 function App() {
   const navigate = useNavigate;
   const { token, setToken } = useToken();
@@ -30,9 +32,6 @@ function App() {
     setRole(getRoleFromToken(token));
   }, [token]);
 
-  console.log("ROLE", role);
-  console.log(token);
-  console.log(token && role !== "guest");
   return (
     <div className="wrapper">
       <h1>Sauna reservation</h1>
@@ -71,6 +70,11 @@ function App() {
                 element={<EditReservation />}
               />
               <Route path="/admin/reservation/add" element={<AddReservation/>} />
+              <Route
+                path="/admin/user/:id/edit"
+                element={<EditUser />}
+              />
+              <Route path="/admin/user/add" element={<AddUser/>} />
             </>
           )}
           <Route path="*" element={<Dashboard role={role}></Dashboard>}></Route>
