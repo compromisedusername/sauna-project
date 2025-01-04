@@ -7,7 +7,8 @@ import { SaunaResponse } from "../dto/response/sauna.response.dto";
 import { AddSaunaRequest } from "../dto/request/add.sauna.request";
 import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
 import { Role } from "../entities/role.model";
-import { ReservationService } from "../services/reservation.service";
+import {  ReservationService } from "../services/reservation.service";
+import { ReservationDto } from "../dto/response/reservation.response.dto";
 import { Reservation } from "../entities/reservation.model";
 import { AddReservationRequest } from "../dto/request/add.reservation.request";
 import { UpdateReservationRequest } from "../dto/request/update.reservation.request";
@@ -19,9 +20,35 @@ export class ReservationController {
     this.reservationService = new ReservationService();
   }
 
+
+public async getAllReservationsPaginated(req: Request, res: Response){
+    try{
+
+    const page: number = Number(req.params.page);
+    const pageSize: number = Number(req.params.pageSize);
+
+    const [reservations, count]: [ReservationDto[], number] =
+      await this.reservationService.getAllReservationsPaginated(
+        page,
+        pageSize,
+      );
+
+    return ResponseFactory.ok(res, {
+        reservations: reservations,
+        totalitems: count,
+        currentPage: page,
+        pageSize: pageSize,
+        totalPages: count / pageSize,
+      })
+
+    }catch(error){
+      return ResponseFactory.error(res, 500, "Error fetching reservations");
+    }
+  }
+
   public async getAllReservations(req: Request, res: Response): Promise<Response> {
     try {
-      const reservations: Reservation[] = await this.reservationService.getAllReservations();
+      const reservations: ReservationDto[] = await this.reservationService.getAllReservations();
       return ResponseFactory.ok(res, reservations);
     } catch (error) {
       return ResponseFactory.error(res, 500, "Error fetching reservations");
@@ -46,7 +73,7 @@ export class ReservationController {
   }
 
   public async updateReservation(req: Request, res: Response): Promise<Response> {
-      const reservationData: UpdateReservationRequest = req.body;
+      const reservationData: UpdateReservationRequest = {id: req.body.id, userId: req.body.userId, dateTo: req.body.dateTo, dateFrom: req.body.dateFrom, saunaId: req.body.saunaId, numberOfPeople: req.body.numberOfPeople};
 
       const isUpdated: boolean = await this.reservationService.updateReservation(reservationData);
       if (isUpdated) {

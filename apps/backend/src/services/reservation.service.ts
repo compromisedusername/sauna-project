@@ -4,6 +4,7 @@ import { User } from "../entities/user.model";
 import { UserRepository } from "../repositories/user.repository";
 import { Reservation } from "../entities/reservation.model";
 import { AddReservationRequest } from "../dto/request/add.reservation.request";
+import { ReservationDto } from "../dto/response/reservation.response.dto";
 import {
   validateAddReservation,
   validateUpdateReservation,
@@ -22,18 +23,88 @@ export class ReservationService {
     this.saunaRepository = new SaunaRepository();
   }
 
-  public async getAllReservations(): Promise<Reservation[]> {
-    const reservations = await this.reservationRepository.getAllReservations();
-    return reservations;
+
+public async getAllReservationsPaginated(page: number, pageSize: number): Promise<[ReservationDto[], number]>{
+
+    const [reservations, count]  = await this.reservationRepository.getAllReservationsPaginated(page, pageSize);
+
+    const reservationsResponse: ReservationDto[] = reservations.map(
+      (reservation) => {
+        return {
+          id: reservation.id,
+          dateFrom: reservation.dateFrom,
+          dateTo: reservation.dateTo,
+          numberOfPeople: reservation.numberOfPeople,
+          sauna: reservation.sauna,
+          user: reservation.user
+            ? {
+              id: reservation.user.id,
+              name: reservation.user.name,
+              surname: reservation.user.surname,
+              email: reservation.user.email,
+            }
+            : undefined,
+        };
+      },
+    );
+
+    return [reservationsResponse, count];
+
+
   }
 
-  public async getReservationById(id: number): Promise<Reservation> {
+  public async getAllReservations(): Promise<ReservationDto[]> {
+    const reservations = await this.reservationRepository.getAllReservations();
+
+    const reservationsResponse: ReservationDto[] = reservations.map(
+      (reservation) => {
+        return {
+          id: reservation.id,
+          dateFrom: reservation.dateFrom,
+          dateTo: reservation.dateTo,
+          numberOfPeople: reservation.numberOfPeople,
+          sauna: reservation.sauna,
+          user: reservation.user
+            ? {
+              id: reservation.user.id,
+              name: reservation.user.name,
+              surname: reservation.user.surname,
+              email: reservation.user.email,
+            }
+            : undefined,
+        };
+      },
+    );
+
+    return reservationsResponse;
+  }
+
+  public async getReservationById(id: number): Promise<ReservationDto> {
     const reservation = await this.reservationRepository.getReservationById(id);
 
     if (!reservation) {
       throw ErrorFactory.createNotFoundError("Reservation not found");
     }
-    return reservation;
+
+    const reservationResponse: ReservationDto =
+      {
+        id: reservation.id,
+        dateFrom: reservation.dateFrom,
+        dateTo: reservation.dateTo,
+        numberOfPeople: reservation.numberOfPeople,
+        sauna: reservation.sauna,
+        user:  {
+              id: reservation.user?.id,
+              name: reservation.user?.name,
+              surname: reservation.user?.surname,
+              email: reservation.user?.email,
+            }
+      }
+
+
+
+
+    return reservationResponse;
   }
   public async addReservaton(data: AddReservationRequest): Promise<number> {
     validateAddReservation(data);
@@ -75,7 +146,6 @@ export class ReservationService {
   public async updateReservation(
     data: UpdateReservationRequest,
   ): Promise<boolean> {
-    validateUpdateReservation(data);
     const reservation = await this.reservationRepository.getReservationById(
       data.id,
     );
@@ -85,9 +155,28 @@ export class ReservationService {
       );
     }
 
-    const sauna: Sauna = await this.saunaRepository.getSaunaById(data.saunaId);
 
-    const user: User = await this.userRepository.getUserById(data.userId);
+let correctSaunaId;
+
+    let correctUserId;
+
+    if(data.saunaId){
+        correctSaunaId = data.saunaId
+    }else{
+    const reservation: Reservation = await this.reservationRepository.getReservationById(data.id);
+    correctSaunaId = reservation.sauna?.id;
+    }
+
+    if(data.userId){
+    correctUserId = data.userId
+    }else{
+    const reservation: Reservation = await this.reservationRepository.getReservationById(data.id);
+    correctUserId = reservation.user?.id;
+    }
+
+    const sauna: Sauna = await this.saunaRepository.getSaunaById(correctSaunaId!);
+
+    const user: User = await this.userRepository.getUserById(correctUserId!);
 
     if (!sauna) {
       throw ErrorFactory.createNotFoundError(
@@ -99,8 +188,8 @@ export class ReservationService {
         `User with given ID: ${data.userId} not found`,
       );
     }
-
     const updatedReservation: Reservation = {
+      id: data.id,
       dateFrom: data.dateFrom,
       dateTo: data.dateTo,
       numberOfPeople: data.numberOfPeople,

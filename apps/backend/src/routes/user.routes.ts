@@ -368,7 +368,7 @@ userRoutes.delete(
  */
 
 
-userRoutes.get("/user/:userId/reservations/:page/:pageSize", async (req, res, next)=>{
+userRoutes.get("/user/:userId/reservations/:page/:pageSize", authMiddleware as RequestHandler, resourceUserAccessMiddleware as RequestHandler, async (req, res, next)=>{
   try{
         await userController.getPaginatedReservationsForUser(req, res);
   }catch(error){

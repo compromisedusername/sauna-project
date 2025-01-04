@@ -14,11 +14,27 @@ export class ReservationRepository {
     return reservations;
   }
 
+public async getAllReservationsPaginated(page:number, pageSize: number): Promise<[Reservation[], number]>{
+
+try{
+    const [result, count]: [Reservation[], number] =
+      await this.reservationRepository.findAndCount({
+          relations: ['user', 'sauna'],
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      });
+return [result, count];
+    }catch(error){
+      throw ErrorFactory.createBadRequestError("Bad request", error)
+    }
+  }
+
   public async getReservationByUserIdPaginated(
     user: User,
     page: number,
     pageSize: number,
   ): Promise<[Reservation[], number]> {
+    try{
     const [result, count]: [Reservation[], number] =
       await this.reservationRepository.findAndCount({
         where: { user: user },
@@ -28,6 +44,9 @@ export class ReservationRepository {
 
 
     return [result, count];
+    }catch(error){
+      throw ErrorFactory.createBadRequestError("Bad request", error);
+    }
   }
 
   public async getReservationById(id: number): Promise<Reservation> {
@@ -66,7 +85,10 @@ export class ReservationRepository {
     updatedReservation: Reservation,
   ): Promise<boolean> {
     try {
-      const result = this.reservationRepository.merge(updatedReservation);
+      console.log(updatedReservation.id)
+      const reservation: Reservation =  await this.getReservationById(updatedReservation.id!)
+      const merged = this.reservationRepository.merge(reservation, updatedReservation);
+      const result = await this.reservationRepository.save(merged);
       return result ? true : false;
     } catch (error) {
       throw ErrorFactory.createInternalServerError(

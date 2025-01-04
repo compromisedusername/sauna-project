@@ -1,4 +1,3 @@
-import { ReservationResponse } from "./reservation.response.dto";
 import { RoleResponse } from "./role.response.dto";
 
 export class UserResponse{
@@ -6,6 +5,5 @@ export class UserResponse{
   surname?:string;
   email?: string;
   role?: RoleResponse;
-  reservations?: ReservationResponse[];
 
 }

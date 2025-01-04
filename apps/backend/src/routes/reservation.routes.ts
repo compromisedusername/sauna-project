@@ -9,6 +9,44 @@ const reservationController: ReservationController = new ReservationController()
 
 /**
  * @swagger
+ * /api/reservations/{page}/{pageSize}:
+ *   get:
+ *     tags:
+ *        - reservation
+ *     summary: Get all reservations paginated
+ *     description: Retrieve a paginated list of all reservations in the system.
+ *     parameters:
+ *       - name: page
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The page
+ *       - name: pageSize
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The page size
+ *     responses:
+ *       200:
+ *         description: A list of reservations.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Reservation'
+ */
+reservationRoutes.get('/reservations/:page/:pageSize', authMiddleware as RequestHandler, adminMiddleware as RequestHandler , async (req: Request, res: Response, next: NextFunction) =>{
+ try{
+  await reservationController.getAllReservationsPaginated(req, res);
+ }catch(error){
+ next(error);
+}
+});
+/**
+ * @swagger
  * /api/reservations:
  *   get:
  *     tags:

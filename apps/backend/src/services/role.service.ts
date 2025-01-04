@@ -87,6 +87,7 @@ export class RoleService {
     );
 
     const updatedRole: Role = {
+      id: data.id,
       name: data.name,
       description: data.description,
       users: users,
