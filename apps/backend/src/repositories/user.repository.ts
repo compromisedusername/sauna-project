@@ -17,6 +17,14 @@ public async getPaginatedUsers(page: number, pageSize: number): Promise<[User[],
 
     return [result, count];
   }
+  public async getAllusersWithourReservation(): Promise<User[]>{
+    try{
+    const users: User[] = await this.userRepository.find({relations: ['role']});
+    return users;
+    }catch(error){
+      throw ErrorFactory.createInternalServerError("Try again later", error)
+    }
+  }
 
   public async getAllUsers(): Promise<User[]> {
     const users: User[] = await this.userRepository.find({

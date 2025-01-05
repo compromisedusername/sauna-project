@@ -66,6 +66,7 @@ const AddReservation: React.FC<EditReservationProps> = () => {
     e.preventDefault();
     if (reservation) {
       try {
+        console.log(reservation)
         const response = await api.post(`/reservation`, reservation);
         navigate("/admin/reservations");
       } catch (error: any) {
@@ -151,7 +152,7 @@ const handleUserSelectChange = (option: { value: number; label: string } | null)
             type="datetime-local"
             name="dateFrom"
             value={
-                reservation.dateTo.toString()
+                reservation.dateFrom.toString()
             }
             onChange={handleInputChange}
           />

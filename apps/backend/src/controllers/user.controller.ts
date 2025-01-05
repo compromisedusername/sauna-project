@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Repository } from "typeorm";
 import { User } from "./../entities/user.model";
 import { UserService } from "../services/user.service";
-import { UserResponse } from "../dto/response/user.response.dto";
+import { UserNoReservations } from "../dto/response/user.response.dto";
 import { ReservationService } from "../services/reservation.service";
 import { AddUserRequest } from "../dto/request/add.user.request";
 import { ErrorFactory } from "../errors/error-factory.error";
@@ -67,14 +67,15 @@ public async getPaginatedUsers(req: Request, res: Response
 
 
   public async getAllUsers(req: Request, res: Response): Promise<Response> {
-    const users: UserResponse[] = await this.userService.getAllUsers();
+    const withReservations: boolean = req.query.reservations === 'true';
+    const users: UserNoReservations[] = await this.userService.getAllUsers(withReservations);
     return ResponseFactory.ok(res, users);
   }
 
   public async getUser(req: Request, res: Response): Promise<Response> {
     const id: number = Number(req.params.id);
 
-    const user: UserResponse = await this.userService.getUserById(Number(id));
+    const user: UserNoReservations = await this.userService.getUserById(Number(id));
 
     return ResponseFactory.ok(res, user);
   }

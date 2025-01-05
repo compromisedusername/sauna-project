@@ -14,7 +14,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
       <p>Surname: {user.surname}</p>
       <p>Email: {user.email}</p>
       <h4>Reservations:</h4>
-      {user.reservations.length > 0 ? (
+      {user.reservations?.length > 0 ? (
         <ul>
           {user.reservations.map((reservation) => (
             <li key={reservation.id}>

@@ -12,6 +12,7 @@ import {
 } from "../utils/validators/user/user.validator";
 import { RoleRepository } from "../repositories/role.repository";
 import { ReservationRepository } from "../repositories/reservation.repository";
+import { UserNoReservations } from "../dto/response/user.response.dto";
 export class UserService {
   private readonly userRepository: UserRepository;
   private readonly roleRepository: RoleRepository;
@@ -65,9 +66,26 @@ export class UserService {
       throw error;
     }
   }
-  public async getAllUsers(): Promise<User[]> {
-    const users: User[] = await this.userRepository.getAllUsers();
-    return users;
+  public async getAllUsers(withReservation:boolean): Promise<User[] | UserNoReservations[]> {
+
+    if(withReservation) {
+      return await this.userRepository.getAllUsers();
+    }else{
+      const users: User[] = await this.userRepository.getAllusersWithourReservation();
+      const usersWithoutReservations: UserNoReservations[] = users.map( (user) => ({
+          id: user.id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        role: {
+          name: user.role?.name,
+          description: user.role?.description
+        }
+
+      }))
+      return usersWithoutReservations;
+    }
+
   }
 
   public async getUserById(id: number): Promise<User> {

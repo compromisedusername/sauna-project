@@ -4,7 +4,6 @@ import { Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
 import { Role } from "../entities/role.model";
 import { HttpError } from "../errors/http-error.error";
-import { RoleWithourUser } from "../dto/response/role.response.dto";
 export class RoleRepository {
   protected readonly roleRepository: Repository<Role> =
     AppDataSource.getRepository(Role);

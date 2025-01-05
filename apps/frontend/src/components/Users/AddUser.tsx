@@ -154,7 +154,7 @@ const AddUser: React.FC<AddUserProps> = () => {
                    Password:
                     <input
                         type="text"
-                        name="password"
+                        name="passwordHash"
                         value={user.passwordHash}
                         onChange={handleInputChange}
                     />

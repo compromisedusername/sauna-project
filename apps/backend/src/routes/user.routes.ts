@@ -19,7 +19,16 @@ const userController = new UserController();
  *     tags:
  *        - user
  *     summary: Get all users
- *     description: Retrieve a list of all users in the system.
+ *     description: Retrieve a list of all users in the system. You can optionally include reservations information.
+ *     parameters:
+ *       - in: query
+ *         name: reservations
+ *         schema:
+ *           type: string
+ *           enum: [true, false]
+ *         description: |
+ *           Optional. If set to `true`, returns roles with user information.
+ *           If set to `false` or not provided, returns only role information.
  *     responses:
  *       200:
  *         description: A list of users.

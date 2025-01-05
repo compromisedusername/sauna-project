@@ -25,6 +25,16 @@ export interface UserDto {
 
 export type UsersDto = UserDto[];
 
+export interface UserRequestUpdate{
+   id: number;
+    name: string,
+  surname: string,
+  email: string,
+  passwordHash: string,
+  roleId: number,
+  reservations: number[];
+ }
+
 export interface UserRequestAdd{
     name: string,
   surname: string,

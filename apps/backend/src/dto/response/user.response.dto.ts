@@ -7,3 +7,13 @@ export class UserResponse{
   role?: RoleResponse;
 
 }
+
+export class UserNoReservations{
+  id?: number;
+  name?: string;
+  surname?:string;
+  email?: string;
+  role?: RoleResponse;
+}
+
+

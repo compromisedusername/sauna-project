@@ -10,9 +10,8 @@ import {
 } from "../../models/Reservation";
 import { UserDto } from "../../models/User";
 import { SaunaDto } from "../../models/Sauna";
-interface EditReservationProps { }
 
-const EditReservation: React.FC<EditReservationProps> = () => {
+const EditReservation  = () => {
   const { id } = useParams<{ id: string }>();
   const [reservation, setReservation] = useState<ReservationResponse | null>(
     null,

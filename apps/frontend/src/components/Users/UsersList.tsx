@@ -45,7 +45,7 @@ const UsersList: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get<UserDto[]>("/users");
+        const response = await api.get<UserDto[]>("/users?reservations=true");
         setUsers(response.data);
       } catch (error: any) {
         setError(error.message);
