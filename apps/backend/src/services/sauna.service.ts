@@ -13,7 +13,7 @@ import { Reservation } from "../entities/reservation.model";
 
 export class SaunaService {
   private readonly saunaRepository: SaunaRepository;
-  private readonly reservationRepository: ReservationRepository
+  private readonly reservationRepository: ReservationRepository;
 
   constructor() {
     this.saunaRepository = new SaunaRepository();
@@ -34,21 +34,68 @@ export class SaunaService {
   }
   public async addSauna(data: AddSaunaRequest): Promise<number> {
     validateAddSauna(data);
-    const reservations: Reservation[] = await Promise.all(data.reservations.map( (id)=>this.reservationRepository.getReservationById(id)));
-    const addSauna:Sauna = {
+    const reservations: Reservation[] = await Promise.all(
+      data.reservations.map((id) =>
+        this.reservationRepository.getReservationById(id),
+      ),
+    );
+    const addSauna: Sauna = {
       name: data.name,
       saunaType: data.saunaType,
       humidity: data.humidity,
       temperature: data.temperature,
       peopleCapacity: data.peopleCapacity,
       reservations: reservations,
-    }
+    };
 
     const savedSauna = await this.saunaRepository.addSauna(addSauna);
-    if(savedSauna.id){
-    return savedSauna.id;}
-    else{
-      throw ErrorFactory.createInternalServerError("Error occured. Try again later.")
+    if (savedSauna.id) {
+      return savedSauna.id;
+    } else {
+      throw ErrorFactory.createInternalServerError(
+        "Error occured. Try again later.",
+      );
+    }
+  }
+
+  public async getFreeSaunasTimePeriod(
+    dateFrom: Date,
+    dateTo: Date,
+  ): Promise<Sauna[]> {
+    try {
+      if (dateTo < dateFrom) {
+        throw ErrorFactory.createBadRequestError(
+          "End date cant be before start",
+        );
+      }
+      const freeSaunasInTimePeriodFromReservations: Sauna[] =
+        await this.reservationRepository.getFreeSaunasFromReservationsByTimePeriod(
+          dateFrom,
+          dateTo,
+        );
+
+      const saunasWithoutReservations: Sauna[] =
+        await this.saunaRepository.getAllSaunasWithoutReservation();
+
+      const freeSaunasInTimePeriod: Sauna[] = [];
+      freeSaunasInTimePeriodFromReservations.forEach((r) => {
+        freeSaunasInTimePeriod.push(r);
+      });
+      saunasWithoutReservations.forEach((r) => {
+        freeSaunasInTimePeriod.push(r);
+      });
+
+      return freeSaunasInTimePeriod.reduce(
+        (accumulator: Sauna[], current: Sauna) => {
+          if (!accumulator.some( sauna => sauna.id === current.id)) {
+            accumulator.push(current);
+          }
+          return accumulator;
+        },
+        [],
+      );
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -61,9 +108,12 @@ export class SaunaService {
       );
     }
 
-
-    const reservations: Reservation[] = await Promise.all(data.reservations.map( (id)=>this.reservationRepository.getReservationById(id)));
-    const updateSauna:Sauna = {
+    const reservations: Reservation[] = await Promise.all(
+      data.reservations.map((id) =>
+        this.reservationRepository.getReservationById(id),
+      ),
+    );
+    const updateSauna: Sauna = {
       id: data.id,
       name: data.name,
       saunaType: data.saunaType,
@@ -71,9 +121,7 @@ export class SaunaService {
       peopleCapacity: data.peopleCapacity,
       humidity: data.humidity,
       reservations: reservations,
-    }
-
-
+    };
 
     const updateResult = await this.saunaRepository.updateSauna(updateSauna);
     return updateResult;

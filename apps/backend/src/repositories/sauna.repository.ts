@@ -1,13 +1,15 @@
 import { ErrorFactory } from "./../errors/error-factory.error";
 import { Sauna } from "./../entities/sauna.model";
-import { Repository } from "typeorm";
+import { IsNull, Repository } from "typeorm";
 import AppDataSource from "./../config/ormconfig";
 export class SaunaRepository {
   protected readonly saunaRepository: Repository<Sauna> =
     AppDataSource.getRepository(Sauna);
 
   public async getAllSaunas(): Promise<Sauna[]> {
-    const users: Sauna[] = await this.saunaRepository.find({relations: ['reservations']});
+    const users: Sauna[] = await this.saunaRepository.find({
+      relations: ["reservations"],
+    });
     return users;
   }
 
@@ -15,13 +17,16 @@ export class SaunaRepository {
     try {
       const sauna: Sauna | null = await this.saunaRepository.findOne({
         where: {
-        id: id,}, relations: ['reservations']
+          id: id,
+        },
+        relations: ["reservations"],
       });
-      if(sauna){
-      return sauna;}
-
-      else{
-        throw ErrorFactory.createNotFoundError(`Sauna with ID: ${id} not found`)
+      if (sauna) {
+        return sauna;
+      } else {
+        throw ErrorFactory.createNotFoundError(
+          `Sauna with ID: ${id} not found`,
+        );
       }
     } catch (error) {
       throw ErrorFactory.createInternalServerError(
@@ -31,9 +36,8 @@ export class SaunaRepository {
     }
   }
 
-  public async addSauna(addSauna:Sauna ): Promise<Sauna> {
+  public async addSauna(addSauna: Sauna): Promise<Sauna> {
     try {
-
       const sauna = this.saunaRepository.create(addSauna);
       const result = await this.saunaRepository.save(sauna);
       return result;
@@ -42,15 +46,30 @@ export class SaunaRepository {
     }
   }
 
-  public async updateSauna(updateSauna:Sauna): Promise<boolean> {
+  public async getAllSaunasWithoutReservation(): Promise<Sauna[]> {
+    try {
+      return await this.saunaRepository.createQueryBuilder('sauna')
+        .leftJoin('sauna.reservations', 'reservation')
+        .where('reservation.id IS NULL')
+      .getMany();
+    } catch (error: any) {
+      throw ErrorFactory.createInternalServerError("Try again later", error);
+    }
+  }
+
+  public async updateSauna(updateSauna: Sauna): Promise<boolean> {
     try {
       const sauna: Sauna = await this.saunaRepository.findOneByOrFail({
         id: updateSauna.id,
       });
-      const result = this.saunaRepository.merge(sauna, updateSauna);
+      const merged = this.saunaRepository.merge(sauna, updateSauna);
+      const result = await this.saunaRepository.save(merged);
       return result ? true : false;
     } catch (error) {
-      throw ErrorFactory.createInternalServerError("Update sauna failed", error);
+      throw ErrorFactory.createInternalServerError(
+        "Update sauna failed",
+        error,
+      );
     }
   }
 

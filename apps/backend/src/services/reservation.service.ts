@@ -23,16 +23,21 @@ export class ReservationService {
     this.saunaRepository = new SaunaRepository();
   }
 
-
-public async getReservationsWithoutUser(): Promise<ReservationDto[]>{
-    const result = await this.reservationRepository.getReservationsWithourUser();
+  public async getReservationsWithoutUser(): Promise<ReservationDto[]> {
+    const result =
+      await this.reservationRepository.getReservationsWithourUser();
     return result;
-
   }
 
-public async getAllReservationsPaginated(page: number, pageSize: number): Promise<[ReservationDto[], number]>{
-
-    const [reservations, count]  = await this.reservationRepository.getAllReservationsPaginated(page, pageSize);
+  public async getAllReservationsPaginated(
+    page: number,
+    pageSize: number,
+  ): Promise<[ReservationDto[], number]> {
+    const [reservations, count] =
+      await this.reservationRepository.getAllReservationsPaginated(
+        page,
+        pageSize,
+      );
 
     const reservationsResponse: ReservationDto[] = reservations.map(
       (reservation) => {
@@ -55,8 +60,6 @@ public async getAllReservationsPaginated(page: number, pageSize: number): Promis
     );
 
     return [reservationsResponse, count];
-
-
   }
 
   public async getAllReservations(): Promise<ReservationDto[]> {
@@ -92,23 +95,19 @@ public async getAllReservationsPaginated(page: number, pageSize: number): Promis
       throw ErrorFactory.createNotFoundError("Reservation not found");
     }
 
-    const reservationResponse: ReservationDto =
-      {
-        id: reservation.id,
-        dateFrom: reservation.dateFrom,
-        dateTo: reservation.dateTo,
-        numberOfPeople: reservation.numberOfPeople,
-        sauna: reservation.sauna,
-        user:  {
-              id: reservation.user?.id,
-              name: reservation.user?.name,
-              surname: reservation.user?.surname,
-              email: reservation.user?.email,
-            }
-      }
-
-
-
+    const reservationResponse: ReservationDto = {
+      id: reservation.id,
+      dateFrom: reservation.dateFrom,
+      dateTo: reservation.dateTo,
+      numberOfPeople: reservation.numberOfPeople,
+      sauna: reservation.sauna,
+      user: {
+        id: reservation.user?.id,
+        name: reservation.user?.name,
+        surname: reservation.user?.surname,
+        email: reservation.user?.email,
+      },
+    };
 
     return reservationResponse;
   }
@@ -129,6 +128,19 @@ public async getAllReservationsPaginated(page: number, pageSize: number): Promis
         `User with given ID: ${data.userId} not found`,
       );
     }
+    if (data.dateFrom >= data.dateTo) {
+      throw ErrorFactory.createBadRequestError(
+        "Reservation end cant be before start!",
+      );
+    }
+
+    if (sauna.peopleCapacity && sauna.peopleCapacity <= data.numberOfPeople) {
+      throw ErrorFactory.createBadRequestError(
+        `Too much people for given sauna. Sauna capacity: ${sauna.peopleCapacity}, People in reservation: ${data.numberOfPeople}`,
+      );
+    }
+
+
 
     const addedReservation: Reservation = {
       dateFrom: data.dateFrom,
@@ -161,26 +173,35 @@ public async getAllReservationsPaginated(page: number, pageSize: number): Promis
       );
     }
 
+    if (data.dateFrom >= data.dateTo) {
+      throw ErrorFactory.createBadRequestError(
+        "Reservation end cant be before start!",
+      );
+    }
 
-let correctSaunaId;
+    let correctSaunaId;
 
     let correctUserId;
 
-    if(data.saunaId){
-        correctSaunaId = data.saunaId
-    }else{
-    const reservation: Reservation = await this.reservationRepository.getReservationById(data.id);
-    correctSaunaId = reservation.sauna?.id;
+    if (data.saunaId) {
+      correctSaunaId = data.saunaId;
+    } else {
+      const reservation: Reservation =
+        await this.reservationRepository.getReservationById(data.id);
+      correctSaunaId = reservation.sauna?.id;
     }
 
-    if(data.userId){
-    correctUserId = data.userId
-    }else{
-    const reservation: Reservation = await this.reservationRepository.getReservationById(data.id);
-    correctUserId = reservation.user?.id;
+    if (data.userId) {
+      correctUserId = data.userId;
+    } else {
+      const reservation: Reservation =
+        await this.reservationRepository.getReservationById(data.id);
+      correctUserId = reservation.user?.id;
     }
 
-    const sauna: Sauna = await this.saunaRepository.getSaunaById(correctSaunaId!);
+    const sauna: Sauna = await this.saunaRepository.getSaunaById(
+      correctSaunaId!,
+    );
 
     const user: User = await this.userRepository.getUserById(correctUserId!);
 
@@ -194,6 +215,14 @@ let correctSaunaId;
         `User with given ID: ${data.userId} not found`,
       );
     }
+    if (sauna.peopleCapacity && sauna.peopleCapacity <= data.numberOfPeople) {
+      throw ErrorFactory.createBadRequestError(
+        `Too much people for given sauna. Sauna capacity: ${sauna.peopleCapacity}, People in reservation: ${data.numberOfPeople}`,
+      );
+    }
+
+
+
     const updatedReservation: Reservation = {
       id: data.id,
       dateFrom: data.dateFrom,

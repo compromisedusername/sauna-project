@@ -14,52 +14,65 @@ export class SaunaController {
   }
 
   public async getAllSaunas(req: Request, res: Response): Promise<Response> {
-    try {
-      const saunas: SaunaResponse[] = await this.saunaService.getAllSaunas();
-      return ResponseFactory.ok(res, saunas);
-    } catch (error) {
-      return ResponseFactory.error(res, 500, "Error fetching saunas");
-    }
+    const saunas: SaunaResponse[] = await this.saunaService.getAllSaunas();
+    return ResponseFactory.ok(res, saunas);
   }
 
   public async getSauna(req: Request, res: Response): Promise<Response> {
-      const saunaId: number = Number(req.params.id);
-      const sauna: SaunaResponse = await this.saunaService.getSauna(saunaId);
-      return ResponseFactory.ok(res, sauna);
+    const saunaId: number = Number(req.params.id);
+    const sauna: SaunaResponse = await this.saunaService.getSauna(saunaId);
+    return ResponseFactory.ok(res, sauna);
   }
 
   public async addSauna(req: Request, res: Response): Promise<Response> {
-      const saunaData: AddSaunaRequest = req.body;
+    const saunaData: AddSaunaRequest = req.body;
 
-      if (!saunaData) {
-        throw ErrorFactory.createBadRequestError("Invalid sauna data");
-      }
+    if (!saunaData) {
+      throw ErrorFactory.createBadRequestError("Invalid sauna data");
+    }
 
-      const createdSaunaId: number = await this.saunaService.addSauna(saunaData);
-      return ResponseFactory.created(res, createdSaunaId);
+    const createdSaunaId: number = await this.saunaService.addSauna(saunaData);
+    return ResponseFactory.created(res, createdSaunaId);
   }
 
   public async updateSauna(req: Request, res: Response): Promise<Response> {
-      const saunaData: UpdateSaunaRequest = req.body;
+    const saunaData: UpdateSaunaRequest = req.body;
 
-      const isUpdated: boolean = await this.saunaService.updateSauna(saunaData);
-      if (isUpdated) {
-        return ResponseFactory.updated(res, "Sauna");
-      } else {
-        throw ErrorFactory.createNotFoundError("Sauna not found");
-      }
+    const isUpdated: boolean = await this.saunaService.updateSauna(saunaData);
+    if (isUpdated) {
+      return ResponseFactory.updated(res, "Sauna");
+    } else {
+      throw ErrorFactory.createNotFoundError("Sauna not found");
+    }
+  }
+
+  public async getFreeSaunasTimePeriod(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    try{
+    const dateFrom: Date = new Date(req.body.dateFrom);
+    const dateTo: Date = new Date(req.body.dateTo);
+
+    const freeSaunas = await this.saunaService.getFreeSaunasTimePeriod(
+      dateFrom,
+      dateTo,
+    );
+    return ResponseFactory.ok(res, freeSaunas);
+    }catch(error){
+      throw error;
+    }
 
   }
 
   public async deleteSauna(req: Request, res: Response): Promise<Response> {
-      const saunaId: number = Number(req.params.id);
-      const isDeleted: boolean = await this.saunaService.deleteSauna(saunaId);
+    const saunaId: number = Number(req.params.id);
+    const isDeleted: boolean = await this.saunaService.deleteSauna(saunaId);
 
-      if (isDeleted) {
-        return ResponseFactory.deleted(res, "Sauna");
-      } else {
-        throw ErrorFactory.createNotFoundError("Sauna not found");
-      }
+    if (isDeleted) {
+      return ResponseFactory.deleted(res, "Sauna");
+    } else {
+      throw ErrorFactory.createNotFoundError("Sauna not found");
+    }
   }
 }
-

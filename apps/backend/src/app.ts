@@ -8,9 +8,8 @@ import swaggerSpec from "./config/swagger-config";
 
 import AppDataSource from "./config/ormconfig";
 
+import asyncMiddleware from "middleware-async";
 import { errorHandler } from "./middlewares/error-handler.middleware";
-import { loggingMiddleware } from "./middlewares/log.middleware";
-import { requireAuthorization } from "./middlewares/requireAuth.middleware";
 import { ResponseFactory } from "./dto/response/response-factory.response";
 import userRoutes from "./routes/user.routes";
 import saunaRoutes from "./routes/sauna.routes";
@@ -26,9 +25,7 @@ const port: number = Number(process.env.PORT) || 3000;
 app.use(cors({origin: "http://localhost:3001",credentials: true}));
 app.use(express.json());
 app.use(cookieParser())
-//app.use(requireAuthorization())
-// middlewares config
-//app.use(loggingMiddleware);
+
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -44,7 +41,10 @@ app.get("/", (req: Request, res: Response) => {
 app.get("*", (req: Request, res: Response) => {
   (ResponseFactory.notFound(res, req.path));
 });
-app.use(errorHandler);
+
+app.use((errorHandler));
+
+
 
 app.listen(port, async () => {
   console.log(`Server is listening on port ${port}`);

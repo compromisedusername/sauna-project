@@ -23,6 +23,10 @@ import SaunasList from "./components/Saunas/SaunasList";
 import EditReservation from "./components/Reservation/EditReservation";
 import AddUser from "./components/Users/AddUser";
 import EditUser from "./components/Users/EditUser";
+import AddSauna from "./components/Saunas/AddSauna";
+import EditSauna from "./components/Saunas/EditSauna";
+import AddRole from "./components/Roles/AddRole";
+import EditRole from "./components/Roles/EditRole";
 function App() {
   const navigate = useNavigate;
   const { token, setToken } = useToken();
@@ -75,6 +79,11 @@ function App() {
                 element={<EditUser />}
               />
               <Route path="/admin/user/add" element={<AddUser/>} />
+              <Route path="/admin/sauna/add" element={<AddSauna/>} />
+              <Route path="/admin/sauna/:id/edit" element={<EditSauna></EditSauna>} />
+
+              <Route path="/admin/role/add" element={<AddRole/>} />
+              <Route path="/admin/role/:id/edit" element={<EditRole/>} />
             </>
           )}
           <Route path="*" element={<Dashboard role={role}></Dashboard>}></Route>

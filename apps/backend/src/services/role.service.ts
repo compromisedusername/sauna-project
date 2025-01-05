@@ -38,6 +38,8 @@ export class RoleService {
       throw ErrorFactory.createNotFoundError(`Role name: '${roleName}' doesnt not exists`)
     }
   }
+
+
   public async getAllRoles(getUsers: boolean): Promise<Role[] | RoleWithourUser[]> {
 if(getUsers){
      return await this.roleRepository.getAllRoles();

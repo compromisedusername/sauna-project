@@ -57,7 +57,6 @@ const AddUser: React.FC<AddUserProps> = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (user) {
-            console.log(user)
             try {
                 const response = await api.post(`/user`, user);
                 console.log(response);

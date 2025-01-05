@@ -222,7 +222,7 @@ reservationRoutes.put('/reservation/', authMiddleware as RequestHandler, adminMi
  */
 reservationRoutes.delete('/reservation/:id', authMiddleware as RequestHandler, userMiddleware as RequestHandler,async (req: Request, res: Response, next: NextFunction) => {
      try{
-      await reservationController.deleteRole(req, res);
+      await reservationController.deleteReservation(req, res);
   }catch(error){
     next(error)
   }

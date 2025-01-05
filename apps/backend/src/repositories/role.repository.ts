@@ -63,7 +63,8 @@ export class RoleRepository {
 
   public async updateRole(updatedRole: Role): Promise<boolean> {
     try {
-      const result = this.roleRepository.merge(updatedRole);
+      const merged = this.roleRepository.merge(updatedRole);
+        const result =await this.roleRepository.save(merged);
       return result ? true : false;
     } catch (error) {
       throw ErrorFactory.createInternalServerError("Update role failed", error);

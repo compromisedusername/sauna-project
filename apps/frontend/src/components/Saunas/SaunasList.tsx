@@ -1,34 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import api from '../../api/api';
-
-// Interfaces for Sauna data
-interface SaunaDto {
-  id: number;
-  name: string;
-  saunaType: string;
-  humidity: number;
-  temperature: number;
-  peopleCapacity: number;
-  reservations: ReservationForSaunaDto[];
-}
-
-interface ReservationForSaunaDto {
-  id: number;
-  dateFrom: string;
-  dateTo: string;
-  numberOfPeople: number;
-}
-
+import React, { useState, useEffect } from "react";
+import api from "../../api/api";
+import SaunaDetails from "./SaunaDetails";
+import { SaunaDto } from "../../models/Sauna";
+import { useNavigate } from "react-router-dom";
+import DeleteSauna from "./DeleteSauna";
 const SaunasList: React.FC = () => {
   const [saunas, setSaunas] = useState<SaunaDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedSauna, setSelectedSauna] = useState<SaunaDto | null>(null);
+  const navigate = useNavigate();
+  const [deletedSaunaId, setDeletedSaunaId] = useState<number|null>(null);
 
   useEffect(() => {
     const fetchSaunas = async () => {
       try {
-        const response = await api.get<SaunaDto[]>('/saunas');
+        const response = await api.get<SaunaDto[]>("/saunas");
         setSaunas(response.data);
       } catch (error: any) {
         setError(error.message);
@@ -36,63 +23,81 @@ const SaunasList: React.FC = () => {
         setLoading(false);
       }
     };
-
     fetchSaunas();
   }, []);
 
   if (loading) return <p>Loading saunas...</p>;
   if (error) return <p>Error fetching saunas: {error}</p>;
 
+    const handleDeleteSauna = (deletedSaunaId: number) => {
+    setSaunas( (prevSaunas) => prevSaunas.filter( sauna => deletedSaunaId !== sauna.id));
+  }
+
   return (
     <div>
       <h2>Saunas</h2>
+      <div>
+        <button
+          onClick={() => {
+            navigate(`/admin/sauna/add`);
+          }}
+        >
+          Add New Sauna
+        </button>
+        <div>
+          <button
+            onClick={() => {
+              navigate("/admin/");
+            }}
+          >
+            Go back
+          </button>
+        </div>
+      </div>
+
       {saunas.length === 0 ? (
         <p>No saunas found.</p>
       ) : (
         <ul>
-          {saunas.map(sauna => (
+          {saunas.map((sauna) => (
             <li key={sauna.id}>
               Sauna Name: {sauna.name} ({sauna.saunaType})
               <button onClick={() => setSelectedSauna(sauna)}>Details</button>
+              <button
+                onClick={() => {
+                  setDeletedSaunaId(sauna.id);
+                  setSelectedSauna(null);
+                }}
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => {
+                  navigate(`/admin/sauna/${sauna.id}/edit`);
+                }}
+              >
+                Edit
+              </button>
             </li>
           ))}
         </ul>
       )}
 
+      {deletedSaunaId && (
+      <DeleteSauna
+          saunaId={deletedSaunaId}
+        onClose={()=>setDeletedSaunaId(null)}
+        setSaunas= {()=>handleDeleteSauna(deletedSaunaId)}
+        />
+      )}
       {selectedSauna && (
-        <SaunaDetails sauna={selectedSauna} onClose={() => setSelectedSauna(null)} />
+        <SaunaDetails
+          sauna={selectedSauna}
+          onClose={() => setSelectedSauna(null)}
+        />
       )}
-    </div>
-  );
-}
 
-interface SaunaDetailsProps {
-  sauna: SaunaDto;
-  onClose: () => void;
-}
 
-const SaunaDetails: React.FC<SaunaDetailsProps> = ({ sauna, onClose }) => {
-  return (
-    <div>
-      <h3>Sauna Details</h3>
-      <p>Name: {sauna.name}</p>
-      <p>Type: {sauna.saunaType}</p>
-      <p>Humidity: {sauna.humidity}%</p>
-      <p>Temperature: {sauna.temperature}°C</p>
-      <p>Capacity: {sauna.peopleCapacity} people</p>
-      <h4>Reservations:</h4>
-      {sauna.reservations.length > 0 ? (
-        <ul>
-          {sauna.reservations.map(reservation => (
-            <li key={reservation.id}>
-              Reservation ID: {reservation.id}, From: {new Date(reservation.dateFrom).toLocaleString()}, To: {new Date(reservation.dateTo).toLocaleString()}, People: {reservation.numberOfPeople}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No reservations found for this sauna.</p>
-      )}
-      <button onClick={onClose}>Close</button>
     </div>
   );
 };

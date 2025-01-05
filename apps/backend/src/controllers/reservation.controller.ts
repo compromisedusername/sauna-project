@@ -101,7 +101,7 @@ export class ReservationController {
 		}
 	}
 
-	public async deleteRole(req: Request, res: Response): Promise<Response> {
+	public async deleteReservation(req: Request, res: Response): Promise<Response> {
 		const reservationId: number = Number(req.params.id);
 		const isDeleted: boolean =
 			await this.reservationService.deleteReservation(reservationId);

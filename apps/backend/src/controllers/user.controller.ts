@@ -67,9 +67,13 @@ public async getPaginatedUsers(req: Request, res: Response
 
 
   public async getAllUsers(req: Request, res: Response): Promise<Response> {
+    try{
     const withReservations: boolean = req.query.reservations === 'true';
     const users: UserNoReservations[] = await this.userService.getAllUsers(withReservations);
     return ResponseFactory.ok(res, users);
+    }catch(error){
+      throw error;
+    }
   }
 
   public async getUser(req: Request, res: Response): Promise<Response> {

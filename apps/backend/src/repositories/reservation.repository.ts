@@ -4,19 +4,33 @@ import AppDataSource from "./../config/ormconfig";
 import { Reservation } from "../entities/reservation.model";
 import { User } from "../entities/user.model";
 import { IsNull } from "typeorm";
+import { Sauna } from "../entities/sauna.model";
 export class ReservationRepository {
 	protected readonly reservationRepository: Repository<Reservation> =
 		AppDataSource.getRepository(Reservation);
 
 	public async getReservationsWithourUser() {
-try{
-    const reservationsWithourUser = await this.reservationRepository.find({
-			relations: ["sauna", "user"],
-			where: { user: IsNull() },
-		});
-		return reservationsWithourUser;
-		}catch(error){
-		  throw ErrorFactory.createInternalServerError("Try again later. ", error);
+		try {
+			const reservationsWithourUser = await this.reservationRepository.find({
+				relations: ["sauna", "user"],
+				where: { user: IsNull() },
+			});
+			return reservationsWithourUser;
+		} catch (error) {
+			throw ErrorFactory.createInternalServerError("Try again later. ", error);
+		}
+	}
+	public async getFreeSaunasFromReservationsByTimePeriod(
+		dateFrom: Date, dateTo: Date
+	): Promise<Sauna[]> {
+		try {
+			const resevations: Reservation[] = await this.getAllReservations();
+			const reservationsWithFreeSaunas: Reservation[] =
+				resevations.filter( r => r.dateTo && r.dateFrom && r.sauna && ( dateFrom > r.dateTo || dateTo < r.dateFrom));
+
+			return reservationsWithFreeSaunas.map( r => r.sauna!);
+		} catch (error) {
+			throw ErrorFactory.createInternalServerError("Try again later", error);
 		}
 	}
 

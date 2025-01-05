@@ -6,15 +6,12 @@ import Select from "react-select";
 import api from "../../api/api";
 import {
     ReservationRequestAdd,
-  ReservationRequestUpdate,
-  ReservationResponse,
   UserReservationResponse,
 } from "../../models/Reservation";
 import { UserDto } from "../../models/User";
 import { SaunaDto } from "../../models/Sauna";
-interface EditReservationProps { }
 
-const AddReservation: React.FC<EditReservationProps> = () => {
+const AddReservation  = () => {
   const [reservation, setReservation] = useState<ReservationRequestAdd>(
     {userId: 0, saunaId: 0, dateTo: new Date(Date.now()), dateFrom: new Date(Date.now()), numberOfPeople: 1  }
 
