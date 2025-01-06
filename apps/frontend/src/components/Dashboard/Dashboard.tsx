@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import AdminPanel from "../AdminPanel/AdminDashboard";
+import UserPanel from "../UserPanel/UserPanel";
 
 export default function Dashboard({ role }: { role: string }) {
   const navigate = useNavigate();
@@ -21,9 +23,15 @@ export default function Dashboard({ role }: { role: string }) {
           </p>
         </>
       ) : (
-        <p>
-          Click here to <a onClick={() => navigate("/logout")}>logout</a>
-        </p>
+        <>
+            {role === 'admin' ? (<>
+              <AdminPanel></AdminPanel>
+            </>): (<></>)}
+            {role === 'user' ? (<>
+              <UserPanel></UserPanel>
+            </>):(<></>)}
+          Click here to <button onClick={() => navigate("/logout")}>logout</button>
+        </>
       )}
     </>
   );

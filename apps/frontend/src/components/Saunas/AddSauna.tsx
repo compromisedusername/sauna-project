@@ -78,8 +78,8 @@ const AddSauna = () => {
     value: reservation.id,
     label: `Date From: ${new Date(reservation.dateFrom).toLocaleString()}, Date To: ${new Date(
       reservation.dateTo,
-    ).toLocaleString()}, Sauna Type: (${reservation.sauna.saunaType
-      }) Left seats: (${reservation.sauna.peopleCapacity - reservation.numberOfPeople})`,
+    ).toLocaleString()}, Sauna Type: (${reservation.sauna?.saunaType
+      }) `,
   }));
 
   return (

@@ -6,6 +6,7 @@ import Select from "react-select";
 import api from "../../api/api";
 import {
     ReservationRequestAdd,
+  ReservationRequestUpdate,
   UserReservationResponse,
 } from "../../models/Reservation";
 import { UserDto } from "../../models/User";

@@ -2,7 +2,10 @@ import { Repository } from "typeorm";
 import { Sauna } from "../entities/sauna.model";
 import { AddSaunaRequest } from "../dto/request/add.sauna.request";
 import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
-import { SaunaResponse } from "../dto/response/sauna.response.dto";
+import {
+  SaunaResponse,
+  SaunaResponseGuests,
+} from "../dto/response/sauna.response.dto";
 import { SaunaRepository } from "../repositories/sauna.repository";
 import { ReservationRepository } from "../repositories/reservation.repository";
 import { ErrorFactory } from "../errors/error-factory.error";
@@ -58,6 +61,19 @@ export class SaunaService {
     }
   }
 
+  public async getSaunaForGuests(): Promise<SaunaResponseGuests[]> {
+    const saunas: Sauna[] = await this.saunaRepository.getSaunasForGuests();
+    const saunasForGuests: SaunaResponseGuests[] = saunas.map((s) => ({
+      name: s.name!,
+      temperature: s.temperature!,
+      saunaType: s.saunaType!,
+      peopleCapacity: s.peopleCapacity!,
+      humidity: s.humidity!,
+    }));
+
+    return saunasForGuests;
+  }
+
   public async getFreeSaunasTimePeriod(
     dateFrom: Date,
     dateTo: Date,
@@ -87,7 +103,7 @@ export class SaunaService {
 
       return freeSaunasInTimePeriod.reduce(
         (accumulator: Sauna[], current: Sauna) => {
-          if (!accumulator.some( sauna => sauna.id === current.id)) {
+          if (!accumulator.some((sauna) => sauna.id === current.id)) {
             accumulator.push(current);
           }
           return accumulator;

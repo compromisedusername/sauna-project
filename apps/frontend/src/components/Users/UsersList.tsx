@@ -4,29 +4,9 @@ import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import UserDelete from "./UserDelete";
 import { DeleteDateColumn } from "typeorm";
-
-interface UserDto {
-  id: number;
-  name: string;
-  surname: string;
-  email: string;
-  passwordHash: string;
-  reservations: ReservationForUserDto[];
-  role: RoleForUserDto;
-}
-
-interface ReservationForUserDto {
-  id: number;
-  dateFrom: string;
-  dateTo: string;
-  numberOfPeople: number;
-}
-
-interface RoleForUserDto {
-  id: number;
-  description: string;
-  name: string;
-}
+import { UserDto } from "../../models/User";
+import { ReservationForUserDto } from "../../models/User";
+import { RoleForUserDto } from "../../models/User";
 
 const UsersList: React.FC = () => {
   const [users, setUsers] = useState<UserDto[]>([]);
@@ -62,7 +42,8 @@ const UsersList: React.FC = () => {
 
   const handleDeleteUser = (deletedUserId: number) => {
     setUsers((prevUsers) =>
-      prevUsers.filter((reservation) => deletedUserId !== reservation.id),
+      prevUsers.filter((user) => deletedUserId !== user.id
+      ),
     );
   };
 

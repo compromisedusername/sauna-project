@@ -98,9 +98,15 @@ export class UserService {
   }
 
   public async updateUser(data: UpdateUserRequest): Promise<boolean> {
-    validateUpdateUser(data);
+
+    const userGetByEmail = await this.userRepository.getUserByEmail(data.email);
 
     const existingUser = await this.userRepository.getUserById(data.userId);
+
+    if(userGetByEmail.id !== existingUser.id){
+      throw ErrorFactory.createConflictError("This email is already taken.")
+    }
+
 
     let reservations: Reservation[];
 

@@ -26,12 +26,11 @@ public async registerUser(req: Request, res: Response): Promise<Response> {
       throw ErrorFactory.createNotFoundError(`Role name user not found`);
     }
     const userRequest: RegisterUserRequest = req.body;
-
     const user: AddUserRequest = {
       name: userRequest.name,
       surname: userRequest.surname,
       email: userRequest.email,
-      passwordHash: await hashPassword(userRequest.password),
+      passwordHash: userRequest.password,
       role: role.id ? role.id : 1,
       reservations: [],
     };

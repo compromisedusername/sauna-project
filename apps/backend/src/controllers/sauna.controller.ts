@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ResponseFactory } from "../dto/response/response-factory.response";
 import { ErrorFactory } from "../errors/error-factory.error";
 import { SaunaService } from "../services/sauna.service";
-import { SaunaResponse } from "../dto/response/sauna.response.dto";
+import { SaunaResponse, SaunaResponseGuests } from "../dto/response/sauna.response.dto";
 import { AddSaunaRequest } from "../dto/request/add.sauna.request";
 import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
 
@@ -44,6 +44,11 @@ export class SaunaController {
     } else {
       throw ErrorFactory.createNotFoundError("Sauna not found");
     }
+  }
+
+    public async getSaunasForGuests(req: Request, res: Response): Promise<Response> {
+    const saunaData: SaunaResponseGuests[] = await this.saunaService.getSaunaForGuests();
+    return ResponseFactory.ok(res, saunaData)
   }
 
   public async getFreeSaunasTimePeriod(

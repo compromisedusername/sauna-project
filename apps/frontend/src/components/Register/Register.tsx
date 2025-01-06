@@ -11,8 +11,8 @@ type RegisterResponse = {
 }
 async function registerUser(credentials: {email: string; password: string; name: string; surname: string;}){
   try{
-
-    const response = await api.post<RegisterResponse>("/login", credentials);
+      console.log(credentials)
+    const response = await api.post<RegisterResponse>("/register", credentials);
     if(response.data && response.data.jwtToken){
     console.log(response.data)
       return response.data.jwtToken;

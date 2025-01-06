@@ -49,3 +49,10 @@ export interface SaunaResponse{
   peopleCapacity: number,
   reservations: ReservationResponse[]
 }
+export interface SaunaResponseGuests{
+  name: string,
+  saunaType: string,
+  humidity: number,
+  temperature: number,
+  peopleCapacity: number,
+}

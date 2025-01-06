@@ -98,6 +98,33 @@ saunaRoutes.post('/freesaunas', authMiddleware as RequestHandler, adminMiddlewar
     next(error);
   }
 })
+
+/**
+ * @swagger
+ * /api/saunasguests:
+ *   get:
+ *     tags:
+ *        - sauna
+ *     summary: Get all saunas, views for guests and users.
+ *     description: Retrieve a list of all saunas in the system.
+ *     responses:
+ *       200:
+ *         description: A list of saunas.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/SaunaResponse'
+ */
+saunaRoutes.get('/saunasguests', async (req, res, next) => {
+  try{
+        await saunaController.getSaunasForGuests(req, res);
+  }catch(error){
+    next(error);
+  }
+})
+
 /**
  * @swagger
  * /api/sauna/{id}:

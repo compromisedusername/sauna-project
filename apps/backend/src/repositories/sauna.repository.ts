@@ -73,6 +73,15 @@ export class SaunaRepository {
     }
   }
 
+
+  public async getSaunasForGuests(): Promise<Sauna[]>{
+        try{
+          return this.saunaRepository.find();
+    }catch(error){
+      throw ErrorFactory.createInternalServerError("Try again later", error);
+    }
+  }
+
   public async deleteSauna(id: number): Promise<boolean> {
     try {
       const result = await this.saunaRepository.delete(id);

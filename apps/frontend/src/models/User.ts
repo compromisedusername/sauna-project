@@ -13,6 +13,17 @@
   name: string;
 }
 
+export interface RoleForUserDto {
+  id: number;
+  description: string;
+  name: string;
+}
+export interface ReservationForUserDto {
+  id: number;
+  dateFrom: string;
+  dateTo: string;
+  numberOfPeople: number;
+}
 export interface UserDto {
   id: number;
   name: string;
@@ -26,11 +37,11 @@ export interface UserDto {
 export type UsersDto = UserDto[];
 
 export interface UserRequestUpdate{
-   id: number;
+   userId: number;
     name: string,
   surname: string,
   email: string,
-  passwordHash: string,
+  passwordHash: string|null,
   roleId: number,
   reservations: number[];
  }

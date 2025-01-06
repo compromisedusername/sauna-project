@@ -7,3 +7,11 @@ export class SaunaResponse{
   peopleCapacity?:number;
   reservations?: ReservationResponse[]
 }
+export class SaunaResponseGuests{
+  saunaType?: string;
+  humidity?: number;
+  peopleCapacity?: number;
+  temperature?: string;
+  name?: string;
+
+}

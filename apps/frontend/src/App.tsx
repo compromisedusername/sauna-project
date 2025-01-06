@@ -14,7 +14,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import Preferences from "./components/Preferences/Preference";
 import Logout from "./components/Logout/Logout";
-import { getRoleFromToken } from "./utils/jwt";
+import { getIdFromToken, getRoleFromToken } from "./utils/jwt";
 import AdminPanel from "./components/AdminPanel/AdminDashboard";
 import ReservationsList from "./components/Reservation/ReservationList";
 import UsersList from "./components/Users/UsersList";
@@ -27,15 +27,19 @@ import AddSauna from "./components/Saunas/AddSauna";
 import EditSauna from "./components/Saunas/EditSauna";
 import AddRole from "./components/Roles/AddRole";
 import EditRole from "./components/Roles/EditRole";
+import SaunasGuestsList from "./components/Saunas/SaunasGuestsList";
 function App() {
   const navigate = useNavigate;
   const { token, setToken } = useToken();
-  const [role, setRole] = useState("guest");
+  const [role, setRole] = useState<string>("guest");
+  const [userId, setUserId] = useState<number|null>(null);
 
   useEffect(() => {
     setRole(getRoleFromToken(token));
+    setUserId(getIdFromToken(token));
   }, [token]);
 
+  console.log(userId, "APP MAIN");
   return (
     <div className="wrapper">
       <h1>Sauna reservation</h1>
@@ -61,7 +65,6 @@ function App() {
 
           {role === "admin" && (
             <>
-              <Route path="/admin" element={<AdminPanel />} />
               <Route
                 path="/admin/reservations"
                 element={<ReservationsList />}
@@ -76,7 +79,7 @@ function App() {
               <Route path="/admin/reservation/add" element={<AddReservation/>} />
               <Route
                 path="/admin/user/:id/edit"
-                element={<EditUser />}
+                element={<EditUser userId={null} role={role} />}
               />
               <Route path="/admin/user/add" element={<AddUser/>} />
               <Route path="/admin/sauna/add" element={<AddSauna/>} />
@@ -86,7 +89,12 @@ function App() {
               <Route path="/admin/role/:id/edit" element={<EditRole/>} />
             </>
           )}
+          {role ==='user' && (
+              <Route path='/user/edit' element= {<EditUser role ={role} userId={userId}/>}></Route>
+          )}
+          <Route path='/about/saunas' element={<SaunasGuestsList/>}/>
           <Route path="*" element={<Dashboard role={role}></Dashboard>}></Route>
+
         </Routes>
       </BrowserRouter>
     </div>
