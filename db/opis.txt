@@ -1,5 +1,12 @@
 Uruchomienie projektu:
 
+w folderze root projektu:
+`
+npm install
+`
+
+
+
 Skonfigutowanie bazy danych.
 1. edycja pliku .env.
 LUB
@@ -23,3 +30,9 @@ W celu seedowania należy wpisać
 `
 npm run seed
 `
+
+W celu uruchomienia aplikacji należy wpisać w folderze root projektu:
+`
+npm run dev
+`
+Skrypt uruchomi backend i frontend jednocześnie.
