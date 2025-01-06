@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import api from "./../../api/api";
 import PropTypes from "prop-types";
 import validateRegister from "./validateRegister";
+import {useTranslation}from 'react-i18next'
 type RegisterResponse = {
   response: string;
   statusCode: number;
@@ -28,6 +29,7 @@ async function registerUser(credentials: {
 }
 
 export default function Register({ setToken }: any) {
+  const {t} = useTranslation<'pl'|'en'>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -58,10 +60,12 @@ export default function Register({ setToken }: any) {
     }
   };
 
-  return (
+return (
     <>
       <div className="login-wrapper">
-        <h2 className="title">Register</h2>
+        <h2 className="title">{
+              // @ts-ignore
+          t("register")}</h2>
         {error && <p className="validation-error">{error}</p>}
 
         {validationErrors.length > 0 && (
@@ -76,25 +80,9 @@ export default function Register({ setToken }: any) {
 
         <form onSubmit={handleSubmit} className="add-form">
           <div className="add-form-group">
-            <label className="form-label">Email</label>
-            <input
-              type="text"
-              className="input"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="add-form-group">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              className="input"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <div className="add-form-group">
-            <label className="form-label">Name</label>
+            <label className="form-label">{
+              // @ts-ignore
+              t("name")}</label>
             <input
               type="text"
               className="input"
@@ -103,7 +91,9 @@ export default function Register({ setToken }: any) {
           </div>
 
           <div className="add-form-group">
-            <label className="form-label">Surname</label>
+            <label className="form-label">{
+              // @ts-ignore
+              t("surname")}</label>
             <input
               type="text"
               className="input"
@@ -111,8 +101,33 @@ export default function Register({ setToken }: any) {
             />
           </div>
 
+          <div className="add-form-group">
+            <label className="form-label">{
+              // @ts-ignore
+              t("email")}</label>
+            <input
+              type="text"
+              className="input"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="add-form-group">
+            <label className="form-label">{
+              // @ts-ignore
+              t("password")}</label>
+            <input
+              type="password"
+              className="input"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
           <button type="submit" className="submit-button">
-            Submit
+            {
+
+              // @ts-ignore
+              t("submit")}
           </button>
         </form>
       </div>
@@ -123,7 +138,10 @@ export default function Register({ setToken }: any) {
             className="action-button"
             onClick={() => navigate("/login")}
           >
-            Already have an account? Login
+            {
+
+              // @ts-ignore
+              t("alreadyhaveaccount")}
           </button>
         </p>
 
@@ -135,12 +153,17 @@ export default function Register({ setToken }: any) {
               setToken("");
             }}
           >
-            Continue As Guest
+            {
+
+              // @ts-ignore
+              t("continueguest")}
           </button>
         </p>
       </div>
     </>
   );
+
+
 }
 
 Register.propTypes = {

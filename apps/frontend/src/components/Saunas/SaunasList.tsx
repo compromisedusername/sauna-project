@@ -5,6 +5,7 @@ import { SaunaDto } from "../../models/Sauna";
 import { useNavigate } from "react-router-dom";
 import DeleteSauna from "./DeleteSauna";
 
+import {useTranslation}from 'react-i18next'
 const SaunasList: React.FC = () => {
   const [saunas, setSaunas] = useState<SaunaDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -13,6 +14,7 @@ const SaunasList: React.FC = () => {
   const navigate = useNavigate();
   const [deletedSaunaId, setDeletedSaunaId] = useState<number | null>(null);
 
+const {t} = useTranslation<'pl'|'en'>();
   useEffect(() => {
     const fetchSaunas = async () => {
       try {
@@ -46,7 +48,8 @@ const SaunasList: React.FC = () => {
                         navigate("/admin/");
                     }}
                 >
-                    Go back
+                     {//@ts-ignore
+            t('goback')}
                 </button>
                 <button
                     className="add-button"
@@ -54,18 +57,33 @@ const SaunasList: React.FC = () => {
                         navigate(`/admin/sauna/add`);
                     }}
                 >
-                    Add New Sauna
+                     {//@ts-ignore
+            t('addsauna')}
                 </button>
             </div>
             {saunas.length === 0 ? (
-                <p>No saunas found.</p>
+                <p>
+ {//@ts-ignore
+            t('nodata')}
+
+                </p>
             ) : (
                 <table className="table">
                     <thead className="table-header">
                     <tr className="table-header-row">
-                        <th className="table-header-cell">Name</th>
-                        <th className="table-header-cell">Type</th>
-                        <th className="table-header-cell">Actions</th>
+                        <th className="table-header-cell">
+ {//@ts-ignore
+            t('name')}
+                                </th>
+                        <th className="table-header-cell">
+ {//@ts-ignore
+            t('saunaType')}
+                                </th>
+                        <th className="table-header-cell">
+ {//@ts-ignore
+            t('actions')}
+
+                                </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,21 +92,27 @@ const SaunasList: React.FC = () => {
                             <td className="table-cell">{sauna.name}</td>
                             <td className="table-cell">{sauna.saunaType}</td>
                             <td className="table-cell">
-                                <button className="action-button" onClick={() => setSelectedSauna(sauna)}>Details</button>
+                                <button className="action-button" onClick={() => setSelectedSauna(sauna)}>
+ {//@ts-ignore
+            t('details')}
+
+                                        </button>
                                 <button className="action-button"
                                     onClick={() => {
                                         setDeletedSaunaId(sauna.id);
                                         setSelectedSauna(null);
                                     }}
                                 >
-                                    Delete
+                                     {//@ts-ignore
+            t('delete')}
                                 </button>
                                 <button className="action-button"
                                     onClick={() => {
                                         navigate(`/admin/sauna/${sauna.id}/edit`);
                                     }}
                                 >
-                                    Edit
+                                     {//@ts-ignore
+            t('edit')}
                                 </button>
                             </td>
                         </tr>

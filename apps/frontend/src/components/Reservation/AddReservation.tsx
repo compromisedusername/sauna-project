@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useTranslation}from 'react-i18next'
 
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
@@ -13,6 +14,7 @@ import { SaunaDto } from "../../models/Sauna";
 import validateReservation from "./validateReservation";
 
 const AddReservation = () => {
+const {t} = useTranslation<'pl'|'en'>();
   const [reservation, setReservation] = useState<ReservationRequestAdd>({
     userId: 0,
     saunaId: 0,
@@ -149,9 +151,15 @@ return (
                 navigate("/admin/reservations");
             }}
         >
-            Go back
+             {//@ts-ignore
+               t('goback')}
         </button>
-      <h2 className="title">Add Reservation</h2>
+      <h2 className="title">
+ {//@ts-ignore
+               t('add')}{" "}
+ {//@ts-ignore
+               t('reservation')}
+      </h2>
          {validationErrors.length > 0 && (
                     <ul className="validation-errors">
                         {validationErrors.map((error, index) => (
@@ -234,7 +242,10 @@ return (
         </div>
 
 
-        <button type="submit" className="submit-button">Save Changes</button>
+        <button type="submit" className="submit-button">
+ {//@ts-ignore
+               t('save')}
+        </button>
       </form>
     </div>
   );

@@ -9,8 +9,10 @@ import {
 import { ReservationResponse } from "../../models/Reservation";
 import validateNwSauna from "./validateSauna";
 
+import {useTranslation}from 'react-i18next'
 
 const EditSauna = () => {
+const {t} = useTranslation<'pl'|'en'>();
   const { id } = useParams<{ id: string }>();
   const [sauna, setSauna] = useState<SaunaRequestUpdate | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -130,7 +132,8 @@ return (
 						navigate("/admin/saunas");
 					}}
 				>
-					Go back
+					 {//@ts-ignore
+            t('goback')}
 				</button>
 			  {validationErrors.length > 0 && (
             <ul className="validation-errors">
@@ -139,11 +142,16 @@ return (
               ))}
             </ul>
           )}
-      <h2 className="title">Edit Sauna</h2>
+      <h2 className="title">
+ {//@ts-ignore
+            t('edit')}{" "}Sauna
+
+      </h2>
       <form onSubmit={handleSubmit} className="add-form">
         <div className="add-form-group">
           <label htmlFor="name" className="form-label">
-            Name:
+             {//@ts-ignore
+            t('name')}
           </label>
           <input
             type="text"
@@ -156,7 +164,9 @@ return (
         </div>
         <div className="add-form-group">
           <label htmlFor="saunaType" className="form-label">
-            Sauna Type:
+
+ {//@ts-ignore
+            t('saunaType')}
           </label>
           <input
             type="text"
@@ -169,7 +179,10 @@ return (
         </div>
         <div className="add-form-group">
           <label htmlFor="humidity" className="form-label">
-            Humidity:
+
+ {//@ts-ignore
+            t('humidity')}
+
           </label>
           <input
             type="text"
@@ -182,7 +195,10 @@ return (
         </div>
         <div className="add-form-group">
           <label htmlFor="temperature" className="form-label">
-            Temperature:
+
+ {//@ts-ignore
+            t('temperature')}
+
           </label>
           <input
             type="text"
@@ -195,7 +211,9 @@ return (
         </div>
         <div className="add-form-group">
           <label htmlFor="peopleCapacity" className="form-label">
-            People Capacity:
+
+ {//@ts-ignore
+            t('peopleCapacity')}
           </label>
           <input
             type="text"
@@ -208,7 +226,8 @@ return (
         </div>
         <div className="add-form-group">
           <label htmlFor="reservations" className="form-label">
-            Reservations:
+ {//@ts-ignore
+            t('reservations')}
           </label>
           <Select
             isMulti
@@ -223,7 +242,8 @@ return (
         </div>
 
         <button type="submit" className="submit-button">
-          Save Changes
+ {//@ts-ignore
+            t('savechanges')}
         </button>
       </form>
     </div>

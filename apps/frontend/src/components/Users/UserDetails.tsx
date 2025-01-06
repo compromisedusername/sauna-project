@@ -1,12 +1,14 @@
 import { UserDto } from "../../models/User";
 import { useState } from "react";
 
+import {useTranslation}from 'react-i18next'
 interface UserDetailsProps {
   user: UserDto;
   onClose: () => void;
 }
 
 const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
+ const {t} = useTranslation<'pl'|'en'>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPagesize] = useState<number>(5);
   const totalReservations = user.reservations?.length || 0;
@@ -28,14 +30,26 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
   };
   return (
     <div className="container">
-      <h3 className="title">User Details</h3>
+      <h3 className="title">
+ {//@ts-ignore
+            t('userdetails')}
+
+      </h3>
 
       <table className="table">
         <thead className="table-header">
           <tr className="table-header-row">
-            <th className="table-header-cell">User ID</th>
-            <th className="table-header-cell">Name</th>
-            <th className="table-header-cell">Surname</th>
+            <th className="table-header-cell">ID</th>
+            <th className="table-header-cell">
+{//@ts-ignore
+               t('name')}
+
+            </th>
+            <th className="table-header-cell">
+{//@ts-ignore
+               t('surname')}
+
+            </th>
             <th className="table-header-cell">Email</th>
           </tr>
         </thead>
@@ -49,13 +63,24 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
         </tbody>
       </table>
 
-      <h4 className="title">Role:</h4>
+      <h4 className="title">
+ {//@ts-ignore
+            t('roles')}
+
+      </h4>
       <table className="table">
         <thead className="table-header">
           <tr className="table-header-row">
             <th className="table-header-cell">ID</th>
-            <th className="table-header-cell">Name</th>
-            <th className="table-header-cell">Description</th>
+            <th className="table-header-cell">
+{//@ts-ignore
+               t('name')}
+
+            </th>
+            <th className="table-header-cell">
+{//@ts-ignore
+               t('desc')}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +91,11 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
           </tr>
         </tbody>
       </table>
-      <h4 className="title">Reservations:</h4>
+      <h4 className="title">
+ {//@ts-ignore
+            t('reservations')}
+
+      </h4>
       {user.reservations?.length > 0 ? (
         <>
           <table className="table">
@@ -99,19 +128,29 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              Previous Reservations
+               {//@ts-ignore
+            t('previous')} {//@ts-ignore
+            t('reservations')}
             </button>
             <span className="sauna-details-page-info">
-              Page {currentPage} of {totalPages}
+               {//@ts-ignore
+            t('page')} {currentPage} of {totalPages}
             </span>
             <button
               className="action-button"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              Next Reservations
+  {//@ts-ignore
+            t('next')}      {//@ts-ignore
+            t('reservations')}
+
             </button>
-            <span className="form-label">Page Size:</span>
+            <span className="form-label">
+ {//@ts-ignore
+            t('pagesize')}
+
+            </span>
             <select
               className="select"
               style={{ width: "60px" }}
@@ -127,11 +166,16 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
           </div>
         </>
       ) : (
-        <p className="no-data">No reservations found for this user.</p>
+        <p className="no-data">
+ {//@ts-ignore
+            t('nodata')}
+
+          </p>
       )}
 
       <button className="back-button" onClick={onClose}>
-        Close
+         {//@ts-ignore
+            t('close')}
       </button>
     </div>
   );

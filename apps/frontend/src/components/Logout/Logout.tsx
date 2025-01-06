@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import api from './../../api/api'
+import {useTranslation}from 'react-i18next'
 export default function Logout({ setToken }: any) {
   const navigate = useNavigate();
+const {t} = useTranslation<'pl'|'en'>();
 
 
 async function logoutUser(){
@@ -17,7 +19,10 @@ async function logoutUser(){
   return (
     <div className='container'>
         {" "}
-        <button className='action-button' onClick={() => {setToken(""); logoutUser(); navigate("/dashboard")}}> LOGOUT</button>
+        <button className='action-button' onClick={() => {setToken(""); logoutUser(); navigate("/dashboard")}}>
+        {// @ts-ignore
+          t('logout')}
+          </button>
     </div>
   );
 }

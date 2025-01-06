@@ -38,7 +38,8 @@ function App() {
   const [role, setRole] = useState<string>("guest");
   const [userId, setUserId] = useState<number | null>(null);
 
-  const { t } = useTranslation<'en'>();
+  const { t, i18n } = useTranslation<'pl'|'en'>();
+
   useEffect(() => {
     setRole(getRoleFromToken(token));
     setUserId(getIdFromToken(token));
@@ -47,6 +48,7 @@ function App() {
   return (
 
     <div className="wrapper">
+
       <BrowserRouter>
         <Navbar role={role} setToken={setToken} userId={userId}></Navbar>
         <Routes>

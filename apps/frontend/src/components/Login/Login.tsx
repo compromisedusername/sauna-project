@@ -5,6 +5,7 @@ import "./Login.css";
 import PropTypes from "prop-types";
 import validateLogin from "./validateLogin";
 
+import { useTranslation } from "react-i18next";
 type LoginResponse = {
   response: string;
   statusCode: number;
@@ -31,6 +32,7 @@ export default function Login({
 }: {
   setToken: (token: string) => void;
 }) {
+  const { t, i18n } = useTranslation<'pl'|'en'>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -71,7 +73,9 @@ export default function Login({
             ))}
           </ul>
         )}
-        <h1>Please Log In</h1>
+        <h1></h1>
+        {// @ts-ignore
+          t('pleaselogin')}
         {error && <p className="login-error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>
@@ -79,7 +83,10 @@ export default function Login({
             <input type="text" onChange={(e) => setEmail(e.target.value)} />
           </label>
           <label>
-            <p>Password</p>
+            <p>
+        {// @ts-ignore
+          t('password')}
+            </p>
             <input
               type="password"
               onChange={(e) => setPassword(e.target.value)}
@@ -87,7 +94,9 @@ export default function Login({
           </label>
           <div>
             <button className="action-button" type="submit">
-              Submit
+
+        {// @ts-ignore
+          t('submit')}
             </button>
           </div>
         </form>
@@ -99,7 +108,14 @@ export default function Login({
             className="action-button"
             onClick={() => navigate("/register")}
           >
-            Dont have an acoount? Register
+
+        {// @ts-ignore
+          t('donthaveaccount')
+
+            }
+
+        {// @ts-ignore
+          t('register')}
           </button>
         </p>
 
@@ -111,7 +127,9 @@ export default function Login({
               setToken("");
             }}
           >
-            Continue As Guest
+
+        {// @ts-ignore
+          t('continueguest')}
           </button>
         </p>
       </div>

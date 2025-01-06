@@ -1,3 +1,10 @@
+Użyte technologie:  Nodejs, Express, Typeorm, Mysql, React, i18
+
+
+Implementacja na poziomie 4, niestety nie do końca wykonane tłumaczenie.
+
+Po odpaleniu backendu, można zobaczyć końcówki w swaggerze na adresie /api/docs, niestety czasem nie ładują się modele.
+
 Uruchomienie projektu:
 
 w folderze root projektu:
@@ -36,3 +43,7 @@ W celu uruchomienia aplikacji należy wpisać w folderze root projektu:
 npm run dev
 `
 Skrypt uruchomi backend i frontend jednocześnie.
+
+Frontend działa na localhost:3001,
+
+credentiale admina: email: admin@example.com, hasło: admin123

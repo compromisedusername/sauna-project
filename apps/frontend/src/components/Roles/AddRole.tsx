@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useTranslation}from 'react-i18next'
 import { useNavigate } from "react-router-dom";
 import Select, { MultiValue } from "react-select";
 import api from "../../api/api";
@@ -9,6 +10,7 @@ import validateRole from "./validateRole";
 interface AddRoleProps { }
 
 const AddRole: React.FC<AddRoleProps> = () => {
+const {t} = useTranslation<'pl'|'en'>();
     const [role, setRole] = useState<RoleRequestAdd>({
         name: "",
         description: "",
@@ -105,7 +107,8 @@ const AddRole: React.FC<AddRoleProps> = () => {
                     navigate("/admin/roles");
                 }}
             >
-                Go back
+                 {//@ts-ignore
+               t('goback')}
             </button>
             {validationErrors.length > 0 && (
                 <ul className="validation-errors">
@@ -120,7 +123,9 @@ const AddRole: React.FC<AddRoleProps> = () => {
             <form onSubmit={handleSubmit} className="add-form">
                 <div className="add-form-group">
                     <label htmlFor="name" className="form-label">
-                        Name:
+                         {//@ts-ignore
+               t('name')}
+                        :
                     </label>
                     <input
                         type="text"
@@ -133,7 +138,9 @@ const AddRole: React.FC<AddRoleProps> = () => {
                 </div>
                 <div className="add-form">
                     <label htmlFor="description" className="form-label">
-                        Description:
+                         {//@ts-ignore
+               t('desc')}
+                        :
                     </label>
                     <input
                         type="text"
@@ -146,7 +153,8 @@ const AddRole: React.FC<AddRoleProps> = () => {
                 </div>
                 <div className="add-form">
                     <label htmlFor="users" className="form-label">
-                        User:
+                         {//@ts-ignore
+               t('user')}:
                     </label>
                     <Select
                         isMulti
@@ -160,7 +168,8 @@ const AddRole: React.FC<AddRoleProps> = () => {
                 </div>
 
                 <button type="submit" className="submit-button">
-                    Save New Role
+                     {//@ts-ignore
+               t('add')}
                 </button>
             </form>
         </div>

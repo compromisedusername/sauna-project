@@ -2,10 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import AdminPanel from "../AdminPanel/AdminDashboard";
 import UserPanel from "../UserPanel/UserPanel";
+import { useTranslation } from "react-i18next";
 
 
 export default function Dashboard({ role }: { role: string }) {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation<'pl'|'en'>();
   console.log(role);
   return (
     <div className="container">
@@ -13,15 +15,37 @@ export default function Dashboard({ role }: { role: string }) {
       {!role || role === "guest" ? (
         <div className="click">
           <p className="click">
-            Don't have an account?{" "}
-              <button className="action-button" onClick={() => navigate("/register")}>Register</button>
+
+        {// @ts-ignore
+          t('donthaveanaccount')}
+            {" "}
+              <button className="action-button" onClick={() => navigate("/register")}>
+
+        {// @ts-ignore
+          t('register')}
+            </button>
           </p>
            <p className="click">
-            Already have an account?{" "}
-             <button className="action-button" onClick={() => navigate("/login")}>Login</button>
+        {// @ts-ignore
+          t('alreadyhavaccount')}
+            {" "}
+             <button className="action-button" onClick={() => navigate("/login")}>
+
+
+        {// @ts-ignore
+          t('login')}
+            </button>
            </p>
-              <p className="click">See our saunas!
-                <button className="action-button" onClick={()=>navigate('/about/saunas')}>See Saunas</button>
+              <p className="click">
+
+        {// @ts-ignore
+          t('seesaunas-text')}
+                <button className="action-button" onClick={()=>navigate('/about/saunas')}>
+
+        {// @ts-ignore
+          t('seesaunas-btn')}
+
+            </button>
               </p>
         </div>
       ) : (
@@ -33,7 +57,11 @@ export default function Dashboard({ role }: { role: string }) {
               <UserPanel></UserPanel>
             </>):(<></>)}
          <p className="form-label">
-            <button className="action-button" onClick={() => navigate("/logout")}>Clik here to Logout</button>
+            <button className="action-button" onClick={() => navigate("/logout")}>
+
+        {// @ts-ignore
+          t('clicklogout')}
+              </button>
          </p>
         </div>
       )}

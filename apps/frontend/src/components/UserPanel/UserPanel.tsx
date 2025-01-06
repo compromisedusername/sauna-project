@@ -1,33 +1,83 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 export default function UserPanel() {
-  const navigate = useNavigate();
-  return (
-    <div className="container">
-      <h2 className="title">User Dashboard</h2>
+	const navigate = useNavigate();
 
-      <p className="click">Click here to see your reservations.</p>
-      <button
-        className="action-button"
-        onClick={() => navigate("/user/reservations")}
-      >
-        See Reservations
-      </button>
-      <p  className="click">
-        Click here to make reservation for sauna.
-        <button className="action-button" onClick={() => navigate("/user/reservation/add")}>
-         Make Reservation
-        </button>
-      </p>
-        <p className="click">
-        Click here to see our saunas.
-        <button className="action-button" onClick={() => navigate("/about/saunas")}>See Saunas</button>
-      </p>
-        <p  className="click">
-        Click here to edit your account
-        <button className="action-button" onClick={() => navigate("/user/edit")}>Edit Account</button>
-      </p>
-    </div>
-  );
+	const { t } = useTranslation<"pl" | "en">();
+	return (
+		<div className="container">
+			<h2 className="title">
+				{
+					// @ts-ignore
+					t("userdashboard")
+				}
+			</h2>
+
+			<p className="click">
+				{
+					// @ts-ignore
+					t("clicktoseereservations")
+				}
+			</p>
+			<button
+				className="action-button"
+				onClick={() => navigate("/user/reservations")}
+			>
+				{
+					// @ts-ignore
+					t("seereservations")
+				}
+			</button>
+
+			<p className="click">
+				{
+					// @ts-ignore
+					t("clicktomakereservation")
+				}
+				<button
+					className="action-button"
+					onClick={() => navigate("/user/reservation/add")}
+				>
+					{
+						// @ts-ignore
+						t("makereservation")
+					}
+				</button>
+			</p>
+
+			<p className="click">
+				{
+					// @ts-ignore
+					t("clicktoseesaunas")
+				}
+				<button
+					className="action-button"
+					onClick={() => navigate("/about/saunas")}
+				>
+					{
+						// @ts-ignore
+						t("seesaunas-btn")
+					}
+				</button>
+			</p>
+
+			<p className="click">
+				{
+					// @ts-ignore
+					t("clicktoeditaccount")
+				}
+				<button
+					className="action-button"
+					onClick={() => navigate("/user/edit")}
+				>
+					{
+						// @ts-ignore
+						t("editaccount")
+					}
+				</button>
+			</p>
+		</div>
+	);
 }

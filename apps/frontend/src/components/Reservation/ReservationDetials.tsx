@@ -1,4 +1,5 @@
 import { ReservationResponse } from "../../models/Reservation";
+import {useTranslation}from 'react-i18next'
  interface ReservationDetailsProps {
   reservation: ReservationResponse;
   onClose: () => void;
@@ -8,6 +9,7 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
   reservation,
   onClose,
 }) => {
+const {t} = useTranslation<'pl'|'en'>();
   return (
     <div className='container'>
       <div className='title'>ReservationDetails</div>

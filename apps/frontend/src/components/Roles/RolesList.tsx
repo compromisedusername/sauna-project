@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useTranslation}from 'react-i18next'
 import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import { RoleDto, UserForRoleDto } from "../../models/Role";
@@ -6,6 +7,7 @@ import RoleDetails from "./RoleDetails";
 import DeleteRole from "./DeleteRole";
 
 const RolesList: React.FC = () => {
+const {t} = useTranslation<'pl'|'en'>();
     const [roles, setRoles] = useState<RoleDto[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -45,7 +47,8 @@ return (
                         navigate("/admin/");
                     }}
                 >
-                    Go back
+                     {//@ts-ignore
+               t('goback')}
                 </button>
                 <button
                     className="add-button"
@@ -53,7 +56,9 @@ return (
                         navigate(`/admin/role/add`);
                     }}
                 >
-                    Add New Role
+                     {//@ts-ignore
+               t('add')} {//@ts-ignore
+               t('role')}
                 </button>
             </div>
             <h2 className="title">Roles</h2>
@@ -63,9 +68,19 @@ return (
                 <table className="table">
                     <thead className="table-header">
                         <tr className="table-header-row">
-                            <th className="table-header-cell">Name</th>
-                            <th className="table-header-cell">Description</th>
-                            <th className="table-header-cell">Actions</th>
+                            <th className="table-header-cell">
+ {//@ts-ignore
+               t('name')}
+                                </th>
+                            <th className="table-header-cell">
+ {//@ts-ignore
+               t('desc')}
+                                </th>
+                            <th className="table-header-cell">
+ {//@ts-ignore
+               t('add')}
+
+                                </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,21 +89,27 @@ return (
                                 <td className="table-cell">{role.name}</td>
                                 <td className="table-cell">{role.description}</td>
                                 <td className="table-cell">
-                                    <button className="action-button" onClick={() => setSelectedRole(role)}>Details</button>
+                                    <button className="action-button" onClick={() => setSelectedRole(role)}>
+ {//@ts-ignore
+               t('details')}
+                                        </button>
                                     <button className="action-button"
                                         onClick={() => {
                                             setDeletedRoleId(role.id);
                                             setSelectedRole(null);
                                         }}
                                     >
-                                        Delete
-                                    </button>
+                                         {//@ts-ignore
+               t('delete')}
+
+                                        </button>
                                     <button className="action-button"
                                         onClick={() => {
                                             navigate(`/admin/role/${role.id}/edit`);
                                         }}
                                     >
-                                        Edit
+                                         {//@ts-ignore
+               t('edit')}
                                     </button>
                                 </td>
                             </tr>

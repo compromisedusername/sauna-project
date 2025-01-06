@@ -5,7 +5,10 @@ import UserDelete from "./UserDelete";
 import { UserDto, UsersResponsePaginated } from "../../models/User";
 import UserDetails from "./UserDetails";
 
+
+import {useTranslation}from 'react-i18next'
 const UsersList: React.FC = () => {
+ const {t} = useTranslation<'pl'|'en'>();
   const [users, setUsers] = useState<UserDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,7 +79,11 @@ const UsersList: React.FC = () => {
 
   return (
     <div className="container">
-      <h2 className="title">Users</h2>
+      <h2 className="title">
+{//@ts-ignore
+               t('users')}
+
+      </h2>
       <div className="actions">
         <button
           className="back-button"
@@ -84,7 +91,8 @@ const UsersList: React.FC = () => {
             navigate("/admin/");
           }}
         >
-          Go back
+          {//@ts-ignore
+               t('goback')}
         </button>
         <button
           className="add-button"
@@ -92,19 +100,36 @@ const UsersList: React.FC = () => {
             navigate(`/admin/user/add`);
           }}
         >
-          Add new user
+           {//@ts-ignore
+            t('adduser')}
         </button>
       </div>
       {users.length === 0 ? (
-        <p>No users found.</p>
+        <p>
+ {//@ts-ignore
+            t('nodata')}
+
+        </p>
       ) : (
         <table className="table">
           <thead className="table-header">
             <tr className="table-header-row">
               <th className="table-header-cell">ID</th>
-              <th className="table-header-cell">Name</th>
-              <th className="table-header-cell">Surname</th>
-              <th className="table-header-cell">Actions</th>
+              <th className="table-header-cell">
+{//@ts-ignore
+               t('name')}
+
+                </th>
+              <th className="table-header-cell">
+{//@ts-ignore
+               t('surname')}
+
+                </th>
+              <th className="table-header-cell">
+{//@ts-ignore
+               t('actions')}
+
+                </th>
             </tr>
           </thead>
           <tbody>
@@ -124,7 +149,8 @@ const UsersList: React.FC = () => {
                       setSelectedUser(user);
                     }}
                   >
-                    Details
+                     {//@ts-ignore
+            t('details')}
                   </button>
                   <button
                     className="action-button"
@@ -133,7 +159,8 @@ const UsersList: React.FC = () => {
                       setSelectedUser(null);
                     }}
                   >
-                    Delete
+                     {//@ts-ignore
+            t('delete')}
                   </button>
                   <button
                     className="action-button"
@@ -141,7 +168,8 @@ const UsersList: React.FC = () => {
                       navigate(`/admin/user/${user.id}/edit`);
                     }}
                   >
-                    Edit
+                     {//@ts-ignore
+            t('edit')}
                   </button>
                 </td>
               </tr>
@@ -169,10 +197,14 @@ const UsersList: React.FC = () => {
           onClick={() => handlePrevPage()}
           disabled={currentPage === 1}
         >
-          Previous Page
+           {//@ts-ignore
+            t('prev')} {//@ts-ignore
+            t('page')}
         </button>
         <span className="form-label">
-          Page{" "}
+           {//@ts-ignore
+            t('page')}{" "}
+
           <input
             type="number"
             className="input"
@@ -188,10 +220,14 @@ const UsersList: React.FC = () => {
           onClick={() => handleNextPage()}
           disabled={currentPage === totalPages}
         >
-          Next Page
+           {//@ts-ignore
+            t('next')}
+           {//@ts-ignore
+            t('page')}
         </button>
         <span className="form-label">
-          Page Size:
+           {//@ts-ignore
+            t('pagesize')}
           <select
             className="select"
             value={pageSize}

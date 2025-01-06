@@ -3,7 +3,11 @@ import api from "../../api/api";
 import { SaunaResponseGuests } from "../../models/Sauna";
 import { useNavigate } from "react-router-dom";
 
+
+import {useTranslation}from 'react-i18next'
 const SaunasGuestsList: React.FC = () => {
+
+const {t} = useTranslation<'pl'|'en'>();
   const [saunas, setSaunas] = useState<SaunaResponseGuests[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,11 +44,28 @@ const SaunasGuestsList: React.FC = () => {
         <table className="sauna-table">
           <thead>
             <tr className="table-header-row">
-              <th className="table-header">Name</th>
-              <th className="table-header">Type</th>
-              <th className="table-header">Humidity</th>
-              <th className="table-header">Temperature</th>
-              <th className="table-header">Capacity</th>
+              <th className="table-header">
+ {//@ts-ignore
+            t('name')}
+
+                </th>
+              <th className="table-header">
+ {//@ts-ignore
+            t('saunaType')}
+                </th>
+              <th className="table-header">
+ {//@ts-ignore
+            t('humidity')}
+                </th>
+              <th className="table-header">
+ {//@ts-ignore
+            t('temperature')}
+
+                </th>
+              <th className="table-header">
+ {//@ts-ignore
+            t('peopleCapacity')}
+                </th>
             </tr>
           </thead>
           <tbody>

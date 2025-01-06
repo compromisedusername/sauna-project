@@ -7,6 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import DeleteReservation from "./DeleteReservation";
 import ReservationDetails from "./ReservationDetials";
+import {useTranslation}from 'react-i18next'
 const ReservationsList: React.FC = () => {
 	const [reservations, setReservations] = useState<ReservationResponse[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
@@ -20,6 +21,7 @@ const ReservationsList: React.FC = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [totalPages, setTotalPages] = useState<number>(1);
 	const [pageInput, setPageInput] = useState<string>("1");
+const {t} = useTranslation<'pl'|'en'>();
 
 	const navigate = useNavigate();
 
@@ -80,7 +82,11 @@ const ReservationsList: React.FC = () => {
 	};
 	return (
 		<div className="container">
-			<h2 className="title">Reservations</h2>
+			<h2 className="title">
+ {//@ts-ignore
+               t('reservations')}
+
+			</h2>
 			<div className="actions">
 				<button
 					className="back-button"
@@ -88,7 +94,8 @@ const ReservationsList: React.FC = () => {
 						navigate("/admin/");
 					}}
 				>
-					Go back
+					 {//@ts-ignore
+               t('goback')}
 				</button>
 				<button
 					className="add-button"
@@ -96,7 +103,8 @@ const ReservationsList: React.FC = () => {
 						navigate(`/admin/reservation/add`);
 					}}
 				>
-					Add new reservation
+					 {//@ts-ignore
+               t('add')}
 				</button>
 			</div>
 			{reservations.length === 0 ? (
@@ -130,7 +138,8 @@ const ReservationsList: React.FC = () => {
 											setSelectedReservation(reservation);
 										}}
 									>
-										Details
+										 {//@ts-ignore
+               t('details')}
 									</button>
 									<button
 										className="action-button"
@@ -139,7 +148,8 @@ const ReservationsList: React.FC = () => {
 											setSelectedReservation(null);
 										}}
 									>
-										Delete
+										 {//@ts-ignore
+               t('delete')}
 									</button>
 									<button
 										className="action-button"
@@ -147,7 +157,8 @@ const ReservationsList: React.FC = () => {
 											navigate(`/admin/reservation/${reservation.id}/edit`);
 										}}
 									>
-										Edit
+										 {//@ts-ignore
+               t('edit')}
 									</button>
 								</td>
 							</tr>

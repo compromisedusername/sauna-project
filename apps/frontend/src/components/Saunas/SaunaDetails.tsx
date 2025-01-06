@@ -1,12 +1,14 @@
 import { SaunaDto } from "../../models/Sauna";
 import { useState } from "react";
 
+import {useTranslation}from 'react-i18next'
 interface SaunaDetailsProps {
   sauna: SaunaDto;
   onClose: () => void;
 }
 
 const SaunaDetails: React.FC<SaunaDetailsProps> = ({ sauna, onClose }) => {
+const {t} = useTranslation<'pl'|'en'>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPagesize] = useState<number>(5);
   const totalReservations = sauna.reservations?.length || 0;
@@ -29,16 +31,36 @@ const SaunaDetails: React.FC<SaunaDetailsProps> = ({ sauna, onClose }) => {
 
   return (
     <div className="container">
-      <h3 className="title">Sauna Details</h3>
+      <h3 className="title">
+ {//@ts-ignore
+            t('details')}
+      </h3>
       <table className="table">
         <thead className="table-header">
           <tr className="table-header-row">
             <th className="table-header-cell">Sauna ID</th>
-            <th className="table-header-cell">Name</th>
-            <th className="table-header-cell">Type</th>
-            <th className="table-header-cell">Humidity</th>
-            <th className="table-header-cell">Temperature</th>
-            <th className="table-header-cell">Capacity</th>
+            <th className="table-header-cell">
+ {//@ts-ignore
+            t('name')}
+            </th>
+            <th className="table-header-cell">
+ {//@ts-ignore
+            t('type')}
+            </th>
+            <th className="table-header-cell">
+ {//@ts-ignore
+            t('humidity')}
+
+            </th>
+            <th className="table-header-cell">
+ {//@ts-ignore
+            t('temperature')}
+            </th>
+            <th className="table-header-cell">
+ {//@ts-ignore
+            t('peopleCapacity')}
+
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -52,16 +74,30 @@ const SaunaDetails: React.FC<SaunaDetailsProps> = ({ sauna, onClose }) => {
           </tr>
         </tbody>
       </table>
-      <h4 className="title">Reservations:</h4>
+      <h4 className="title">
+ {//@ts-ignore
+            t('reservations')}
+        :</h4>
       {sauna.reservations?.length > 0 ? (
         <>
           <table className="table">
             <thead className="table-header">
               <tr className="table-header-row">
                 <th className="table-header-cell">ID</th>
-                <th className="table-header-cell">From</th>
-                <th className="table-header-cell">To</th>
-                <th className="table-header-cell">People</th>
+                <th className="table-header-cell">
+ {//@ts-ignore
+            t('from')}
+                </th>
+                <th className="table-header-cell">
+ {//@ts-ignore
+            t('to')}
+
+                </th>
+                <th className="table-header-cell">
+ {//@ts-ignore
+            t('people')}
+
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -81,19 +117,24 @@ const SaunaDetails: React.FC<SaunaDetailsProps> = ({ sauna, onClose }) => {
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              Previous Reservations
+             {//@ts-ignore
+            t('prev')}
             </button>
             <span className="details-page-info">
-              Page {currentPage} of {totalPages}
+               {//@ts-ignore
+            t('page')} {currentPage} of {totalPages}
             </span>
             <button
               className="action-button"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              Next Reservations
+               {//@ts-ignore
+            t('next')}
             </button>
-            <span className="form-label">Page Size:</span>
+            <span className="form-label">
+               {//@ts-ignore
+            t('pagesize')}:</span>
             <select style={{width: "50px"}}
               className="select"
               value={pageSize}
@@ -108,9 +149,17 @@ const SaunaDetails: React.FC<SaunaDetailsProps> = ({ sauna, onClose }) => {
           </div>
         </>
       ) : (
-        <p className="no-data">No reservations found for this sauna.</p>
+        <p className="no-data">
+ {//@ts-ignore
+            t('nodata')}
+
+          </p>
       )}
-      <button className="back-button" onClick={onClose}>Close</button>
+      <button className="back-button" onClick={onClose}>
+ {//@ts-ignore
+            t('close')}
+
+      </button>
     </div>
   );
 };

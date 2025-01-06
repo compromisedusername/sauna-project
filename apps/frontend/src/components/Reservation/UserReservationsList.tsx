@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useTranslation}from 'react-i18next'
 import api from "../../api/api";
 import {
   ReservationResponse,
@@ -16,6 +17,7 @@ const UserReservationsList = ({ userId }: { userId: number }) => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [pageInput, setPageInput] = useState<string>("1");
 
+const {t} = useTranslation<'pl'|'en'>();
   const navigate = useNavigate();
 
   useEffect(() => {

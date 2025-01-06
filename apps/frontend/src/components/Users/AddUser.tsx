@@ -5,10 +5,12 @@ import api from "../../api/api";
 import { UserRequestAdd, ReservationWithoutUser } from "../../models/User";
 import { RoleDto } from "../../models/Role";
 import validateUser from "./validateUser";
-
+import {useTranslation}from 'react-i18next'
 interface AddUserProps { }
 
 const AddUser: React.FC<AddUserProps> = () => {
+
+const {t} = useTranslation<'pl'|'en'>();
     const [user, setUser] = useState<UserRequestAdd>({
         name: "",
         surname: "",
@@ -114,7 +116,7 @@ const AddUser: React.FC<AddUserProps> = () => {
         });
     };
 
-    if (error) return <p>Error loading user details: {error}</p>;
+    if (error) return <p>Error: {error}</p>;
 
     const roleOptions = roles.map((role) => ({
         value: role.id,
@@ -148,7 +150,13 @@ const AddUser: React.FC<AddUserProps> = () => {
                     ))}
                 </ul>
             )}
-            <h2 className="title">Add User</h2>
+            <h2 className="title">
+
+{//@ts-ignore
+            t('adduser')}
+
+            </h2>
+
             <form onSubmit={handleSubmit} className="add-form">
                 {validationErrors.length > 0 && (
                     <ul className="validation-errors">
@@ -231,7 +239,8 @@ const AddUser: React.FC<AddUserProps> = () => {
                 </div>
 
                 <button type="submit" className="submit-button">
-                    Save Changes
+                    {//@ts-ignore
+            t('savechanges')}
                 </button>
             </form>
         </div>

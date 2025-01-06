@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+
+import {useTranslation}from 'react-i18next'
 import { useNavigate } from "react-router-dom";
 import Select, { MultiValue } from "react-select";
 import api from "../../api/api";
@@ -23,6 +25,8 @@ const EditUser = ({
 	if (!id && userId !== null && role !== "admin") {
 		id = String(userId);
 	}
+
+const {t} = useTranslation<'pl'|'en'>();
 	const [user, setUser] = useState<UserRequestUpdate>({
 		userId: Number(id),
 		name: "",
@@ -189,7 +193,11 @@ const EditUser = ({
 
 
 		  <h2 className="error">{ (error? error:null)}</h2>
-			<h2 className="title">Edit User</h2>
+			<h2 className="title">
+{//@ts-ignore
+            t('edituser')}
+
+			</h2>
 			<form onSubmit={handleSubmit} className="add-form">
                 {validationErrors.length > 0 && (
                     <ul className="validation-errors">
@@ -200,7 +208,8 @@ const EditUser = ({
                 )}
                   <div className="add-form-group">
                       <label className="form-label">
-                            Name:
+                            {//@ts-ignore
+            t('name')}
                         </label>
                         <input
                             type="text"
@@ -213,7 +222,8 @@ const EditUser = ({
                 </div>
                  <div className="add-form-group">
                       <label className="form-label">
-                            Surname:
+                            {//@ts-ignore
+            t('surname')}
                         </label>
                        <input
                             type="text"
@@ -240,7 +250,8 @@ const EditUser = ({
 
                 <div className="add-form-group">
                     <label className="form-label">
-                        Password:
+                        {//@ts-ignore
+            t('password')}
                     </label>
                     <input
                         type="password"
@@ -257,7 +268,8 @@ const EditUser = ({
 					<>
                         <div className="add-form-group">
                             <label className="form-label">
-                                Role:
+                                {//@ts-ignore
+            t('role')}
                             </label>
                             <Select
                                 options={roleOptions}
@@ -272,7 +284,8 @@ const EditUser = ({
 
                         <div className="add-form-group">
                              <label className="form-label">
-                                Reservations:
+                                {//@ts-ignore
+            t('reservations')}
                             </label>
                             <Select
                                 isMulti
@@ -288,7 +301,11 @@ const EditUser = ({
 					</>
 				)}
 				<br />
-    <button type="submit" className="submit-button">Save Changes</button>
+    <button type="submit" className="submit-button">
+{//@ts-ignore
+            t('savechanges')}
+
+    		</button>
 			</form>
 		</div>
 	);

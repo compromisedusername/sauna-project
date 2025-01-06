@@ -1,7 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 export default function AdminPanel() {
+
+  const { t, i18n } = useTranslation<'pl'|'en'>();
   const navigate = useNavigate();
   return (
     <div className="container">
@@ -11,26 +15,33 @@ export default function AdminPanel() {
         className="action-button"
         onClick={() => navigate("/admin/reservations")}
       >
-        Reservations
+
+        {// @ts-ignore
+          t('reservations')}
       </button>
       <button
         className="action-button"
         onClick={() => navigate("/admin/roles")}
       >
-        Roles
+
+        {// @ts-ignore
+          t('roles')}
       </button>
 
       <button
         className="action-button"
         onClick={() => navigate("/admin/saunas")}
       >
-        Saunas
+        {// @ts-ignore
+          t('saunas')}
       </button>
       <button
         className="action-button"
         onClick={() => navigate("/admin/users")}
       >
-        Users
+
+        {// @ts-ignore
+          t('users')}
       </button>
     </div>
   );

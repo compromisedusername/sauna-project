@@ -1,4 +1,5 @@
 import React from "react";
+import {useTranslation}from 'react-i18next'
 import { RoleDto, UserForRoleDto } from "../../models/Role";
 
 interface RoleDetailsProps {
@@ -7,14 +8,27 @@ interface RoleDetailsProps {
 }
 
 const RoleDetails: React.FC<RoleDetailsProps> = ({ role, onClose }) => {
+
+const {t} = useTranslation<'pl'|'en'>();
   return (
     <div className="container">
-      <h3 className="title">Role Details</h3>
+      <h3 className="title">
+{//@ts-ignore
+            t('details')}
+      </h3>
       <table className="table">
         <thead className="table-header">
           <tr className="table-header-row">
-            <th className="header-cell">Name</th>
-            <th className="header-cell">Description</th>
+            <th className="header-cell">
+ {//@ts-ignore
+               t('name')}
+
+            </th>
+            <th className="header-cell">
+ {//@ts-ignore
+               t('desc')}
+
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -24,13 +38,23 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, onClose }) => {
           </tr>
         </tbody>
       </table>
-      <h4 className="title">Users:</h4>
+      <h4 className="title">
+        {//@ts-ignore
+            t('users')}
+        :</h4>
       {role.users?.length > 0 ? (
         <table className="table">
           <thead className="table-header">
             <tr className="table-header-row">
-              <th className="header-cell">Name</th>
-              <th className="header-cell">Surname</th>
+              <th className="header-cell">
+{//@ts-ignore
+            t('name')}
+
+              </th>
+              <th className="header-cell">
+{//@ts-ignore
+            t('surname')}
+              </th>
               <th className="header-cell">Email</th>
             </tr>
           </thead>
@@ -45,7 +69,10 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role, onClose }) => {
           </tbody>
         </table>
       ) : (
-        <p className="no-data">No users assigned to this role.</p>
+        <p className="no-data">
+{//@ts-ignore
+            t('nodata')}
+          </p>
       )}
       <button className="close-button" onClick={onClose}>
         Close

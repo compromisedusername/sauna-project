@@ -1,4 +1,5 @@
 import React from "react";
+import {useTranslation}from 'react-i18next'
 import api from "./../../api/api";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +16,7 @@ const DeleteRole: React.FC<DeleteRoleProps> = ({
 }) => {
     const navigate = useNavigate();
 
+const {t} = useTranslation<'pl'|'en'>();
     const handleClick = async () => {
         try {
             await api.delete(`/role/${roleId}`);
@@ -28,12 +30,25 @@ const DeleteRole: React.FC<DeleteRoleProps> = ({
 
     return (
     <div className='container'>
-            <h2 className='title'>Delete Role for ID: {roleId}</h2>
-            <p className='title-sure'>Are you sure?</p>
+            <h2 className='title'>
+
+                 {//@ts-ignore
+               t('delete')}{" "}
+                Role
+               ID: {roleId}</h2>
+            <p className='title-sure'>
+ {//@ts-ignore
+               t('sure')}
+
+            </p>
             <button className='delete-button' onClick={handleClick}>
-                DELETE
+                 {//@ts-ignore
+               t('delete')}
             </button>
-            <button className='back-button' onClick={onClose}>Close</button>
+            <button className='back-button' onClick={onClose}>
+ {//@ts-ignore
+               t('close')}
+            </button>
         </div>
     );
 };

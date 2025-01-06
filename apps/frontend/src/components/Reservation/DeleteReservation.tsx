@@ -1,4 +1,5 @@
 import React from "react";
+import {useTranslation}from 'react-i18next'
 import api from "./../../api/api";
 import { Dispatch } from "react";
 import { SetStateAction } from "react";
@@ -11,6 +12,7 @@ const DeleteReservation = ({
 	  setReservations: ()=>void;
 }) => {
 
+const {t} = useTranslation<'pl'|'en'>();
 	const handleClick = async () => {
 		if (reservationId) {
 			try {

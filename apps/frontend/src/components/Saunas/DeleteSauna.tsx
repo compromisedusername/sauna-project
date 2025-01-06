@@ -1,5 +1,5 @@
 import api from "../../api/api";
-
+import {useTranslation}from 'react-i18next'
 const DeleteSauna = ({
   saunaId,
   onClose,
@@ -9,6 +9,7 @@ const DeleteSauna = ({
   onClose: () => void;
   setSaunas: () => void;
 }) => {
+const {t} = useTranslation<'pl'|'en'>();
   const handleClick = async () => {
     if (saunaId) {
       try {
@@ -23,10 +24,23 @@ const DeleteSauna = ({
 
   return (
     <div className='container'>
-      <h2 className = 'title'>Delete Sauna for ID: {saunaId}</h2>
-      <p className='title-sure'>Are you sure?</p>
-      <button className='delete-button' onClick={handleClick}> YES, DELETE sauna ID: {saunaId}</button>
-      <button className='back-button' onClick={onClose}>NO, CLOSE</button>
+      <h2 className = 'title'>
+ {//@ts-ignore
+            t('delete-sauna')}
+        ID: {saunaId}</h2>
+      <p className='title-sure'>
+ {//@ts-ignore
+            t('sure')}
+
+      </p>
+      <button className='delete-button' onClick={handleClick}>
+ {//@ts-ignore
+            t('delete')}
+        sauna ID: {saunaId}</button>
+      <button className='back-button' onClick={onClose}>
+ {//@ts-ignore
+            t('close')}
+      </button>
     </div>
   );
 };

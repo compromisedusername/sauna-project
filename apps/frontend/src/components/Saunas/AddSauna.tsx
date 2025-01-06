@@ -5,8 +5,11 @@ import api from "../../api/api";
 import { SaunaRequestAdd, SaunaResponse } from "./../../models/Sauna";
 import { ReservationResponse } from "../../models/Reservation";
 import validateNwSauna from "./validateSauna";
+import { useTranslation } from "react-i18next";
+
 
 const AddSauna = () => {
+  const { t } = useTranslation<"en"|"pl">();
   const [sauna, setSauna] = useState<SaunaRequestAdd>({
     name: "",
     saunaType: "",
@@ -79,7 +82,7 @@ const AddSauna = () => {
     });
   };
 
-  if (error) return <p>Error loading user details: {error}</p>;
+  if (error) return <p>Error: {error}</p>;
 
   const reservationsOptions = reservations.map((reservation) => ({
     value: reservation.id,
@@ -96,7 +99,8 @@ const AddSauna = () => {
           navigate("/admin/saunas");
         }}
       >
-        Go back
+        {//@ts-ignore
+          t('goback')}
       </button>
       {validationErrors.length > 0 && (
         <ul className="validation-errors">
@@ -107,11 +111,15 @@ const AddSauna = () => {
           ))}
         </ul>
       )}
-      <h2 className="title">Add Sauna</h2>
+      <h2 className="title">
+          {//@ts-ignore
+            t('add')} Sauna
+      </h2>
       <form onSubmit={handleSubmit} className="add-form">
         <div className="add-form-group">
           <label htmlFor="name" className="form-label">
-            Name:
+              {//@ts-ignore
+                 t('name')}:
           </label>
           <input
             type="text"
@@ -124,7 +132,8 @@ const AddSauna = () => {
         </div>
         <div className="add-form-group">
           <label htmlFor="saunaType" className="form-label">
-            Sauna Type:
+              {//@ts-ignore
+                 t('saunaType')}:
           </label>
           <input
             type="text"
@@ -137,7 +146,8 @@ const AddSauna = () => {
         </div>
         <div className="add-form-group">
           <label htmlFor="humidity" className="form-label">
-            Humidity:
+            {//@ts-ignore
+                t('humidity')}:
           </label>
           <input
             type="text"
@@ -150,7 +160,8 @@ const AddSauna = () => {
         </div>
         <div className="add-form-group">
           <label htmlFor="peopleCapacity" className="form-label">
-            People Capacity:
+              {//@ts-ignore
+                 t('peopleCapacity')}:
           </label>
           <input
             type="text"
@@ -163,7 +174,8 @@ const AddSauna = () => {
         </div>
         <div className="add-form-group">
           <label htmlFor="temperature" className="form-label">
-            Temperature:
+              {//@ts-ignore
+                 t('temperature')}:
           </label>
           <input
             type="text"
@@ -176,7 +188,8 @@ const AddSauna = () => {
         </div>
         <div className="add-form-group">
           <label htmlFor="reservations" className="form-label">
-            Reservations:
+            {//@ts-ignore
+               t('reservations')}:
           </label>
           <Select
             isMulti
@@ -191,7 +204,8 @@ const AddSauna = () => {
         </div>
 
         <button type="submit" className="submit-button">
-          Save New Sauna
+          {//@ts-ignore
+            t('add')}
         </button>
       </form>
     </div>

@@ -1,4 +1,5 @@
 import Select, { MultiValue } from "react-select";
+import {useTranslation}from 'react-i18next'
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
@@ -9,6 +10,7 @@ import validateRole from "./validateRole";
 interface EditRoleProps { }
 
 const EditRole: React.FC<EditRoleProps> = () => {
+const {t} = useTranslation<'pl'|'en'>();
     const { id } = useParams<{ id: string }>();
     const [users, setUsers] = useState<UserReservationResponse[]>([]);
     const [role, setRole] = useState<RoleRequestUpdate | null>(null);
@@ -111,7 +113,8 @@ const EditRole: React.FC<EditRoleProps> = () => {
                     navigate("/admin/roles");
                 }}
             >
-                Go back
+                 {//@ts-ignore
+               t('goback')}
             </button>
             {validationErrors.length > 0 && (
                 <ul className="validation-errors">
@@ -122,12 +125,19 @@ const EditRole: React.FC<EditRoleProps> = () => {
                     ))}
                 </ul>
             )}
-            <h2 className="title">Edit Role</h2>
+            <h2 className="title">
+ {//@ts-ignore
+               t('editrole')}
+
+            </h2>
             <form onSubmit={handleSubmit} className="add-form">
-                <p>Role ID: {role?.id}</p>
+                <p> {//@ts-ignore
+               t('role')} ID: {role?.id}</p>
                 <div className="add-form-group">
                     <label htmlFor="name" className="form-label">
-                        Name:
+
+                        : {//@ts-ignore
+               t('name')}
                     </label>
                     <input
                         type="text"
@@ -140,7 +150,8 @@ const EditRole: React.FC<EditRoleProps> = () => {
                 </div>
                 <div className="add-form">
                     <label htmlFor="description" className="form-label">
-                        Description:
+                         {//@ts-ignore
+               t('desc')}:
                     </label>
                     <input
                         type="text"
@@ -167,7 +178,8 @@ const EditRole: React.FC<EditRoleProps> = () => {
                 </div>
 
                 <button type="submit" className="submit-button">
-                    Save Changes
+                     {//@ts-ignore
+               t('save')}
                 </button>
             </form>
         </div>

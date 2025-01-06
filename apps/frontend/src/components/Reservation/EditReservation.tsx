@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useTranslation}from 'react-i18next'
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import api from "../../api/api";
@@ -12,6 +13,7 @@ import { SaunaDto } from "../../models/Sauna";
 import validateReservation from "./validateReservation";
 
 const EditReservation = () => {
+const {t} = useTranslation<'pl'|'en'>();
   const { id } = useParams<{ id: string }>();
   const [reservation, setReservation] = useState<ReservationResponse | null>(
     null,
@@ -171,7 +173,8 @@ const EditReservation = () => {
           navigate("/admin/reservations");
         }}
       >
-        Go back
+         {//@ts-ignore
+               t('goback')}
       </button> {validationErrors.length > 0 && (
           <ul className="validation-errors">
             {validationErrors.map((error, index) => (
@@ -181,9 +184,16 @@ const EditReservation = () => {
             ))}
           </ul>
         )}
-      <h2 className="title">Edit Reservation</h2>
+      <h2 className="title">
+ {//@ts-ignore
+               t('edit')}
+        {" "}
+ {//@ts-ignore
+               t('reservation')}
+      </h2>
       <form onSubmit={handleSubmit} className="add-form">
-        <p>Reservation ID: {reservation.id}</p>
+        <p> {//@ts-ignore
+               t('reservation')} ID: {reservation.id}</p>
 
         <div className="add-form-group">
           <label htmlFor="user" className="form-label">
@@ -263,7 +273,8 @@ const EditReservation = () => {
         </div>
 
         <button type="submit" className="submit-button">
-          Save Changes
+           {//@ts-ignore
+               t('save')}
         </button>
       </form>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useTranslation}from 'react-i18next'
 
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
@@ -13,6 +14,7 @@ import { SaunaDto, SaunaResponse, SaunaResponseGuests } from "../../models/Sauna
 import validateReservation from "./validateReservation";
 
 const AddUserReservation = ({ userId }: { userId: number }) => {
+const {t} = useTranslation<'pl'|'en'>();
   const [reservation, setReservation] = useState<ReservationRequestAdd>({
     userId: userId,
     saunaId: 0,

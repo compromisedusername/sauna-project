@@ -1,5 +1,7 @@
 import api from "../../api/api";
 
+import {useTranslation}from 'react-i18next'
+
 const UserDelete = ({
   userId,
   onClose,
@@ -9,6 +11,7 @@ const UserDelete = ({
   onClose: () => void;
   setUsers: () => void;
 }) => {
+const {t} = useTranslation<'pl'|'en'>();
   const handleClick = async () => {
     if (userId) {
       try {
@@ -23,12 +26,26 @@ const UserDelete = ({
 
   return (
     <div className='container'>
-      <h2 className='title'>Delete User ID: {userId}</h2>
-      <p className='title-sure'>Are you sure?</p>
+      <h2 className='title'>
+ {//@ts-ignore
+            t('deleteuserquestion')}
+        ID: {userId}</h2>
+      <p className='title-sure'>
+ {//@ts-ignore
+            t('sure')}
+
+      </p>
       <button className='delete-button' onClick={handleClick}>
-        YES, DELETE user ID: {userId}
+
+{//@ts-ignore
+            t('deleteuser')}
+         ID: {userId}
       </button>
-      <button className ='back-button'onClick={onClose}>NO, CLOSE</button>
+      <button className ='back-button'onClick={onClose}>
+ {//@ts-ignore
+            t('close')}
+
+      </button>
     </div>
   );
 };
