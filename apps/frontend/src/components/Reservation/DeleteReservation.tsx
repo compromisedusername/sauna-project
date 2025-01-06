@@ -24,14 +24,14 @@ const DeleteReservation = ({
 	};
 
 	return (
-		<>
-			<h2>Delete Reservation for ID: {reservationId}</h2>
-			<p>Are you sure?</p>
-			<button onClick={handleClick}>
+		<div className='container'>
+			<h2 className= 'title'>Delete Reservation for ID: {reservationId}</h2>
+			<p className='title-sure'>Are you sure?</p>
+			<button className='back-button' onClick={handleClick}>
 			YES, DELETE reservation ID: {reservationId}
 			</button>
-			<button onClick={onClose}>NO, CLOSE</button>
-		</>
+			<button className='delete-button' onClick={onClose}>NO, CLOSE</button>
+		</div>
 	);
 };
 

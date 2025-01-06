@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import { RoleRequestUpdate, RoleDto } from "../../models/Role";
 import { UserReservationResponse } from "../../models/Reservation";
+import validateRole from "./validateRole";
+
 interface EditRoleProps { }
 
 const EditRole: React.FC<EditRoleProps> = () => {
@@ -13,11 +15,12 @@ const EditRole: React.FC<EditRoleProps> = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-
     const [selectedUserOptions, setSelecetdUserOptions] = useState<MultiValue<{
         value: number;
         label: string;
     }> | null>(null);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
     useEffect(() => {
         const fetchRole = async () => {
             if (id) {
@@ -50,7 +53,13 @@ const EditRole: React.FC<EditRoleProps> = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setValidationErrors([]);
         if (role) {
+            const errors = validateRole(role);
+            if (errors.length > 0) {
+                setValidationErrors(errors);
+                return;
+            }
             try {
                 console.log(role);
                 const response = await api.put(`/role`, role);
@@ -85,7 +94,7 @@ const EditRole: React.FC<EditRoleProps> = () => {
             }
             return {
                 ...prevRole!,
-                users: options?.map((option) => option.value),
+                users: options.map((option) => option.value),
             };
         });
     };
@@ -93,38 +102,59 @@ const EditRole: React.FC<EditRoleProps> = () => {
         value: user.id,
         label: `Name: ${user.name}, Surname: ${user.surname}, Email: (${user.email})`,
     }));
+
     return (
-        <div>
-            <h2>Edit Role</h2>
-				<button
-					onClick={() => {
-						navigate("/admin/roles");
-					}}
-				>
-					Go back
-				</button>
-            <form onSubmit={handleSubmit}>
-                <p>Role ID: {role.id}</p>
-                <label>
-                    Name:
+        <div className="container">
+            <button
+                className="back-button"
+                onClick={() => {
+                    navigate("/admin/roles");
+                }}
+            >
+                Go back
+            </button>
+            {validationErrors.length > 0 && (
+                <ul className="validation-errors">
+                    {validationErrors.map((error, index) => (
+                        <li key={index} className="validation-error">
+                            {error}
+                        </li>
+                    ))}
+                </ul>
+            )}
+            <h2 className="title">Edit Role</h2>
+            <form onSubmit={handleSubmit} className="add-form">
+                <p>Role ID: {role?.id}</p>
+                <div className="add-form-group">
+                    <label htmlFor="name" className="form-label">
+                        Name:
+                    </label>
                     <input
                         type="text"
                         name="name"
-                        value={role.name}
+                        id="name"
+                        value={role?.name}
                         onChange={handleInputChange}
+                        className="input"
                     />
-                </label>
-                <label>
-                    Description:
+                </div>
+                <div className="add-form">
+                    <label htmlFor="description" className="form-label">
+                        Description:
+                    </label>
                     <input
                         type="text"
                         name="description"
-                        value={role.description}
+                        id="description"
+                        value={role?.description}
                         onChange={handleInputChange}
+                        className="input"
                     />
-                </label>
-                <label>
-                    User:
+                </div>
+                <div className="add-form">
+                    <label htmlFor="users" className="form-label">
+                        User:
+                    </label>
                     <Select
                         isMulti
                         options={usersOptions}
@@ -132,9 +162,13 @@ const EditRole: React.FC<EditRoleProps> = () => {
                         onChange={handleUserSelectChange}
                         placeholder="Select user..."
                         isSearchable
+                        className="select"
                     />
-                </label>
-                <button type="submit">Save Changes</button>
+                </div>
+
+                <button type="submit" className="submit-button">
+                    Save Changes
+                </button>
             </form>
         </div>
     );

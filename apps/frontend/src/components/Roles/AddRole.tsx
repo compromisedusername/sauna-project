@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Select, { MultiValue } from "react-select";
 import api from "../../api/api";
 import { RoleRequestAdd, UserRoleResponse } from "../../models/Role";
-import { useEffect } from "react";
-import { UserReservationResponse } from "../../models/Reservation";
 import { UserDto } from "../../models/User";
-import {MultiValue } from 'react-select'
-import Select from 'react-select';
+import validateRole from "./validateRole";
+
 interface AddRoleProps { }
 
 const AddRole: React.FC<AddRoleProps> = () => {
@@ -17,12 +16,12 @@ const AddRole: React.FC<AddRoleProps> = () => {
     });
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-
     const [users, setUsers] = useState<UserRoleResponse[]>([]);
     const [selectedUserOptions, setSelecetdUserOptions] = useState<MultiValue<{
         value: number;
         label: string;
     }> | null>(null);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -35,7 +34,7 @@ const AddRole: React.FC<AddRoleProps> = () => {
                         name: user.name,
                         surname: user.surname,
                         email: user.email,
-                        role: user.role.name
+                        role: user.role.name,
                     };
                 });
 
@@ -47,9 +46,16 @@ const AddRole: React.FC<AddRoleProps> = () => {
 
         fetchUsers();
     }, []);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setValidationErrors([]);
         if (role) {
+            const errors = validateRole(role);
+            if (errors.length > 0) {
+                setValidationErrors(errors);
+                return;
+            }
             try {
                 const response = await api.post(`/role`, role);
                 navigate("/admin/roles");
@@ -68,17 +74,18 @@ const AddRole: React.FC<AddRoleProps> = () => {
             [name]: value,
         }));
     };
+
     const handleUserSelectChange = (
-        options:MultiValue< { value: number; label: string }>
+        options: MultiValue<{ value: number; label: string }>,
     ) => {
         setSelecetdUserOptions(options);
         setRole((prevRole) => {
-            if(!options){
-                return {...prevRole!, users: []}
+            if (!options) {
+                return { ...prevRole!, users: [] };
             }
             return {
                 ...prevRole,
-                userId: options.map(option => option.value),
+                users: options.map((option) => option.value),
             };
         });
     };
@@ -87,32 +94,60 @@ const AddRole: React.FC<AddRoleProps> = () => {
         value: user.id,
         label: `Name: ${user.name}, Surname: ${user.surname}, Email: (${user.email}), Role: (${user.role})`,
     }));
+
     if (error) return <p>Error loading role details: {error}</p>;
 
     return (
-        <div>
-            <h2>Add Role</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Name:
+        <div className="container">
+            <button
+                className="back-button"
+                onClick={() => {
+                    navigate("/admin/roles");
+                }}
+            >
+                Go back
+            </button>
+            {validationErrors.length > 0 && (
+                <ul className="validation-errors">
+                    {validationErrors.map((error, index) => (
+                        <li key={index} className="validation-error">
+                            {error}
+                        </li>
+                    ))}
+                </ul>
+            )}
+            <h2 className="title">Add Role</h2>
+            <form onSubmit={handleSubmit} className="add-form">
+                <div className="add-form-group">
+                    <label htmlFor="name" className="form-label">
+                        Name:
+                    </label>
                     <input
                         type="text"
                         name="name"
+                        id="name"
                         value={role.name}
                         onChange={handleInputChange}
+                        className="input"
                     />
-                </label>
-                <label>
-                    Description:
+                </div>
+                <div className="add-form">
+                    <label htmlFor="description" className="form-label">
+                        Description:
+                    </label>
                     <input
                         type="text"
                         name="description"
+                        id="description"
                         value={role.description}
                         onChange={handleInputChange}
+                        className="input"
                     />
-                </label>{" "}
-                <label>
-                    User:
+                </div>
+                <div className="add-form">
+                    <label htmlFor="users" className="form-label">
+                        User:
+                    </label>
                     <Select
                         isMulti
                         options={usersOptions}
@@ -120,9 +155,13 @@ const AddRole: React.FC<AddRoleProps> = () => {
                         onChange={handleUserSelectChange}
                         placeholder="Select user..."
                         isSearchable
+                        className="select"
                     />
-                </label>
-                <button type="submit">Save New Role</button>
+                </div>
+
+                <button type="submit" className="submit-button">
+                    Save New Role
+                </button>
             </form>
         </div>
     );

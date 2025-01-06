@@ -1,12 +1,13 @@
 import { SaunaDto } from "../../models/Sauna";
 import { useState } from "react";
+
 interface SaunaDetailsProps {
   sauna: SaunaDto;
   onClose: () => void;
 }
 
 const SaunaDetails: React.FC<SaunaDetailsProps> = ({ sauna, onClose }) => {
-const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPagesize] = useState<number>(5);
   const totalReservations = sauna.reservations?.length || 0;
   const totalPages = Math.ceil(totalReservations / pageSize);
@@ -25,44 +26,76 @@ const [currentPage, setCurrentPage] = useState<number>(1);
   const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPagesize(Number(e.target.value));
   };
+
   return (
-    <div>
-      <h3>Sauna Details</h3>
-      <p>Sauna ID: {sauna.id}</p>
-      <p>Name: {sauna.name}</p>
-      <p>Type: {sauna.saunaType}</p>
-      <p>Humidity: {sauna.humidity}%</p>
-      <p>Temperature: {sauna.temperature}°C</p>
-      <p>Capacity: {sauna.peopleCapacity} people</p>
-      <h4>Reservations:</h4>
-      {sauna.reservations.length > 0 ? (
-      <>
-        <ul>
-          {reservationsOnPage.map(reservation => (
-            <li key={reservation.id}>
-              Reservation ID: {reservation.id}, From: {new Date(reservation.dateFrom).toLocaleString()}, To: {new Date(reservation.dateTo).toLocaleString()}, People: {reservation.numberOfPeople}
-            </li>
-          ))}
-        </ul><div>
+    <div className="container">
+      <h3 className="title">Sauna Details</h3>
+      <table className="table">
+        <thead className="table-header">
+          <tr className="table-header-row">
+            <th className="table-header-cell">Sauna ID</th>
+            <th className="table-header-cell">Name</th>
+            <th className="table-header-cell">Type</th>
+            <th className="table-header-cell">Humidity</th>
+            <th className="table-header-cell">Temperature</th>
+            <th className="table-header-cell">Capacity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="table-row">
+            <td className="table-cell">{sauna.id}</td>
+            <td className="table-cell">{sauna.name}</td>
+            <td className="table-cell">{sauna.saunaType}</td>
+            <td className="table-cell">{sauna.humidity}%</td>
+            <td className="table-cell">{sauna.temperature}°C</td>
+            <td className="table-cell">{sauna.peopleCapacity} people</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4 className="title">Reservations:</h4>
+      {sauna.reservations?.length > 0 ? (
+        <>
+          <table className="table">
+            <thead className="table-header">
+              <tr className="table-header-row">
+                <th className="table-header-cell">ID</th>
+                <th className="table-header-cell">From</th>
+                <th className="table-header-cell">To</th>
+                <th className="table-header-cell">People</th>
+              </tr>
+            </thead>
+            <tbody>
+              {reservationsOnPage.map(reservation => (
+                <tr key={reservation.id} className="table-row">
+                  <td className="table-cell">{reservation.id}</td>
+                  <td className="table-cell">{new Date(reservation.dateFrom).toLocaleString()}</td>
+                  <td className="table-cell">{new Date(reservation.dateTo).toLocaleString()}</td>
+                  <td className="table-cell">{reservation.numberOfPeople}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="add-form">
             <button
+              className="action-button"
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
               Previous Reservations
             </button>
-            <span>
-              {" "}
-              Page {currentPage} of {totalPages}{" "}
+            <span className="details-page-info">
+              Page {currentPage} of {totalPages}
             </span>
             <button
+              className="action-button"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
               Next Reservations
             </button>
-            Page Size:
-            <select
-              style={{ width: "60px" }}
+            <span className="form-label">Page Size:</span>
+            <select style={{width: "50px"}}
+              className="select"
               value={pageSize}
               onChange={handlePageSizeChange}
             >
@@ -73,12 +106,13 @@ const [currentPage, setCurrentPage] = useState<number>(1);
               <option value={50}>50</option>
             </select>
           </div>
-          </>
+        </>
       ) : (
-        <p>No reservations found for this sauna.</p>
+        <p className="no-data">No reservations found for this sauna.</p>
       )}
-      <button onClick={onClose}>Close</button>
+      <button className="back-button" onClick={onClose}>Close</button>
     </div>
   );
 };
+
 export default SaunaDetails;

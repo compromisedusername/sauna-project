@@ -9,8 +9,7 @@ import {
 import { SaunaRepository } from "../repositories/sauna.repository";
 import { ReservationRepository } from "../repositories/reservation.repository";
 import { ErrorFactory } from "../errors/error-factory.error";
-import { validateUpdateSauna } from "../utils/validators/sauna/sauna.validator";
-import { validateAddSauna } from "../utils/validators/sauna/sauna.validator";
+import { validateNwSauna } from "../utils/validators/sauna/sauna.validator";
 import { UpdatedResponse } from "../dto/response/response-factory.response";
 import { Reservation } from "../entities/reservation.model";
 
@@ -36,7 +35,7 @@ export class SaunaService {
     return sauna;
   }
   public async addSauna(data: AddSaunaRequest): Promise<number> {
-    validateAddSauna(data);
+    validateNwSauna(data);
     const reservations: Reservation[] = await Promise.all(
       data.reservations.map((id) =>
         this.reservationRepository.getReservationById(id),
@@ -117,7 +116,7 @@ export class SaunaService {
   }
 
   public async updateSauna(data: UpdateSaunaRequest): Promise<boolean> {
-    validateUpdateSauna(data);
+    validateNwSauna(data);
     const sauna = await this.getSauna(data.id);
     if ((sauna && !sauna.id) || !sauna) {
       throw ErrorFactory.createNotFoundError(

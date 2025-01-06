@@ -7,8 +7,7 @@ import { Role } from "../entities/role.model";
 import { Reservation } from "../entities/reservation.model";
 import { comparePasswords, hashPassword } from "../utils/bcrypt";
 import {
-  validateAddUser,
-  validateUpdateUser,
+  validateNewUser,
 } from "../utils/validators/user/user.validator";
 import { RoleRepository } from "../repositories/role.repository";
 import { ReservationRepository } from "../repositories/reservation.repository";
@@ -99,6 +98,7 @@ export class UserService {
 
   public async updateUser(data: UpdateUserRequest): Promise<boolean> {
 
+    validateNewUser(data);
     const userGetByEmail = await this.userRepository.getUserByEmail(data.email);
 
     const existingUser = await this.userRepository.getUserById(data.userId);
@@ -145,7 +145,7 @@ export class UserService {
   }
 
   public async addUser(data: AddUserRequest): Promise<number> {
-    validateAddUser(data);
+    validateNewUser(data);
     const role: Role = await this.roleRepository.getRoleById(data.role);
     const reservations: Reservation[] = await Promise.all(
       data.reservations.map((id) =>

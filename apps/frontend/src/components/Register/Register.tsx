@@ -1,91 +1,148 @@
-import { useNavigate } from 'react-router-dom';
-import React, {useState} from 'react';
-import api from './../../api/api';
-import './Register.css';
-import PropTypes from 'prop-types';
-
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import api from "./../../api/api";
+import PropTypes from "prop-types";
+import validateRegister from "./validateRegister";
 type RegisterResponse = {
   response: string;
   statusCode: number;
   jwtToken: string;
-}
-async function registerUser(credentials: {email: string; password: string; name: string; surname: string;}){
-  try{
-      console.log(credentials)
+};
+async function registerUser(credentials: {
+  email: string;
+  password: string;
+  name: string;
+  surname: string;
+}) {
+  try {
+    console.log(credentials);
     const response = await api.post<RegisterResponse>("/register", credentials);
-    if(response.data && response.data.jwtToken){
-    console.log(response.data)
+    if (response.data && response.data.jwtToken) {
+      console.log(response.data);
       return response.data.jwtToken;
     }
-
-  }catch(error: any){
+  } catch (error: any) {
     console.error("Error during register: ", error.response?.data);
-    throw new Error(`Register failed. ${error.response.data['response']} `);
+    throw new Error(`Register failed. ${error.response.data["response"]} `);
   }
 }
 
-
-export default function Register( {setToken}: any,  ) {
-const [email, setEmail] = useState("");
+export default function Register({ setToken }: any) {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const navigate = useNavigate();
-const [error, setError] = useState("");
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [error, setError] = useState("");
 
-const handleSubmit = async (e: React.FormEvent) => {
-    try{
-  e.preventDefault();
-    const token = await registerUser({
-      email, password, name, surname
-    });
-    setToken(token);
-    }catch(err: any){
+  const handleSubmit = async (e: React.FormEvent) => {
+    try {
+      e.preventDefault();
+      setValidationErrors([]);
+
+      const errors: string[] = validateRegister(surname, name, password, email);
+      if (errors.length > 0) {
+        setValidationErrors(errors);
+        return;
+      }
+      const token = await registerUser({
+        email,
+        password,
+        name,
+        surname,
+      });
+      setToken(token);
+    } catch (err: any) {
       setError(err.message);
     }
-  }
+  };
 
+  return (
+    <>
+      <div className="login-wrapper">
+        <h2 className="title">Register</h2>
+        {error && <p className="validation-error">{error}</p>}
 
-  return( <>
-    <div className="register-wrapper">
-      <h1>Register</h1>
-      {error && <p className="register-error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          <p>Email</p>
-          <input type="text" onChange={e => setEmail(e.target.value)}/>
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)} />
-        </label>
-        <label>
-          <p>Name</p>
-          <input type="text" onChange={e => setName(e.target.value)}/>
-        </label>
-        <label>
-          <p>Surname</p>
-          <input type="text" onChange={e => setSurname(e.target.value)}/>
-        </label>
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-    </div>
-<div className="decide-log">
-        <p>
-          Already have an account? <a onClick={() => navigate("/login")}>Login</a>
-        </p>
-        <p>
-          Or <span onClick={ () => {setToken(""); navigate("/dashboard")}} >Continue as Guest</span>
-        </p>
+        {validationErrors.length > 0 && (
+          <ul className="validation-errors">
+            {validationErrors.map((error, index) => (
+              <li key={index} className="validation-error">
+                {error}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <form onSubmit={handleSubmit} className="add-form">
+          <div className="add-form-group">
+            <label className="form-label">Email</label>
+            <input
+              type="text"
+              className="input"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="add-form-group">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              className="input"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <div className="add-form-group">
+            <label className="form-label">Name</label>
+            <input
+              type="text"
+              className="input"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="add-form-group">
+            <label className="form-label">Surname</label>
+            <input
+              type="text"
+              className="input"
+              onChange={(e) => setSurname(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="submit-button">
+            Submit
+          </button>
+        </form>
       </div>
 
-</>
+      <div className="decide-log">
+        <p>
+          <button
+            className="action-button"
+            onClick={() => navigate("/login")}
+          >
+            Already have an account? Login
+          </button>
+        </p>
 
-  )
+        <p>
+          <button
+            className="action-button"
+            onClick={() => {
+              navigate("/dashboard");
+              setToken("");
+            }}
+          >
+            Continue As Guest
+          </button>
+        </p>
+      </div>
+    </>
+  );
 }
 
 Register.propTypes = {
-  setToken: PropTypes.func.isRequired
+  setToken: PropTypes.func.isRequired,
 };

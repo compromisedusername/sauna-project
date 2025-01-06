@@ -2,7 +2,7 @@ import { AddUserRequest } from "../../../dto/request/add.user.request";
 import { UpdateUserRequest } from "../../../dto/request/update.user.request";
 import { ErrorFactory } from "../../../errors/error-factory.error";
 
-export function validateAddUser(data: AddUserRequest): void {
+export function validateNewUser(data: AddUserRequest | UpdateUserRequest): void {
   if (data.name && (data.name.length < 3 || data.name.length >= 60)) {
     throw ErrorFactory.createBadRequestError(
       "Name must be longer than 2 characters and shorter than 60 characters",
@@ -20,6 +20,4 @@ export function validateAddUser(data: AddUserRequest): void {
     throw ErrorFactory.createBadRequestError("Incorrect email format.");
   }
 
-}
-export function validateUpdateUser(data: UpdateUserRequest): void {
 }

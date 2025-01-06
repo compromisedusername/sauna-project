@@ -6,11 +6,13 @@ import { UpdateSaunaRequest } from "../../../dto/request/update.sauna.request";
 import { ErrorFactory } from "../../../errors/error-factory.error";
 
 
-export function validateAddRole(data : AddRoleRequest):void{
+export function validateNewRole(data : AddRoleRequest | AddRoleRequest):void{
 
+      if( data.name && data.name.length > 20){
+      throw ErrorFactory.createBadRequestError("Role name cant exceed 20 chars")
+    }
+      if(data.description && data.description.length > 20){
+      throw ErrorFactory.createBadRequestError("Role description cant exceed 20 chars")
+    }
 }
 
-
-export function validateUpdateRole(data: UpdateRoleRequest):void{
-    validateAddRole(data);
-}

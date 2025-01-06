@@ -5,13 +5,11 @@ import { UpdateSaunaRequest } from "../dto/request/update.sauna.request";
 import { SaunaResponse } from "../dto/response/sauna.response.dto";
 import { SaunaRepository } from "../repositories/sauna.repository";
 import { ErrorFactory } from "../errors/error-factory.error";
-import { validateUpdateSauna } from "../utils/validators/sauna/sauna.validator";
-import { validateAddSauna as validateAddSauna } from "../utils/validators/sauna/sauna.validator";
+import { validateNwSauna as validateNwSauna } from "../utils/validators/sauna/sauna.validator";
 import { AddRoleRequest } from "../dto/request/add.role.request";
 import { Role } from "../entities/role.model";
 import {
-  validateAddRole,
-  validateUpdateRole,
+  validateNewRole,
 } from "../utils/validators/role/role.validator";
 import { User } from "../entities/user.model";
 import { UpdateRoleRequest } from "../dto/request/update.role.request";
@@ -67,7 +65,15 @@ return rolesWithourUser;
     return role;
   }
   public async addRole(data: AddRoleRequest): Promise<number> {
-    validateAddRole(data);
+
+      validateNewRole(data);
+
+      if(data.name.length > 20){
+      throw ErrorFactory.createBadRequestError("Role name cant exceed 20 chars")
+    }
+      if(data.description.length > 20){
+      throw ErrorFactory.createBadRequestError("Role description cant exceed 20 chars")
+    }
 
     const users: User[] = await Promise.all(
       data.users.map((id) => this.userRepository.getUserById(id)),
@@ -90,7 +96,10 @@ return rolesWithourUser;
   }
 
   public async updateRole(data: UpdateRoleRequest): Promise<boolean> {
-    validateUpdateRole(data);
+
+
+    validateNewRole(data);
+
     const role = await this.getRole(data.id);
     if ((role && !role.id) || !role) {
       throw ErrorFactory.createNotFoundError(

@@ -36,21 +36,19 @@ const RolesList: React.FC = () => {
             prevRoles.filter((role) => deletedRoleId !== role.id),
         );
     };
-
-    return (
-        <div>
-            <h2>Roles</h2>
-            <div>
+return (
+        <div className="container">
+            <div className="actions">
                 <button
+                    className="back-button"
                     onClick={() => {
                         navigate("/admin/");
                     }}
                 >
                     Go back
                 </button>
-            </div>
-            <div>
                 <button
+                    className="add-button"
                     onClick={() => {
                         navigate(`/admin/role/add`);
                     }}
@@ -58,32 +56,45 @@ const RolesList: React.FC = () => {
                     Add New Role
                 </button>
             </div>
+            <h2 className="title">Roles</h2>
             {roles.length === 0 ? (
                 <p>No roles found.</p>
             ) : (
-                <ul>
-                    {roles.map((role) => (
-                        <li key={role.id}>
-                            Role Name: {role.name} - {role.description}
-                            <button onClick={() => setSelectedRole(role)}>Details</button>
-                            <button
-                                onClick={() => {
-                                    setDeletedRoleId(role.id);
-                                    setSelectedRole(null);
-                                }}
-                            >
-                                Delete
-                            </button>
-                            <button
-                                onClick={() => {
-                                    navigate(`/admin/role/${role.id}/edit`);
-                                }}
-                            >
-                                Edit
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+                <table className="table">
+                    <thead className="table-header">
+                        <tr className="table-header-row">
+                            <th className="table-header-cell">Name</th>
+                            <th className="table-header-cell">Description</th>
+                            <th className="table-header-cell">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {roles.map((role) => (
+                            <tr key={role.id} className="table-row">
+                                <td className="table-cell">{role.name}</td>
+                                <td className="table-cell">{role.description}</td>
+                                <td className="table-cell">
+                                    <button className="action-button" onClick={() => setSelectedRole(role)}>Details</button>
+                                    <button className="action-button"
+                                        onClick={() => {
+                                            setDeletedRoleId(role.id);
+                                            setSelectedRole(null);
+                                        }}
+                                    >
+                                        Delete
+                                    </button>
+                                    <button className="action-button"
+                                        onClick={() => {
+                                            navigate(`/admin/role/${role.id}/edit`);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             )}
             {deletedRoleId && (
                 <DeleteRole
@@ -100,6 +111,7 @@ const RolesList: React.FC = () => {
             )}
         </div>
     );
+
 };
 
 export default RolesList;

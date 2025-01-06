@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Select, { MultiValue } from "react-select";
 import api from "../../api/api";
-import { SaunaRequestUpdate, SaunaResponse } from "./../../models/Sauna";
+import {
+  SaunaRequestUpdate,
+  SaunaResponse,
+} from "./../../models/Sauna";
 import { ReservationResponse } from "../../models/Reservation";
+import validateNwSauna from "./validateSauna";
+
 
 const EditSauna = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +19,7 @@ const EditSauna = () => {
     useState<MultiValue<{ value: number; label: string }> | null>(null);
   const [reservations, setReservations] = useState<ReservationResponse[]>([]);
   const navigate = useNavigate();
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchSauna = async () => {
@@ -62,19 +68,23 @@ const EditSauna = () => {
     fetchReservations();
   }, [id]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (sauna) {
-      try {
-        console.log(sauna);
-        const response = await api.put(`/sauna`, sauna);
-        console.log(response.statusText)
-        navigate("/admin/saunas");
-      } catch (error: any) {
-        setError(`Error updating sauna: ${error.message}`);
-      }
-    }
-  };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (sauna) {
+            const errors = validateNwSauna(sauna);
+            if (errors.length > 0) {
+                setValidationErrors(errors);
+                return;
+            }
+            try {
+                const response = await api.put(`/sauna`, sauna);
+                console.log(response.statusText)
+                navigate("/admin/saunas");
+            } catch (error: any) {
+                setError(`Error updating sauna: ${error.message}`);
+            }
+        }
+    };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -112,64 +122,94 @@ const EditSauna = () => {
     ).toLocaleString()}, Sauna Type: (${reservation.sauna?.saunaType
       }) Left seats: (${reservation.sauna?.peopleCapacity - reservation.numberOfPeople})`,
   }));
-
-  return (
-    <div><button
+return (
+      <div className="container">
+         <button
+					className="back-button"
 					onClick={() => {
 						navigate("/admin/saunas");
 					}}
 				>
 					Go back
 				</button>
-      <h2>Edit Sauna</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
+			  {validationErrors.length > 0 && (
+            <ul className="validation-errors">
+              {validationErrors.map((error, index) => (
+                <li key={index} className="validation-error">{error}</li>
+              ))}
+            </ul>
+          )}
+      <h2 className="title">Edit Sauna</h2>
+      <form onSubmit={handleSubmit} className="add-form">
+        <div className="add-form-group">
+          <label htmlFor="name" className="form-label">
+            Name:
+          </label>
           <input
             type="text"
             name="name"
+            id="name"
             value={sauna?.name}
             onChange={handleInputChange}
+            className="input"
           />
-        </label>
-        <label>
-          Sauna Type:
+        </div>
+        <div className="add-form-group">
+          <label htmlFor="saunaType" className="form-label">
+            Sauna Type:
+          </label>
           <input
             type="text"
             name="saunaType"
+            id="saunaType"
             value={sauna?.saunaType}
             onChange={handleInputChange}
+              className="input"
           />
-        </label>
-        <label>
-          Humidity:
+        </div>
+        <div className="add-form-group">
+          <label htmlFor="humidity" className="form-label">
+            Humidity:
+          </label>
           <input
             type="text"
             name="humidity"
+              id="humidity"
             value={sauna?.humidity}
             onChange={handleInputChange}
+            className="input"
           />
-        </label>
-        <label>
-          Temperature:
+        </div>
+        <div className="add-form-group">
+          <label htmlFor="temperature" className="form-label">
+            Temperature:
+          </label>
           <input
             type="text"
             name="temperature"
+            id="temperature"
             value={sauna?.temperature}
             onChange={handleInputChange}
+           className="input"
           />
-        </label>
-        <label>
-          People Capacity:
+        </div>
+        <div className="add-form-group">
+          <label htmlFor="peopleCapacity" className="form-label">
+            People Capacity:
+          </label>
           <input
             type="text"
             name="peopleCapacity"
+            id="peopleCapacity"
             value={sauna?.peopleCapacity}
             onChange={handleInputChange}
+            className="input"
           />
-        </label>
-        <label>
-          Reservations:
+        </div>
+        <div className="add-form-group">
+          <label htmlFor="reservations" className="form-label">
+            Reservations:
+          </label>
           <Select
             isMulti
             options={reservationsOptions}
@@ -177,9 +217,14 @@ const EditSauna = () => {
             onChange={handleReservationSelectChange}
             placeholder="Select reservations..."
             isSearchable
+              className="select"
+               classNamePrefix="select"
           />
-        </label>
-        <button type="submit">Save Changes</button>
+        </div>
+
+        <button type="submit" className="submit-button">
+          Save Changes
+        </button>
       </form>
     </div>
   );

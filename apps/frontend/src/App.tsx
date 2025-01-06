@@ -31,21 +31,24 @@ import SaunasGuestsList from "./components/Saunas/SaunasGuestsList";
 import AddUserReservation from "./components/Reservation/AddUserReservation";
 import UserReservationsList from "./components/Reservation/UserReservationsList";
 import Navbar from "./components/Navbar/Navbar";
+import { useTranslation } from "react-i18next";
 function App() {
   const navigate = useNavigate;
   const { token, setToken } = useToken();
   const [role, setRole] = useState<string>("guest");
   const [userId, setUserId] = useState<number | null>(null);
 
+  const { t } = useTranslation<'en'>();
   useEffect(() => {
     setRole(getRoleFromToken(token));
     setUserId(getIdFromToken(token));
   }, [token]);
 
   return (
+
     <div className="wrapper">
       <BrowserRouter>
-      <Navbar role={role} setToken={setToken} userId={userId}></Navbar>
+        <Navbar role={role} setToken={setToken} userId={userId}></Navbar>
         <Routes>
           {(!token || role === "guest") && (
             <>
@@ -104,12 +107,12 @@ function App() {
               />
               <Route
                 path="/user/reservation/add"
-                element={<AddUserReservation userId={userId!}/>}
+                element={<AddUserReservation userId={userId!} />}
               />
               <Route
                 path="/user/reservations"
-                element={<UserReservationsList userId={userId!}/>}
-             />
+                element={<UserReservationsList userId={userId!} />}
+              />
             </>
           )}
           <Route path="/about/saunas" element={<SaunasGuestsList />} />

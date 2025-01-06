@@ -63,13 +63,12 @@ const UserReservationsList = ({ userId }: { userId: number }) => {
       setPageInput("");
     }
   };
-
   return (
-    <div>
-      <h2>Reservations</h2>
-
-      <div>
+    <div className="container">
+      <h2 className="title">Reservations</h2>
+      <div className="actions">
         <button
+          className="back-button"
           onClick={() => {
             navigate("/");
           }}
@@ -77,6 +76,7 @@ const UserReservationsList = ({ userId }: { userId: number }) => {
           Go back
         </button>
         <button
+          className="add-button"
           onClick={() => {
             navigate(`/user/reservation/add`);
           }}
@@ -88,52 +88,73 @@ const UserReservationsList = ({ userId }: { userId: number }) => {
       {reservations.length === 0 ? (
         <p>No reservations found.</p>
       ) : (
-        <ul>
-          {reservations.map((reservation) => (
-            <li key={reservation.id}>
-              <>
-                Reservation ID: {reservation.id}
-                Reservation Starts: {reservation.dateFrom}
-                Reservation Ends: {reservation.dateTo}
-                Seats reserved: {reservation.numberOfPeople}
-              </>
-            </li>
-          ))}
-        </ul>
+        <table className="table">
+          <thead className="table-header">
+            <tr className="table-header-row">
+              <th className="table-header-cell">ID</th>
+              <th className="table-header-cell">Starts At</th>
+              <th className="table-header-cell">Ends At</th>
+              <th className="table-header-cell">Seats Reserved</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reservations.map((reservation) => (
+              <tr key={reservation.id} className="table-row">
+                <td className="table-cell">{reservation.id}</td>
+                <td className="table-cell">
+                  {new Date(reservation.dateFrom).toISOString().slice(0, 16)}
+                </td>
+                <td className="table-cell">
+                  {new Date(reservation.dateTo).toISOString().slice(0, 16)}
+                </td>
+                <td className="table-cell">{reservation.numberOfPeople}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
 
-      <div>
-        <button onClick={() => handlePrevPage()} disabled={currentPage === 1}>
+      <div className="add-form">
+        <button
+          className="action-button"
+          onClick={() => handlePrevPage()}
+          disabled={currentPage === 1}
+        >
           Previous Page
         </button>
-        <span>
+        <span className="form-label">
           Page{" "}
           <input
-            style={{ width: "50px" }}
             type="number"
+            className="input"
             value={pageInput}
             onChange={handlePageInputChange}
             onBlur={handlePageInputBlurr}
+            style={{ width: "50px" }}
           />{" "}
           of {totalPages}
         </span>
         <button
+          className="action-button"
           onClick={() => handleNextPage()}
           disabled={currentPage === totalPages}
         >
           Next Page
         </button>
-        Page Size:
-        <select
-          style={{ width: "60px" }}
-          value={pageSize}
-          onChange={handlePageSizeChange}
-        >
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-        </select>
+        <span className="form-label">
+          Page Size:
+          <select
+            className="select"
+            value={pageSize}
+            onChange={handlePageSizeChange}
+            style={{ width: "60px" }}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+          </select>
+        </span>
         <></>
       </div>
     </div>

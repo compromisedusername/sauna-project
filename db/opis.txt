@@ -1,0 +1,25 @@
+Uruchomienie projektu:
+
+Skonfigutowanie bazy danych.
+1. edycja pliku .env.
+LUB
+2. edycja ormconfig.ts gdy nie korzystamy z .env.
+
+
+database: (należy utworzyć bazę danych i wpisać tu jej nazwę)
+`
+CREATE DATABASE {database};
+`
+username: (należy utworzyć użytkownika w bazie danych np. admin i przyznać mu uprawnienia nad utworzoną bazą danych)
+`
+GRANT ALL PRIVILEGES ON sauna.* TO '{username}'@'localhost'
+GRANT ALL PRIVILEGES ON sauna.* TO '{username}'@'%'
+`
+Następnie, jeśli backend połączył się z bazą danych, w folderze root/apps/backend/ należy wpisać komendę od utworzenia tabel, używając do tego TypeORM.
+`
+npm run migration:run
+`
+W celu seedowania należy wpisać
+`
+npm run seed
+`

@@ -6,8 +6,7 @@ import { Reservation } from "../entities/reservation.model";
 import { AddReservationRequest } from "../dto/request/add.reservation.request";
 import { ReservationDto } from "../dto/response/reservation.response.dto";
 import {
-  validateAddReservation,
-  validateUpdateReservation,
+  validateNewReservation,
 } from "../utils/validators/reservation/reservation.validator";
 import { SaunaRepository } from "../repositories/sauna.repository";
 import { UpdateReservationRequest } from "../dto/request/update.reservation.request";
@@ -113,6 +112,7 @@ export class ReservationService {
   }
   public async addReservaton(data: AddReservationRequest): Promise<number> {
 
+    validateNewReservation(data);
     const sauna: Sauna = await this.saunaRepository.getSaunaById(data.saunaId);
 
     const user: User = await this.userRepository.getUserById(data.userId);
@@ -125,11 +125,6 @@ export class ReservationService {
     if (!user) {
       throw ErrorFactory.createNotFoundError(
         `User with given ID: ${data.userId} not found`,
-      );
-    }
-    if (data.dateFrom >= data.dateTo) {
-      throw ErrorFactory.createBadRequestError(
-        "Reservation end cant be before start!",
       );
     }
 
@@ -172,11 +167,6 @@ export class ReservationService {
       );
     }
 
-    if (data.dateFrom >= data.dateTo) {
-      throw ErrorFactory.createBadRequestError(
-        "Reservation end cant be before start!",
-      );
-    }
 
     let correctSaunaId;
 

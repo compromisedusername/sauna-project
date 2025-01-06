@@ -22,12 +22,12 @@ const DeleteSauna = ({
   };
 
   return (
-    <>
-      <h2>Delete Sauna for ID: {saunaId}</h2>
-      <p>Are you sure?</p>
-      <button onClick={handleClick}> YES, DELETE sauna ID: {saunaId}</button>
-      <button onClick={onClose}>NO, CLOSE</button>
-    </>
+    <div className='container'>
+      <h2 className = 'title'>Delete Sauna for ID: {saunaId}</h2>
+      <p className='title-sure'>Are you sure?</p>
+      <button className='delete-button' onClick={handleClick}> YES, DELETE sauna ID: {saunaId}</button>
+      <button className='back-button' onClick={onClose}>NO, CLOSE</button>
+    </div>
   );
 };
 export default DeleteSauna;

@@ -10,6 +10,7 @@ import {
 } from "../../models/Reservation";
 import { UserDto } from "../../models/User";
 import { SaunaDto, SaunaResponse, SaunaResponseGuests } from "../../models/Sauna";
+import validateReservation from "./validateReservation";
 
 const AddUserReservation = ({ userId }: { userId: number }) => {
   const [reservation, setReservation] = useState<ReservationRequestAdd>({
@@ -27,6 +28,8 @@ const AddUserReservation = ({ userId }: { userId: number }) => {
   const [saunas, setSaunas] = useState<SaunaResponseGuests[]>([]);
   const navigate = useNavigate();
 
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
   useEffect(() => {
     const fetchSaunas = async () => {
       try {
@@ -42,7 +45,14 @@ const AddUserReservation = ({ userId }: { userId: number }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationErrors([]);
     if (reservation) {
+      const sauna: SaunaResponseGuests | undefined = saunas.find(s =>s.id === reservation.saunaId);
+      const errors = validateReservation(reservation.dateFrom, reservation.dateTo, reservation.numberOfPeople, sauna?.peopleCapacity);
+      if(errors.length > 0){
+        setValidationErrors(errors)
+        return;
+      }
       try {
         console.log(reservation);
         const response = await api.post(`/reservation`, reservation);
@@ -83,57 +93,67 @@ const AddUserReservation = ({ userId }: { userId: number }) => {
   }));
 
   return (
-    <div>
-      <button onClick={()=>navigate('/')}>Go back</button>
-      <h2>Make reservation for sauna</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Sauna:
-          <Select
-            options={saunaOptions}
-            value={selectedSaunaOptions}
-            onChange={handleSaunaSelectChange}
-            placeholder="Select sauna..."
-            isSearchable
-          />
-        </label>
-        <label>
-          Date From:
-          <input
-            type="datetime-local"
-            name="dateFrom"
-            value={reservation.dateFrom.toString()}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br />
+        <div className='container'>
+            <button className='back-button' onClick={()=>navigate('/')}>Go back</button>
+            <h2 className='title'>Make reservation for sauna</h2>
+            <form className='add-form' onSubmit={handleSubmit}>
+                 <div className="add-form-group">
+                     <label className='form-label'>
+                         Sauna:
+                     </label>
+                     <Select
+                         options={saunaOptions}
+                         value={selectedSaunaOptions}
+                         onChange={handleSaunaSelectChange}
+                         placeholder="Select sauna..."
+                         isSearchable
+                            className="select"
+                     />
+                 </div>
 
-        <label>
-          Date To:
-          <input
-            type="datetime-local"
-            name="dateTo"
-            value={reservation.dateTo.toString()}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br />
+                <div className="add-form-group">
+                    <label className="form-label">
+                        Date From:
+                    </label>
+                     <input
+                            type="datetime-local"
+                            name="dateFrom"
+                            value={reservation.dateFrom.toString()}
+                           onChange={handleInputChange}
+                           className="input"
+                     />
+                </div>
 
-        <label>
-          Number of People:
-          <input
-            type="number"
-            name="numberOfPeople"
-            value={reservation.numberOfPeople}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br />
 
-        <button type="submit">Add Reservation</button>
-      </form>
-    </div>
-  );
+                <div className="add-form-group">
+                    <label  className="form-label">
+                        Date To:
+                    </label>
+                      <input
+                        type="datetime-local"
+                        name="dateTo"
+                        value={reservation.dateTo.toString()}
+                        onChange={handleInputChange}
+                           className="input"
+                     />
+                </div>
+
+                <div className="add-form-group">
+                    <label  className="form-label">
+                        Number of People:
+                    </label>
+                     <input
+                        type="number"
+                        name="numberOfPeople"
+                        value={reservation.numberOfPeople}
+                        onChange={handleInputChange}
+                           className="input"
+                     />
+                </div>
+              <button type="submit" className="submit-button">Add Reservation</button>
+            </form>
+        </div>
+    );
 };
 
 export default AddUserReservation;

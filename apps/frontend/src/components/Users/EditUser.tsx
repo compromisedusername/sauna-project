@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Select, { ActionMeta, MultiValue } from "react-select";
+import Select, { MultiValue } from "react-select";
 import api from "../../api/api";
 import {
 	UserRequestAdd,
@@ -10,6 +10,7 @@ import {
 } from "../../models/User";
 import { RoleDto } from "../../models/Role";
 import { useParams } from "react-router-dom";
+import validateUser from "./validateUser";
 
 const EditUser = ({
 	userId,
@@ -32,6 +33,7 @@ const EditUser = ({
 		reservations: [],
 	});
 	const [error, setError] = useState<string | null>(null);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
 	const [reservations, setReservations] = useState<ReservationWithoutUser[]>(
 		[],
 	);
@@ -90,7 +92,13 @@ const EditUser = ({
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+        setValidationErrors([]);
 		if (user) {
+			const errors: string[] = validateUser(user);
+			if(errors.length > 0){
+					setValidationErrors(errors);
+				return;
+			}
 			try {
 				const response = await api.put(`/user`, user);
 				navigate("/admin/users");
@@ -108,7 +116,7 @@ const EditUser = ({
 	) => {
 		const { name, value } = e.target;
 		setUser((prevUser) => ({
-			...prevUser,
+			...prevUser!,
 			[name]: value,
 		}));
 	};
@@ -117,7 +125,7 @@ const EditUser = ({
 		option: { value: number; label: string } | null,
 	) => {
 		setUser((prevUser) => ({
-			...prevUser,
+			...prevUser!,
 			roleId: option ? option.value : 0,
 		}));
 	};
@@ -127,10 +135,10 @@ const EditUser = ({
 	) => {
 		setUser((prevUser) => {
 			if (!options) {
-				return { ...prevUser, reservations: [] };
+				return { ...prevUser!, reservations: [] };
 			}
 			return {
-				...prevUser,
+				...prevUser!,
 				reservations: options.map((option) => option.value),
 			};
 		});
@@ -167,10 +175,11 @@ const EditUser = ({
 		: [];
 
 	return (
-		<div>
+		<div className="container">
 
-
-<div><button onClick={()=>{
+<div><button
+		className="back-button"
+    onClick={()=>{
 				  if(role==='admin'){
 				    navigate('/admin/users')
 				  }else if(role==='user'){
@@ -178,77 +187,108 @@ const EditUser = ({
 				  }
 				}}>Go back</button></div>
 
-		  <h2>{ (error? error:null)}</h2>
-			<h2>Edit User</h2>
-			<form onSubmit={handleSubmit}>
-				<label>
-					Name:
-					<input
-						type="text"
-						name="name"
-						value={user.name}
-						onChange={handleInputChange}
-					/>
-				</label>
-				<label>
-					Surname:
-					<input
-						type="text"
-						name="surname"
-						value={user.surname}
-						onChange={handleInputChange}
-					/>
-				</label>
-				<label>
-					Email:
-					<input
-						type="text"
-						name="email"
-						value={user.email}
-						onChange={handleInputChange}
-					/>
-				</label>
-				<label>
-					Password:
-					<input
-						type="password"
-						name="passwordHash"
-						value={user.passwordHash ? user.passwordHash : ""}
-						onChange={handleInputChange}
-						placeholder="************"
-					/>
-				</label>
+
+		  <h2 className="error">{ (error? error:null)}</h2>
+			<h2 className="title">Edit User</h2>
+			<form onSubmit={handleSubmit} className="add-form">
+                {validationErrors.length > 0 && (
+                    <ul className="validation-errors">
+                        {validationErrors.map((error, index) => (
+                            <li key={index} className="validation-error">{error}</li>
+                        ))}
+                    </ul>
+                )}
+                  <div className="add-form-group">
+                      <label className="form-label">
+                            Name:
+                        </label>
+                        <input
+                            type="text"
+                            name="name"
+                             id="name"
+                            value={user.name}
+                            onChange={handleInputChange}
+                               className="input"
+                        />
+                </div>
+                 <div className="add-form-group">
+                      <label className="form-label">
+                            Surname:
+                        </label>
+                       <input
+                            type="text"
+                            name="surname"
+                             id="surname"
+                            value={user.surname}
+                            onChange={handleInputChange}
+                               className="input"
+                       />
+                 </div>
+                <div className="add-form-group">
+                    <label className="form-label">
+                        Email:
+                    </label>
+                    <input
+                        type="text"
+                        name="email"
+                          id="email"
+                        value={user.email}
+                        onChange={handleInputChange}
+                           className="input"
+                    />
+                </div>
+
+                <div className="add-form-group">
+                    <label className="form-label">
+                        Password:
+                    </label>
+                    <input
+                        type="password"
+                        name="passwordHash"
+                        id="passwordHash"
+                        value={user.passwordHash ? user.passwordHash : ""}
+                        onChange={handleInputChange}
+                         placeholder="************"
+                       className="input"
+                    />
+                </div>
+
 				{role === "admin" && (
 					<>
-						<label>
-							Role:
-							<Select
-								options={roleOptions}
-								value={selectedRoleValue}
-								onChange={handleRoleSelectChange}
-								placeholder="Select role..."
-								isSearchable
-							/>
-						</label>
-						<br />
-						<label>
-							Reservations:
-							<Select
-								isMulti
-								options={reservationsOptions}
-								value={selectedReservationValue}
-								onChange={handleReservationSelectChange}
-								placeholder="Select reservation..."
-								isSearchable
-							/>
-						</label>
+                        <div className="add-form-group">
+                            <label className="form-label">
+                                Role:
+                            </label>
+                            <Select
+                                options={roleOptions}
+                                value={selectedRoleValue}
+                                onChange={handleRoleSelectChange}
+                                placeholder="Select role..."
+                                isSearchable
+                                    className="select"
+                                    classNamePrefix="select"
+                            />
+                        </div>
+
+                        <div className="add-form-group">
+                             <label className="form-label">
+                                Reservations:
+                            </label>
+                            <Select
+                                isMulti
+                                options={reservationsOptions}
+                                value={selectedReservationValue}
+                                onChange={handleReservationSelectChange}
+                                placeholder="Select reservation..."
+                                isSearchable
+                                className="select"
+                                  classNamePrefix="select"
+                            />
+                        </div>
 					</>
 				)}
 				<br />
-<div>
-				<button type="submit">Save Changes</button>
-				</div>
-
+    <button type="submit" className="submit-button">Save Changes</button>
 			</form>
 		</div>
 	);

@@ -4,27 +4,34 @@ import { useNavigate } from "react-router-dom";
 export default function AdminPanel() {
   const navigate = useNavigate();
   return (
-    <>
-      <h2>Admin Dashboard</h2>
+    <div className="container">
+      <h2 className="title">Administration</h2>
 
-      <p>
-        Click here to get reservations
-        <button onClick={() => navigate("/admin/reservations")}>
-          Reservations
-        </button>
-      </p>
-      <p>
-        Click here to get roles
-        <button onClick={() => navigate("/admin/roles")}>Roles</button>
-      </p>
-      <p>
-        Click here to get saunas
-        <button onClick={() => navigate("/admin/saunas")}>Saunas</button>
-      </p>
-      <p>
-        Click here to get users
-        <button onClick={() => navigate("/admin/users")}>Users</button>
-      </p>
-    </>
+      <button
+        className="action-button"
+        onClick={() => navigate("/admin/reservations")}
+      >
+        Reservations
+      </button>
+      <button
+        className="action-button"
+        onClick={() => navigate("/admin/roles")}
+      >
+        Roles
+      </button>
+
+      <button
+        className="action-button"
+        onClick={() => navigate("/admin/saunas")}
+      >
+        Saunas
+      </button>
+      <button
+        className="action-button"
+        onClick={() => navigate("/admin/users")}
+      >
+        Users
+      </button>
+    </div>
   );
 }

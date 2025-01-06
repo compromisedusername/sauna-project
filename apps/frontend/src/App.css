@@ -88,3 +88,104 @@ form {
 form button{
   margin: 10px 5px;
 }
+
+.validation-errors {
+    padding: 5px;
+    margin-top: 15px;
+    color: #721c24;
+    background: #f8d7da;
+    border: 2px solid #f5c6cb;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.validation-error {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+
+}
+
+.table-header {
+    background-color: #f2f2f2;
+}
+.table-header-row {
+    border-bottom: 1px solid #ddd;
+}
+.table-header-row th{
+    padding: 12px;
+     text-align: left;
+}
+
+.table-row {
+    border-bottom: 1px solid #f2f2f2;
+}
+.table-row:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.table-row:last-child{
+    border-bottom: none;
+}
+
+.table-cell {
+    padding: 12px;
+    text-align: left;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.action-button {
+  background: #a76bcf;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:hover {
+  background: #a75bcd;
+  transform: scale(1.05);
+}
+
+.action-button:active {
+  transform: scale(0.95);
+}
+
+.buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.action-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px #a55bdd;
+}

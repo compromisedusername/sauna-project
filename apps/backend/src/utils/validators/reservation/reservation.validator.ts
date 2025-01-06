@@ -6,10 +6,13 @@ import { UpdateReservationRequest } from "../../../dto/request/update.reservatio
 import { ErrorFactory } from "../../../errors/error-factory.error";
 
 
-export function validateAddReservation(data : AddReservationRequest):void{
+export function validateNewReservation(data : AddReservationRequest | UpdateReservationRequest):void{
 
+    if ( data.dateTo && data.dateFrom && (data.dateFrom >= data.dateTo)) {
+      throw ErrorFactory.createBadRequestError(
+        "Reservation end cant be before start!",
+      );
+    }
 }
 
 
-export function validateUpdateReservation(data: UpdateReservationRequest):void{
-}

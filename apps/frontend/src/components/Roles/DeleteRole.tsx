@@ -27,14 +27,14 @@ const DeleteRole: React.FC<DeleteRoleProps> = ({
     };
 
     return (
-        <>
-            <h2>Delete Role for ID: {roleId}</h2>
-            <p>Are you sure?</p>
-            <button onClick={handleClick}>
+    <div className='container'>
+            <h2 className='title'>Delete Role for ID: {roleId}</h2>
+            <p className='title-sure'>Are you sure?</p>
+            <button className='delete-button' onClick={handleClick}>
                 DELETE
             </button>
-            <button onClick={onClose}>Close</button>
-        </>
+            <button className='back-button' onClick={onClose}>Close</button>
+        </div>
     );
 };
 

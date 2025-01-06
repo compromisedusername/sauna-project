@@ -22,14 +22,14 @@ const UserDelete = ({
   };
 
   return (
-    <>
-      <h2>Delete User ID: {userId}</h2>
-      <p>Are you sure?</p>
-      <button onClick={handleClick}>
+    <div className='container'>
+      <h2 className='title'>Delete User ID: {userId}</h2>
+      <p className='title-sure'>Are you sure?</p>
+      <button className='delete-button' onClick={handleClick}>
         YES, DELETE user ID: {userId}
       </button>
-      <button onClick={onClose}>NO, CLOSE</button>
-    </>
+      <button className ='back-button'onClick={onClose}>NO, CLOSE</button>
+    </div>
   );
 };
 export default UserDelete;

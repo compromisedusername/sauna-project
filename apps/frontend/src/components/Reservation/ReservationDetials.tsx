@@ -9,14 +9,37 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
   onClose,
 }) => {
   return (
-    <div>
-      <h3>Reservation Details</h3>
-      <p>Reservation ID: {reservation?.id}</p>
-      <p>Starts at: {reservation.dateFrom?.toString()}</p>
-      <p>Ends at: {reservation.dateTo?.toString()}</p>
-      <p>User ID: {reservation.user?.id}</p>
-      <p>User name: {reservation.user?.name}</p>
+    <div className='container'>
+      <div className='title'>ReservationDetails</div>
+    <table className ="table">
+      <thead className='table-header'>
+        <th className="table-header-cell">ID</th>
+          <th className="table-header-cell">Seats Reserved</th>
+        <th className="table-header-cell">Starts at</th>
+        <th className="table-header-cell">Ends at</th>
+        <th className="table-header-cell">User ID</th>
+        <th className="table-header-cell">User Name</th>
+        <th className="table-header-cell">User Surname</th>
+        <th className="table-header-cell">User email</th>
+      </thead>
+      <tbody>
+          <td className="table-cell">{reservation.id}</td>
+          <td className="table-cell">{reservation.numberOfPeople}</td>
+          <td className="table-cell">
+{new Date(reservation.dateFrom).toLocaleString()}
+          </td>
+          <td className="table-cell">
+{new Date(reservation.dateFrom).toLocaleString()}
+          </td>
+          <td className="table-cell">{reservation.user.id}</td>
+          <td className="table-cell">{reservation.user?.name}</td>
+          <td className="table-cell">{reservation.user?.surname}</td>
+          <td className="table-cell">{reservation.user?.email}</td>
+
+
+      </tbody>
       <button onClick={onClose}>Close</button>
+    </table>
     </div>
   );
 };

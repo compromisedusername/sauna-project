@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import api from "../../api/api";
@@ -10,14 +9,16 @@ import {
 } from "../../models/Reservation";
 import { UserDto } from "../../models/User";
 import { SaunaDto } from "../../models/Sauna";
+import validateReservation from "./validateReservation";
 
-const EditReservation  = () => {
+const EditReservation = () => {
   const { id } = useParams<{ id: string }>();
   const [reservation, setReservation] = useState<ReservationResponse | null>(
     null,
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [users, setUsers] = useState<UserReservationResponse[]>([]);
   const [saunas, setSaunas] = useState<SaunaDto[]>([]);
   const navigate = useNavigate();
@@ -72,9 +73,19 @@ const EditReservation  = () => {
     fetchSaunas();
   }, [id]);
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationErrors([]);
     if (reservation) {
+      const sauna: SaunaDto | undefined = saunas.find(
+        (s) => s.id === reservation.sauna.id,
+      );
+      const errors = validateReservation(reservation.dateFrom, reservation.dateTo, reservation.numberOfPeople, sauna!.peopleCapacity);
+      if (errors.length > 0) {
+        setValidationErrors(errors);
+        return;
+      }
       try {
         const reservationUpdate: ReservationRequestUpdate = {
           id: reservation.id,
@@ -102,28 +113,32 @@ const EditReservation  = () => {
     }));
   };
 
-const handleUserSelectChange = (option: { value: number; label: string } | null) => {
-    setReservation(prevReservation => {
-        if(!prevReservation){
-            return null
-        }
-        return ({
-      ...prevReservation,
-      user: { ...prevReservation.user, id: option ? option.value : 0 },
-    })
-});
+  const handleUserSelectChange = (
+    option: { value: number; label: string } | null,
+  ) => {
+    setReservation((prevReservation) => {
+      if (!prevReservation) {
+        return null;
+      }
+      return {
+        ...prevReservation,
+        user: { ...prevReservation.user, id: option ? option.value : 0 },
+      };
+    });
   };
 
-  const handleSaunaSelectChange = (option: { value: number; label: string } | null) => {
-    setReservation(prevReservation => {
-          if(!prevReservation){
-            return null
-        }
-        return ({
-      ...prevReservation,
-      sauna: { ...prevReservation.sauna, id: option ? option.value : 0 },
-    })
-});
+  const handleSaunaSelectChange = (
+    option: { value: number; label: string } | null,
+  ) => {
+    setReservation((prevReservation) => {
+      if (!prevReservation) {
+        return null;
+      }
+      return {
+        ...prevReservation,
+        sauna: { ...prevReservation.sauna, id: option ? option.value : 0 },
+      };
+    });
   };
 
   if (loading) return <p>Loading reservation details...</p>;
@@ -149,83 +164,107 @@ const handleUserSelectChange = (option: { value: number; label: string } | null)
     : [];
 
   return (
-    <div>
-				<button
-					onClick={() => {
-						navigate("/admin/reservations");
-					}}
-				>
-					Go back
-				</button>
-
-      <h2>Edit Reservation</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="container">
+      <button
+        className="back-button"
+        onClick={() => {
+          navigate("/admin/reservations");
+        }}
+      >
+        Go back
+      </button> {validationErrors.length > 0 && (
+          <ul className="validation-errors">
+            {validationErrors.map((error, index) => (
+              <li key={index} className="validation-error">
+                {error}
+              </li>
+            ))}
+          </ul>
+        )}
+      <h2 className="title">Edit Reservation</h2>
+      <form onSubmit={handleSubmit} className="add-form">
         <p>Reservation ID: {reservation.id}</p>
 
-        <label>
-          User:
+        <div className="add-form-group">
+          <label htmlFor="user" className="form-label">
+            User:
+          </label>
           <Select
             options={userOptions}
             value={selectedUserOption}
             onChange={handleUserSelectChange}
             placeholder="Select user..."
             isSearchable
+            className="select"
           />
-        </label>
-        <br />
+        </div>
 
-        <label>
-          Sauna:
+        <div className="add-form-group">
+          <label htmlFor="sauna" className="form-label">
+            Sauna:
+          </label>
           <Select
             options={saunaOptions}
             value={selectedSaunaOptions}
             onChange={handleSaunaSelectChange}
             placeholder="Select sauna..."
             isSearchable
+            className="select"
           />
-        </label>
-        <label>
-          Date From:
+        </div>
+        <div className="add-form-group">
+          <label htmlFor="dateFrom" className="form-label">
+            Date From:
+          </label>
           <input
             type="datetime-local"
             name="dateFrom"
+            id="dateFrom"
             value={
               reservation.dateFrom
                 ? new Date(reservation.dateFrom).toISOString().slice(0, 16)
                 : ""
             }
             onChange={handleInputChange}
+            className="input"
           />
-        </label>
-        <br />
+        </div>
 
-        <label>
-          Date To:
+        <div className="add-form-group">
+          <label htmlFor="dateTo" className="form-label">
+            Date To:
+          </label>
           <input
             type="datetime-local"
             name="dateTo"
+            id="dateTo"
             value={
               reservation.dateTo
                 ? new Date(reservation.dateTo).toISOString().slice(0, 16)
                 : ""
             }
             onChange={handleInputChange}
+            className="input"
           />
-        </label>
-        <br />
+        </div>
 
-        <label>
-          Number of People:
+        <div className="add-form-group">
+          <label htmlFor="numberOfPeople" className="form-label">
+            Number of People:
+          </label>
           <input
             type="number"
+            id="numberOfPeople"
             name="numberOfPeople"
             value={reservation.numberOfPeople}
             onChange={handleInputChange}
+            className="input"
           />
-        </label>
-        <br />
+        </div>
 
-        <button type="submit">Save Changes</button>
+        <button type="submit" className="submit-button">
+          Save Changes
+        </button>
       </form>
     </div>
   );

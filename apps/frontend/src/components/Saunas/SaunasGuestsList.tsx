@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api/api";
-import SaunaDetails from "./SaunaDetails";
-import { SaunaDto, SaunaResponseGuests } from "../../models/Sauna";
+import { SaunaResponseGuests } from "../../models/Sauna";
 import { useNavigate } from "react-router-dom";
+
 const SaunasGuestsList: React.FC = () => {
   const [saunas, setSaunas] = useState<SaunaResponseGuests[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,24 +27,41 @@ const SaunasGuestsList: React.FC = () => {
   if (error) return <p>Error fetching saunas: {error}</p>;
 
   return (
-    <div>
-      <button onClick={() => navigate("/")}>Get back</button>
+    <div className="container">
+      <div>
+        <button className="action-button" onClick={() => navigate("/")}>
+          Get back
+        </button>
+      </div>
       <h2>Saunas in our offer:</h2>
       {saunas.length === 0 ? (
         <p>No saunas found.</p>
       ) : (
-        <ul>
-          {saunas.map((sauna) => (
-            <li key={sauna.name + sauna.humidity}>
-              Sauna Name: {sauna.name}
-                Type: {sauna.saunaType}
-                Humidity: {sauna.humidity}
-                Temperature: {sauna.temperature}
-                Capacity: {sauna.peopleCapacity}
-            </li>
-
-          ))}
-        </ul>
+        <table className="sauna-table">
+          <thead>
+            <tr className="table-header-row">
+              <th className="table-header">Name</th>
+              <th className="table-header">Type</th>
+              <th className="table-header">Humidity</th>
+              <th className="table-header">Temperature</th>
+              <th className="table-header">Capacity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {saunas.map((sauna, index) => (
+              <tr
+                key={sauna.name + sauna.humidity}
+                className={`table-row ${index % 2 === 0 ? "even-row" : "odd-row"}`}
+              >
+                <td className="table-cell">{sauna.name}</td>
+                <td className="table-cell">{sauna.saunaType}</td>
+                <td className="table-cell">{sauna.humidity}</td>
+                <td className="table-cell">{sauna.temperature}</td>
+                <td className="table-cell">{sauna.peopleCapacity}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

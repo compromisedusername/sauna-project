@@ -12,21 +12,23 @@ export type SaunaType = keyof typeof SaunaTypes;
 export function validateSaunaType(saunaType: string): saunaType is SaunaType{
    return saunaType in SaunaTypes;
 }
-export function validateAddSauna(data : AddSaunaRequest):void{
+export function validateNwSauna(data : AddSaunaRequest | UpdateSaunaRequest):void{
 
-      if(data.name.length <= 0 || data.name.length >= 50)
+      if( data.name && data.name.length >= 50){
+    throw ErrorFactory.createBadRequestError("Sauna name cant exceed 50 chars")
+  }
 
-    if (data.humidity <= 0 || data.humidity > 100) {
+    if ( (data.humidity) && (data.humidity <= 0 || data.humidity > 100)) {
       throw ErrorFactory.createBadRequestError(
         "Sauna humidity must be under 100 and greater than 0",
       );
     }
-    if (data.temperature <= 0 || data.temperature >= 200) {
+    if ( data.temperature && (data.temperature <= 0 || data.temperature >= 200)) {
       throw ErrorFactory.createBadRequestError(
         "Sauna temperature must be under 200 and greater than 0",
       );
     }
-    if (data.peopleCapacity >= 100 && data.peopleCapacity < 0) {
+    if ( data.peopleCapacity && (data.peopleCapacity >= 100 && data.peopleCapacity < 0)) {
       throw ErrorFactory.createBadRequestError(
         "People capacity must be under 100 and greater than 0",
       );
@@ -38,7 +40,3 @@ export function validateAddSauna(data : AddSaunaRequest):void{
       );
 
   }}
-
-export function validateUpdateSauna(data: UpdateSaunaRequest):void{
-    validateAddSauna(data);
-}

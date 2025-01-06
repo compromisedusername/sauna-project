@@ -4,6 +4,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 10px;
 }
 
 .navbar-brand {
@@ -14,13 +15,16 @@
 .navbar-logo {
     color: white;
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: bold;
 }
 
 .navbar-links {
     display: flex;
     gap: 20px;
+    font-size: 16px;
+    font-weight: 600;
+
 }
 
 .navbar-link {
@@ -34,5 +38,9 @@
     border: none;
 }
 .navbar-link:hover{
-    background-color: #555;
+    background-color: #a75bcd;
+    transform: scale(1.05)
+}
+navbar-link:active{
+    transform: scale(0.95)
 }

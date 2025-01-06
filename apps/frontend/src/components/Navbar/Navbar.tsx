@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css'
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 interface NavbarProps {
     role: string;
     setToken: (token: string ) => void;
@@ -22,6 +23,9 @@ const Navbar: React.FC<NavbarProps> = ({ role, setToken, userId }) => {
                 <Link to="/" className="navbar-logo">Sauna Reservation</Link>
              </div>
            <div className="navbar-links">
+
+        <LanguageSwitcher></LanguageSwitcher>
+
             {role === "admin" && (
                 <>
                   <Link to="/admin" className="navbar-link">Admin Panel</Link>
