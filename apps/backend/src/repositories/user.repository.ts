@@ -10,6 +10,7 @@ export class UserRepository {
 
 public async getPaginatedUsers(page: number, pageSize: number): Promise<[User[], number]>{
       const [result, count]: [User[], number] = await this.userRepository.findAndCount({
+
       relations: ['reservations', 'role'],
       skip: (page-1 ) * pageSize,
       take: pageSize,

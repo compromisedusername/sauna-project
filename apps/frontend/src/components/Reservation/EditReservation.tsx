@@ -135,7 +135,7 @@ const handleUserSelectChange = (option: { value: number; label: string } | null)
     label: `Name: ${sauna.name}, Type: ${sauna.saunaType}, Capacity: ${sauna.peopleCapacity}`,
   }));
 
-  const selectedSaunaOptions = reservation.sauna.id
+  const selectedSaunaOptions = reservation.sauna?.id
     ? saunaOptions.find((option) => option.value === reservation.sauna.id)
     : [];
 
@@ -144,12 +144,20 @@ const handleUserSelectChange = (option: { value: number; label: string } | null)
     label: `Name: ${user.name}, Surname: ${user.surname}, Email: (${user.email})`,
   }));
 
-  const selectedUserOption = reservation.user.id
+  const selectedUserOption = reservation.user?.id
     ? userOptions.find((option) => option.value === reservation.user.id)
     : [];
 
   return (
     <div>
+				<button
+					onClick={() => {
+						navigate("/admin/reservations");
+					}}
+				>
+					Go back
+				</button>
+
       <h2>Edit Reservation</h2>
       <form onSubmit={handleSubmit}>
         <p>Reservation ID: {reservation.id}</p>

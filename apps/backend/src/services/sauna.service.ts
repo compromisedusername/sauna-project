@@ -64,6 +64,7 @@ export class SaunaService {
   public async getSaunaForGuests(): Promise<SaunaResponseGuests[]> {
     const saunas: Sauna[] = await this.saunaRepository.getSaunasForGuests();
     const saunasForGuests: SaunaResponseGuests[] = saunas.map((s) => ({
+      id: s.id,
       name: s.name!,
       temperature: s.temperature!,
       saunaType: s.saunaType!,

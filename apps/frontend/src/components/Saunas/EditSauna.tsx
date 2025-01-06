@@ -114,7 +114,13 @@ const EditSauna = () => {
   }));
 
   return (
-    <div>
+    <div><button
+					onClick={() => {
+						navigate("/admin/saunas");
+					}}
+				>
+					Go back
+				</button>
       <h2>Edit Sauna</h2>
       <form onSubmit={handleSubmit}>
         <label>

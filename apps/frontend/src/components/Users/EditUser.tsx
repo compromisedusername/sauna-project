@@ -168,6 +168,16 @@ const EditUser = ({
 
 	return (
 		<div>
+
+
+<div><button onClick={()=>{
+				  if(role==='admin'){
+				    navigate('/admin/users')
+				  }else if(role==='user'){
+				    navigate('/')
+				  }
+				}}>Go back</button></div>
+
 		  <h2>{ (error? error:null)}</h2>
 			<h2>Edit User</h2>
 			<form onSubmit={handleSubmit}>
@@ -238,13 +248,7 @@ const EditUser = ({
 <div>
 				<button type="submit">Save Changes</button>
 				</div>
-				<div><button onClick={()=>{
-				  if(role==='admin'){
-				    navigate('/admin/users')
-				  }else if(role==='user'){
-				    navigate('/user/edit')
-				  }
-				}}>Go back</button></div>
+
 			</form>
 		</div>
 	);

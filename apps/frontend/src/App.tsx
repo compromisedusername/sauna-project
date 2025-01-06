@@ -28,23 +28,24 @@ import EditSauna from "./components/Saunas/EditSauna";
 import AddRole from "./components/Roles/AddRole";
 import EditRole from "./components/Roles/EditRole";
 import SaunasGuestsList from "./components/Saunas/SaunasGuestsList";
+import AddUserReservation from "./components/Reservation/AddUserReservation";
+import UserReservationsList from "./components/Reservation/UserReservationsList";
+import Navbar from "./components/Navbar/Navbar";
 function App() {
   const navigate = useNavigate;
   const { token, setToken } = useToken();
   const [role, setRole] = useState<string>("guest");
-  const [userId, setUserId] = useState<number|null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
 
   useEffect(() => {
     setRole(getRoleFromToken(token));
     setUserId(getIdFromToken(token));
   }, [token]);
 
-  console.log(userId, "APP MAIN");
   return (
     <div className="wrapper">
-      <h1>Sauna reservation</h1>
-      {role === "admin" ? <></> : <></>}
       <BrowserRouter>
+      <Navbar role={role} setToken={setToken} userId={userId}></Navbar>
         <Routes>
           {(!token || role === "guest") && (
             <>
@@ -76,25 +77,43 @@ function App() {
                 path="/admin/reservation/:id/edit"
                 element={<EditReservation />}
               />
-              <Route path="/admin/reservation/add" element={<AddReservation/>} />
+              <Route
+                path="/admin/reservation/add"
+                element={<AddReservation />}
+              />
               <Route
                 path="/admin/user/:id/edit"
                 element={<EditUser userId={null} role={role} />}
               />
-              <Route path="/admin/user/add" element={<AddUser/>} />
-              <Route path="/admin/sauna/add" element={<AddSauna/>} />
-              <Route path="/admin/sauna/:id/edit" element={<EditSauna></EditSauna>} />
+              <Route path="/admin/user/add" element={<AddUser />} />
+              <Route path="/admin/sauna/add" element={<AddSauna />} />
+              <Route
+                path="/admin/sauna/:id/edit"
+                element={<EditSauna></EditSauna>}
+              />
 
-              <Route path="/admin/role/add" element={<AddRole/>} />
-              <Route path="/admin/role/:id/edit" element={<EditRole/>} />
+              <Route path="/admin/role/add" element={<AddRole />} />
+              <Route path="/admin/role/:id/edit" element={<EditRole />} />
             </>
           )}
-          {role ==='user' && (
-              <Route path='/user/edit' element= {<EditUser role ={role} userId={userId}/>}></Route>
+          {role === "user" && (
+            <>
+              <Route
+                path="/user/edit"
+                element={<EditUser role={role} userId={userId} />}
+              />
+              <Route
+                path="/user/reservation/add"
+                element={<AddUserReservation userId={userId!}/>}
+              />
+              <Route
+                path="/user/reservations"
+                element={<UserReservationsList userId={userId!}/>}
+             />
+            </>
           )}
-          <Route path='/about/saunas' element={<SaunasGuestsList/>}/>
+          <Route path="/about/saunas" element={<SaunasGuestsList />} />
           <Route path="*" element={<Dashboard role={role}></Dashboard>}></Route>
-
         </Routes>
       </BrowserRouter>
     </div>

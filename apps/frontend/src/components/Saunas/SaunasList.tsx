@@ -10,7 +10,7 @@ const SaunasList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedSauna, setSelectedSauna] = useState<SaunaDto | null>(null);
   const navigate = useNavigate();
-  const [deletedSaunaId, setDeletedSaunaId] = useState<number|null>(null);
+  const [deletedSaunaId, setDeletedSaunaId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchSaunas = async () => {
@@ -29,13 +29,24 @@ const SaunasList: React.FC = () => {
   if (loading) return <p>Loading saunas...</p>;
   if (error) return <p>Error fetching saunas: {error}</p>;
 
-    const handleDeleteSauna = (deletedSaunaId: number) => {
-    setSaunas( (prevSaunas) => prevSaunas.filter( sauna => deletedSaunaId !== sauna.id));
-  }
+  const handleDeleteSauna = (deletedSaunaId: number) => {
+    setSaunas((prevSaunas) =>
+      prevSaunas.filter((sauna) => deletedSaunaId !== sauna.id),
+    );
+  };
 
   return (
     <div>
-      <h2>Saunas</h2>
+      <h2>Saunas</h2>{" "}
+      <div>
+        <button
+          onClick={() => {
+            navigate("/admin/");
+          }}
+        >
+          Go back
+        </button>
+      </div>
       <div>
         <button
           onClick={() => {
@@ -44,17 +55,7 @@ const SaunasList: React.FC = () => {
         >
           Add New Sauna
         </button>
-        <div>
-          <button
-            onClick={() => {
-              navigate("/admin/");
-            }}
-          >
-            Go back
-          </button>
-        </div>
       </div>
-
       {saunas.length === 0 ? (
         <p>No saunas found.</p>
       ) : (
@@ -82,12 +83,11 @@ const SaunasList: React.FC = () => {
           ))}
         </ul>
       )}
-
       {deletedSaunaId && (
-      <DeleteSauna
+        <DeleteSauna
           saunaId={deletedSaunaId}
-        onClose={()=>setDeletedSaunaId(null)}
-        setSaunas= {()=>handleDeleteSauna(deletedSaunaId)}
+          onClose={() => setDeletedSaunaId(null)}
+          setSaunas={() => handleDeleteSauna(deletedSaunaId)}
         />
       )}
       {selectedSauna && (
@@ -96,8 +96,6 @@ const SaunasList: React.FC = () => {
           onClose={() => setSelectedSauna(null)}
         />
       )}
-
-
     </div>
   );
 };

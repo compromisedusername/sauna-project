@@ -15,11 +15,14 @@ export default function Dashboard({ role }: { role: string }) {
           {" "}
           <p>
             Don't have an account?{" "}
-            <a onClick={() => navigate("/register")}>Register</a>
+            <button onClick={() => navigate("/register")}>Register</button>
           </p>
           <p>
             Already have an account?{" "}
-            <a onClick={() => navigate("/login")}>Login</a>
+            <button onClick={() => navigate("/login")}>Login</button>
+          </p>
+          <p>See our saunas!
+          <button onClick={()=>navigate('/about/saunas')}>See Saunas</button>
           </p>
         </>
       ) : (

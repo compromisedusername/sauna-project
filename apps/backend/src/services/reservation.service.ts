@@ -112,7 +112,6 @@ export class ReservationService {
     return reservationResponse;
   }
   public async addReservaton(data: AddReservationRequest): Promise<number> {
-    validateAddReservation(data);
 
     const sauna: Sauna = await this.saunaRepository.getSaunaById(data.saunaId);
 

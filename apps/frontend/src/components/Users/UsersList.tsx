@@ -4,7 +4,7 @@ import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import UserDelete from "./UserDelete";
 import { DeleteDateColumn } from "typeorm";
-import { UserDto } from "../../models/User";
+import { UserDto, UsersResponsePaginated } from "../../models/User";
 import { ReservationForUserDto } from "../../models/User";
 import { RoleForUserDto } from "../../models/User";
 
@@ -25,8 +25,9 @@ const UsersList: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get<UserDto[]>("/users?reservations=true");
-        setUsers(response.data);
+        const response = await api.get<UsersResponsePaginated>(`/users/${currentPage}/${pageSize}`);
+        setUsers(response.data.users);
+        setTotalPages(response.data.totalPages)
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -35,15 +36,14 @@ const UsersList: React.FC = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [currentPage, pageSize]);
 
   if (loading) return <p>Loading users...</p>;
   if (error) return <p>Error fetching users: {error}</p>;
 
   const handleDeleteUser = (deletedUserId: number) => {
     setUsers((prevUsers) =>
-      prevUsers.filter((user) => deletedUserId !== user.id
-      ),
+      prevUsers.filter((user) => deletedUserId !== user.id),
     );
   };
 
@@ -76,13 +76,6 @@ const UsersList: React.FC = () => {
     <div>
       <h2>Users</h2>
       <div>
-        <button
-          onClick={() => {
-            navigate(`/admin/user/add`);
-          }}
-        >
-          Add new user
-        </button>
         <div>
           <button
             onClick={() => {
@@ -92,6 +85,13 @@ const UsersList: React.FC = () => {
             Go back
           </button>
         </div>
+        <button
+          onClick={() => {
+            navigate(`/admin/user/add`);
+          }}
+        >
+          Add new user
+        </button>
       </div>
       {users.length === 0 ? (
         <p>No users found.</p>
@@ -130,13 +130,13 @@ const UsersList: React.FC = () => {
           ))}
         </ul>
       )}
-{deletedUserId && (
-				<UserDelete
-					userId={deletedUserId}
-					onClose={() => setDeletedUserId(null)}
-					setUsers={() => handleDeleteUser(deletedUserId)}
-				/>
-			)}
+      {deletedUserId && (
+        <UserDelete
+          userId={deletedUserId}
+          onClose={() => setDeletedUserId(null)}
+          setUsers={() => handleDeleteUser(deletedUserId)}
+        />
+      )}
       {selectedUser && (
         <UserDetails
           user={selectedUser}
@@ -144,43 +144,40 @@ const UsersList: React.FC = () => {
         />
       )}
 
-<div>
-				<button onClick={() => handlePrevPage()} disabled={currentPage === 1}>
-					Previous Page
-				</button>
-				<span>
-					Page{" "}
-					<input
-						style={{ width: "50px" }}
-						type="number"
-						value={pageInput}
-						onChange={handlePageInputChange}
-						onBlur={handlePageInputBlurr}
-					/>{" "}
-					of {totalPages}
-				</span>
-				<button
-					onClick={() => handleNextPage()}
-					disabled={currentPage === totalPages}
-				>
-					Next Page
-				</button>
-				Page Size:
-				<select
-					style={{ width: "60px" }}
-					value={pageSize}
-					onChange={handlePageSizeChange}
-				>
-					<option value={5}>5</option>
-					<option value={10}>10</option>
-					<option value={25}>25</option>
-					<option value={50}>50</option>
-				</select>
-				<></>
-			</div>
-
-
-
+      <div>
+        <button onClick={() => handlePrevPage()} disabled={currentPage === 1}>
+          Previous Page
+        </button>
+        <span>
+          Page{" "}
+          <input
+            style={{ width: "50px" }}
+            type="number"
+            value={pageInput}
+            onChange={handlePageInputChange}
+            onBlur={handlePageInputBlurr}
+          />{" "}
+          of {totalPages}
+        </span>
+        <button
+          onClick={() => handleNextPage()}
+          disabled={currentPage === totalPages}
+        >
+          Next Page
+        </button>
+        Page Size:
+        <select
+          style={{ width: "60px" }}
+          value={pageSize}
+          onChange={handlePageSizeChange}
+        >
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={25}>25</option>
+          <option value={50}>50</option>
+        </select>
+        <></>
+      </div>
     </div>
   );
 };

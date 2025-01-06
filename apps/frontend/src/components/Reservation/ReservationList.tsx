@@ -80,7 +80,15 @@ const ReservationsList: React.FC = () => {
 	return (
 		<div>
 			<h2>Reservations</h2>
-
+			<div>
+				<button
+					onClick={() => {
+						navigate("/admin/");
+					}}
+				>
+					Go back
+				</button>
+			</div>
 			<div>
 				<button
 					onClick={() => {
@@ -89,13 +97,6 @@ const ReservationsList: React.FC = () => {
 				>
 					Add new reservation
 				</button>
-				<div>
-				  <button
-    onClick={()=>{
-              navigate('/admin/')
-            }}
-				  >Go back</button>
-				</div>
 			</div>
 			{reservations.length === 0 ? (
 				<p>No reservations found.</p>

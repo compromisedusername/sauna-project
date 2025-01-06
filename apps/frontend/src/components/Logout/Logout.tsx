@@ -18,7 +18,7 @@ async function logoutUser(){
     <>
       <p>
         {" "}
-        <a onClick={() => {setToken(""); logoutUser(); navigate("/dashboard")}}> LOGOUT</a>
+        <button onClick={() => {setToken(""); logoutUser(); navigate("/dashboard")}}> LOGOUT</button>
       </p>
     </>
   );

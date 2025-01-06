@@ -17,6 +17,7 @@ export interface SaunaDto {
   peopleCapacity: number;
   reservations: ReservationForSaunaDto[];
 }
+
 export interface ReservationForSaunaDto {
   id: number;
   dateFrom: string;
@@ -50,6 +51,7 @@ export interface SaunaResponse{
   reservations: ReservationResponse[]
 }
 export interface SaunaResponseGuests{
+  id: number;
   name: string,
   saunaType: string,
   humidity: number,

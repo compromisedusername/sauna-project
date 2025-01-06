@@ -7,6 +7,15 @@
   numberOfPeople: number;
 }
 
+ export interface UsersResponsePaginated{
+
+  users: UserDto[];
+  totalItems: number;
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+
+ }
  interface Role {
   id: number;
   description: string;

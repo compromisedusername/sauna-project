@@ -8,10 +8,12 @@ export default function UserPanel() {
     <>
       <h2>User Dashboard</h2>
 
+      <p>Click here to see your reservations.</p>
+      <button onClick={()=>navigate('/user/reservations')}>See Reservations</button>
       <p>
         Click here to make reservation for sauna.
-        <button onClick={() => navigate("/user/reservation")}>
-         Make reservation
+        <button onClick={() => navigate("/user/reservation/add")}>
+         Make Reservation
         </button>
       </p>
       <p>
@@ -20,7 +22,7 @@ export default function UserPanel() {
       </p>
       <p>
         Click here to edit your account
-        <button onClick={() => navigate("/user/edit")}>Edit account</button>
+        <button onClick={() => navigate("/user/edit")}>Edit Account</button>
       </p>
     </>
   );

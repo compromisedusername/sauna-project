@@ -96,6 +96,13 @@ const EditRole: React.FC<EditRoleProps> = () => {
     return (
         <div>
             <h2>Edit Role</h2>
+				<button
+					onClick={() => {
+						navigate("/admin/roles");
+					}}
+				>
+					Go back
+				</button>
             <form onSubmit={handleSubmit}>
                 <p>Role ID: {role.id}</p>
                 <label>

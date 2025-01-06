@@ -29,10 +29,8 @@ export class SaunaRepository {
         );
       }
     } catch (error) {
-      throw ErrorFactory.createInternalServerError(
-        `Finding sauna failed`,
-        error,
-      );
+       throw error
+
     }
   }
 

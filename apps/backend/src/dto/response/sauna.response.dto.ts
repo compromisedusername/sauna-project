@@ -8,10 +8,11 @@ export class SaunaResponse{
   reservations?: ReservationResponse[]
 }
 export class SaunaResponseGuests{
+  id?: number;
   saunaType?: string;
   humidity?: number;
   peopleCapacity?: number;
-  temperature?: string;
+  temperature?: number;
   name?: string;
 
 }
