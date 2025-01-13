@@ -27,12 +27,28 @@ const {t} = useTranslation<'pl'|'en'>();
 
 	return (
 		<div className='container'>
-			<h2 className= 'title'>Delete Reservation for ID: {reservationId}</h2>
-			<p className='title-sure'>Are you sure?</p>
+			<h2 className= 'title'>
+
+            {//@ts-ignore
+               t('deletereservation')}:
+				ID: {reservationId}</h2>
+			<p className='title-sure'>
+
+            {//@ts-ignore
+               t('sure')}:
+			</p>
 			<button className='back-button' onClick={handleClick}>
-			YES, DELETE reservation ID: {reservationId}
+
+            {//@ts-ignore
+               t('yesdeletereservation')}:
+
+				ID: {reservationId}
 			</button>
-			<button className='delete-button' onClick={onClose}>NO, CLOSE</button>
+			<button className='delete-button' onClick={onClose}>
+
+            {//@ts-ignore
+               t('close')}:
+			</button>
 		</div>
 	);
 };

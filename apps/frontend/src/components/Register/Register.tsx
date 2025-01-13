@@ -141,7 +141,7 @@ return (
             {
 
               // @ts-ignore
-              t("alreadyhaveaccount")}
+              t("alreadyhavaccount")}
           </button>
         </p>
 

@@ -197,7 +197,9 @@ const {t} = useTranslation<'pl'|'en'>();
 
         <div className="add-form-group">
           <label htmlFor="user" className="form-label">
-            User:
+
+            {//@ts-ignore
+               t('user')}:
           </label>
           <Select
             options={userOptions}
@@ -211,7 +213,9 @@ const {t} = useTranslation<'pl'|'en'>();
 
         <div className="add-form-group">
           <label htmlFor="sauna" className="form-label">
-            Sauna:
+
+            {//@ts-ignore
+               t('sauna')}:
           </label>
           <Select
             options={saunaOptions}
@@ -224,7 +228,9 @@ const {t} = useTranslation<'pl'|'en'>();
         </div>
         <div className="add-form-group">
           <label htmlFor="dateFrom" className="form-label">
-            Date From:
+
+            {//@ts-ignore
+               t('from')}:
           </label>
           <input
             type="datetime-local"
@@ -242,7 +248,9 @@ const {t} = useTranslation<'pl'|'en'>();
 
         <div className="add-form-group">
           <label htmlFor="dateTo" className="form-label">
-            Date To:
+
+            {//@ts-ignore
+               t('to')}:
           </label>
           <input
             type="datetime-local"
@@ -260,7 +268,9 @@ const {t} = useTranslation<'pl'|'en'>();
 
         <div className="add-form-group">
           <label htmlFor="numberOfPeople" className="form-label">
-            Number of People:
+
+            {//@ts-ignore
+               t('peopleCapacity')}:
           </label>
           <input
             type="number"

@@ -170,7 +170,8 @@ return (
       <form onSubmit={handleSubmit} className="add-form">
         <div className="add-form-group">
             <label className="form-label">
-                User:
+            {//@ts-ignore
+               t('user')}:
             </label>
            <Select
              options={userOptions}
@@ -186,7 +187,9 @@ return (
 
         <div className="add-form-group">
             <label  className="form-label">
-              Sauna:
+
+            {//@ts-ignore
+               t('sauna')}:
             </label>
              <Select
                 options={saunaOptions}
@@ -199,7 +202,9 @@ return (
         </div>
           <div className="add-form-group">
                <label className="form-label">
-              Date From:
+
+            {//@ts-ignore
+               t('from')}:
             </label>
             <input
             type="datetime-local"
@@ -214,7 +219,9 @@ return (
 
          <div className="add-form-group">
            <label  className="form-label">
-              Date To:
+
+            {//@ts-ignore
+               t('to')}:
             </label>
                <input
             type="datetime-local"
@@ -229,7 +236,9 @@ return (
 
         <div className="add-form-group">
             <label  className="form-label">
-                Number of People:
+
+            {//@ts-ignore
+               t('peopleCapacity')}:
             </label>
                <input
             type="number"

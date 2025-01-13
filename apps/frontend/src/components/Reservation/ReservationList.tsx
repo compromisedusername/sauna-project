@@ -108,15 +108,31 @@ const {t} = useTranslation<'pl'|'en'>();
 				</button>
 			</div>
 			{reservations.length === 0 ? (
-				<p>No reservations found.</p>
+				<p>
+
+         {//@ts-ignore
+               t('nodata')}{" "}
+				</p>
 			) : (
 				<table className="table">
 					<thead className="table-header">
 						<tr className="table-header-row">
 							<th className="table-header-cell">ID</th>
-							<th className="table-header-cell">Starts At</th>
-							<th className="table-header-cell">Ends At</th>
-							<th className="table-header-cell">Actions</th>
+							<th className="table-header-cell">
+
+         {//@ts-ignore
+               t('from')}{" "}
+								</th>
+							<th className="table-header-cell">
+
+         {//@ts-ignore
+               t('to')}{" "}
+								</th>
+							<th className="table-header-cell">
+
+         {//@ts-ignore
+               t('actions')}{" "}
+								</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -186,10 +202,14 @@ const {t} = useTranslation<'pl'|'en'>();
 					onClick={() => handlePrevPage()}
 					disabled={currentPage === 1}
 				>
-					Previous Page
+
+         {//@ts-ignore
+               t('prev')}
 				</button>
 				<span className="form-label">
-					Page{" "}
+
+         {//@ts-ignore
+               t('page')}
 					<input
 						type="number"
 						className="input"
@@ -198,17 +218,25 @@ const {t} = useTranslation<'pl'|'en'>();
 						onBlur={handlePageInputBlurr}
 						style={{ width: "50px" }}
 					/>{" "}
-					of {totalPages}
+
+
+         {//@ts-ignore
+               t('of')}
+					{totalPages}
 				</span>
 				<button
 					className="action-button"
 					onClick={() => handleNextPage()}
 					disabled={currentPage === totalPages}
 				>
-					Next Page
+
+         {//@ts-ignore
+               t('next')}
 				</button>
 				<span className="form-label">
-					Page Size:
+
+         {//@ts-ignore
+               t('pagesize')}
 					<select
 						className="select"
 						value={pageSize}

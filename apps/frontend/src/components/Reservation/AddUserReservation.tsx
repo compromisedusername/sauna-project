@@ -87,7 +87,7 @@ const {t} = useTranslation<'pl'|'en'>();
     });
   };
 
-  if (error) return <p>Error loading reservation details: {error}</p>;
+  if (error) return <p className='error'>Error loading reservation details: {error}</p>;
 
   const saunaOptions = saunas.map((sauna) => ({
     value: sauna.id,
@@ -96,12 +96,23 @@ const {t} = useTranslation<'pl'|'en'>();
 
   return (
         <div className='container'>
-            <button className='back-button' onClick={()=>navigate('/')}>Go back</button>
-            <h2 className='title'>Make reservation for sauna</h2>
+            <button className='back-button' onClick={()=>navigate('/')}>
+
+            {//@ts-ignore
+               t('goback')}:
+      </button>
+            <h2 className='title'>
+
+
+            {//@ts-ignore
+               t('makereservation')}:
+      </h2>
             <form className='add-form' onSubmit={handleSubmit}>
                  <div className="add-form-group">
                      <label className='form-label'>
-                         Sauna:
+
+            {//@ts-ignore
+               t('sauna')}:
                      </label>
                      <Select
                          options={saunaOptions}
@@ -115,7 +126,9 @@ const {t} = useTranslation<'pl'|'en'>();
 
                 <div className="add-form-group">
                     <label className="form-label">
-                        Date From:
+
+            {//@ts-ignore
+               t('from')}:
                     </label>
                      <input
                             type="datetime-local"
@@ -129,7 +142,9 @@ const {t} = useTranslation<'pl'|'en'>();
 
                 <div className="add-form-group">
                     <label  className="form-label">
-                        Date To:
+
+            {//@ts-ignore
+               t('to')}:
                     </label>
                       <input
                         type="datetime-local"
@@ -142,7 +157,9 @@ const {t} = useTranslation<'pl'|'en'>();
 
                 <div className="add-form-group">
                     <label  className="form-label">
-                        Number of People:
+
+            {//@ts-ignore
+               t('peopleCapacity')}:
                     </label>
                      <input
                         type="number"
@@ -152,7 +169,11 @@ const {t} = useTranslation<'pl'|'en'>();
                            className="input"
                      />
                 </div>
-              <button type="submit" className="submit-button">Add Reservation</button>
+              <button type="submit" className="submit-button">
+
+            {//@ts-ignore
+               t('addreservation')}:
+        </button>
             </form>
         </div>
     );

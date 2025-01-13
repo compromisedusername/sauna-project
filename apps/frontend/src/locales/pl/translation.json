@@ -15,9 +15,17 @@
   "humidity": "Wilgotność",
  "peopleCapacity": "Pojemność osób",
 
-
-
+"addreservation": "Dodaj Rezerwację",
+"deletereservation":"Usuń rezerwacje ",
+ "yesdeletereservation": "TAK, USUŃ Rezerwację",
+"reservationdetails": "Szczegóły Rezerwacji",
+ "seatsreserved":"Ilość miejsc",
+ "username":"Imię Użytkownika",
+ "usersurname":"Nazwisko Użytkownika",
+ "useremail": "Email użytkownika",
   "addsauna": "Dodaj Saunę",
+
+ "of":"z",
   "sure": "Jesteś pewien?",
  "temperature": "Temperatura",
   "delete-sauna": "Usuń saunę o ",
@@ -58,7 +66,6 @@
   "goback": "Wróć",
   "add": "Dodaj",
   "edit": "Edytuj",
-  "delete": "Usuń",
   "pleaselogin": "Proszę, zaloguj się",
   "logout": "Wyloguj się",
   "adminpanel": "Panel administratora",

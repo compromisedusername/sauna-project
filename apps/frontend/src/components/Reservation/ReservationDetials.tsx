@@ -12,17 +12,49 @@ const ReservationDetails: React.FC<ReservationDetailsProps> = ({
 const {t} = useTranslation<'pl'|'en'>();
   return (
     <div className='container'>
-      <div className='title'>ReservationDetails</div>
+      <div className='title'>
+
+         {//@ts-ignore
+               t('reservationdetails')}
+      </div>
     <table className ="table">
       <thead className='table-header'>
         <th className="table-header-cell">ID</th>
-          <th className="table-header-cell">Seats Reserved</th>
-        <th className="table-header-cell">Starts at</th>
-        <th className="table-header-cell">Ends at</th>
-        <th className="table-header-cell">User ID</th>
-        <th className="table-header-cell">User Name</th>
-        <th className="table-header-cell">User Surname</th>
-        <th className="table-header-cell">User email</th>
+          <th className="table-header-cell">
+
+         {//@ts-ignore
+               t('seatsreserved')}
+          </th>
+        <th className="table-header-cell">
+
+         {//@ts-ignore
+               t('from')}
+          </th>
+        <th className="table-header-cell">
+
+         {//@ts-ignore
+               t('to')}
+          </th>
+        <th className="table-header-cell">
+
+         {//@ts-ignore
+               t('user')}{" "}
+            ID</th>
+        <th className="table-header-cell">
+
+         {//@ts-ignore
+               t('username')}
+          </th>
+        <th className="table-header-cell">
+
+         {//@ts-ignore
+               t('usersurname')}
+          </th>
+        <th className="table-header-cell">
+
+         {//@ts-ignore
+               t('useremail')}{" "}
+          </th>
       </thead>
       <tbody>
           <td className="table-cell">{reservation.id}</td>
@@ -40,7 +72,11 @@ const {t} = useTranslation<'pl'|'en'>();
 
 
       </tbody>
-      <button onClick={onClose}>Close</button>
+      <button onClick={onClose}>
+
+         {//@ts-ignore
+               t('close')}{" "}
+        </button>
     </table>
     </div>
   );
